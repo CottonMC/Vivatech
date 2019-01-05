@@ -1,0 +1,16 @@
+{
+  "id": "united-manufacturing",
+  "name": "United Manufacturing",
+  "version": "0.0.1+18w50a",
+  "side": "universal",
+  "requires": {
+    "fabric": "*"
+  },
+  "initializers": [
+    "io.github.cottonmc.um.UnitedManufacturing"
+  ],
+  "mixins": {
+    "client": "united-manufacturing.client.json",
+    "common": "united-manufacturing.common.json"
+  }
+}
