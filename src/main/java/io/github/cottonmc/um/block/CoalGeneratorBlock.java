@@ -18,6 +18,7 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 	
 	@Override
 	public BlockEntity createBlockEntity(BlockView var1) {
+		System.out.println("BlockEntity created.");
 		return new CoalGeneratorEntity();
 	}
 	
@@ -43,6 +44,6 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayerHorizontalFacing());
+		return this.getDefaultState().with(FACING, context.getPlayerHorizontalFacing().getOpposite());
 	}
 }

@@ -16,8 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class AbstractMachineBlock extends Block {
-	DirectionProperty FACING = Properties.FACING_HORIZONTAL;
-	EnumProperty<MachineStatus> STATUS = EnumProperty.create("status", MachineStatus.class);
+	public static DirectionProperty FACING = Properties.FACING_HORIZONTAL;
+	public static EnumProperty<MachineStatus> STATUS = EnumProperty.create("status", MachineStatus.class);
 	
 	public AbstractMachineBlock() {
 		super(FabricBlockSettings.of(Material.METAL, DyeColor.WHITE).build());
