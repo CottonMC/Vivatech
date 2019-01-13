@@ -6,6 +6,7 @@ import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import io.github.cottonmc.energy.api.EnergyComponent;
 import io.github.cottonmc.energy.api.SidedEnergyComponentHolder;
 import io.github.cottonmc.um.block.UMBlocks;
+import io.github.cottonmc.um.component.InventoryDelegate;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
@@ -17,10 +18,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.text.TextComponent;
 import net.minecraft.util.math.Direction;
-public class CoalGeneratorEntity extends BlockEntity implements Inventory, LockableContainer {
+public class CoalGeneratorEntity extends BlockEntity implements InventoryDelegate, LockableContainer {
 	public static int MAX_WU = 4;
 	public static int FUEL_PER_WU = 5; //Fractional fuel will get banked; generators are lossless.
 	public static int PULSE_LENGTH = 30; //Might shorten to 20, we'll see how it feels in-game.
@@ -109,7 +108,7 @@ public class CoalGeneratorEntity extends BlockEntity implements Inventory, Locka
 					totalTicks = remainingTicks;
 					
 					fuelStack.subtractAmount(1);
-					itemStorage.put(0, (fuelStack.isEmpty()) ? ItemStack.EMPTY : fuelStack); //Stuff it back in to trigger a markDirty
+					itemStorage.setInvStack(0, (fuelStack.isEmpty()) ? ItemStack.EMPTY : fuelStack); //Stuff it back in to trigger a markDirty
 				}
 			}
 		}
@@ -149,53 +148,10 @@ public class CoalGeneratorEntity extends BlockEntity implements Inventory, Locka
 			(wuBuffer<MAX_WU && remainingTicks>FUEL_PER_WU);
 	}
 	
-	//delegates Inventory to itemStorage {
-		@Override
-		public void clearInv() {
-			itemStorage.clear();
-		}
-	
-		@Override
-		public TextComponent getName() {
-			return itemStorage.getName();
-		}
-	
-		@Override
-		public int getInvSize() {
-			return itemStorage.size();
-		}
-	
-		@Override
-		public boolean isInvEmpty() {
-			return itemStorage.isEmpty();
-		}
-	
-		@Override
-		public ItemStack getInvStack(int slotIndex) {
-			return itemStorage.get(slotIndex);
-		}
-	
-		@Override
-		public ItemStack takeInvStack(int slotIndex, int amount) {
-			return itemStorage.extract(slotIndex, amount);
-		}
-	
-		@Override
-		public ItemStack removeInvStack(int slotIndex) {
-			return itemStorage.extract(slotIndex);
-		}
-	
-		@Override
-		public void setInvStack(int slotIndex, ItemStack itemStack) {
-			itemStorage.put(slotIndex, itemStack);
-		}
-	
-		@Override
-		public boolean canPlayerUseInv(PlayerEntity player) {
-			//This one we always have to implement ourselves
-			return player.squaredDistanceTo((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
-		}
-	//}
+	@Override
+	public Inventory getInventoryDelegate() {
+		return itemStorage;
+	}
 	
 	//implements ContainerProvider (implied by LockableContainer) {
 		
@@ -228,4 +184,6 @@ public class CoalGeneratorEntity extends BlockEntity implements Inventory, Locka
 			return lock;
 		}
 	//}
+
+		
 }
