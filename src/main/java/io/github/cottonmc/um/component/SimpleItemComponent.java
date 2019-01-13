@@ -103,7 +103,11 @@ public class SimpleItemComponent implements Component, ItemComponent, Observable
 		
 		@Override
 		public boolean isInvEmpty() {
-			return storage.isEmpty();
+			if (storage.size()==0) return true;
+			for(int i=0; i<storage.size(); i++) {
+				if (!storage.get(i).isEmpty()) return false;
+			}
+			return true;
 		}
 		
 		@Override
@@ -239,21 +243,33 @@ public class SimpleItemComponent implements Component, ItemComponent, Observable
 			ItemStack existing = storage.get(slotIndex);
 			if (existing.isEmpty()) {
 				ItemStack result = ItemStack.EMPTY;
-				storage.set(slotIndex, stack);
-				int max = getMaxStackSize(slotIndex, stack);
-				if (stack.getAmount()>max) {
-					result = stack.split(stack.getAmount()-max);
+				ItemStack accepted = stack.copy();
+				
+				int max = getMaxStackSize(slotIndex, accepted);
+				if (accepted.getAmount()>max) {
+					result = accepted.split(accepted.getAmount()-max);
 				}
-				onChanged();
+				
+				if (action==ActionType.PERFORM) {
+					storage.set(slotIndex, accepted);
+					onChanged();
+				}
+				
 				return result;
 			} else {
 				ItemStack result = ItemStack.EMPTY;
+				ItemStack accepted = existing.copy();
+				
 				boolean canStack = stack.isEqualIgnoreTags(existing) && ItemStack.areTagsEqual(stack, existing);
 				if (canStack) {
-					existing.setAmount(existing.getAmount()+stack.getAmount());
-					int max = getMaxStackSize(slotIndex, existing);
-					if (existing.getAmount()>max) result = existing.split(existing.getAmount()-max);
-					onChanged();
+					accepted.setAmount(existing.getAmount()+stack.getAmount());
+					int max = getMaxStackSize(slotIndex, accepted);
+					if (accepted.getAmount()>max) result = accepted.split(accepted.getAmount()-max);
+					
+					if (action==ActionType.PERFORM) {
+						storage.set(slotIndex, accepted);
+						onChanged();
+					}
 				}
 				return result;
 			}
