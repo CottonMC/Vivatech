@@ -12,11 +12,11 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.text.TextComponent;
 import net.minecraft.text.TranslatableTextComponent;
 import net.minecraft.util.DefaultedList;
-
+import net.minecraft.util.Nameable;
 import io.github.cottonmc.ecs.api.Component;
 import io.github.prospector.silk.util.ActionType;
 
-public class SimpleItemComponent implements Component, ItemComponent, Observable, Inventory {
+public class SimpleItemComponent implements Component, ItemComponent, Inventory, Nameable, Observable  {
 	protected TextComponent name = new TranslatableTextComponent("container.inventory"); //en_us: "Inventory"
 	protected final DefaultedList<ItemStack> storage;// = DefaultedList.create(ItemStack.EMPTY);
 	protected final ArrayList<Runnable> observers = new ArrayList<>();
@@ -186,8 +186,9 @@ public class SimpleItemComponent implements Component, ItemComponent, Observable
 			}
 			onChanged();
 		}
-		
-		//Frome Nameable, implied by Inventory
+	//}
+	
+	//implements Nameable {
 		@Override
 		public TextComponent getName() {
 			return name;

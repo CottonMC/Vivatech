@@ -14,7 +14,7 @@ import net.minecraft.util.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 /** Simple FluidComponent where every tank is the same size. */
-public class SimpleFluidComponent implements Component, FluidComponent, FluidContainer {
+public class SimpleFluidComponent implements Component, FluidComponent, FluidContainer, Observable {
 	private FluidInstance EMPTY = new FluidInstance(); //TODO: As soon as possible, switch to FluidInstance.EMPTY
 	protected DefaultedList<FluidInstance> storage;
 	protected final ArrayList<Runnable> observers = new ArrayList<>();
@@ -32,6 +32,12 @@ public class SimpleFluidComponent implements Component, FluidComponent, FluidCon
 	protected void onChanged() {
 		for(Runnable r : observers) r.run();
 	}
+	
+	//implements Observable {
+		public void addObserver(Runnable onChanged) {
+			observers.add(onChanged);
+		}
+	//}
 	
 	//implements FluidComponent {
 		@Override

@@ -26,38 +26,31 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "united-manufacturing"
-version = "0.0.1+18w50a" //Yes, that's valid SemVer
+version = "0.0.1+19w03a"
 
 
 repositories {
-	//maven { url 'https://jitpack.io' }
-	//mavenLocal();
-
+	//mavenCentral()
 	maven {
 		//cotton
 		url "http://server.bbkr.space:8081/artifactory/libs-snapshot"
 	}
-
-	maven {
-		//jankson
-		url "http://repo.elytradev.com/"
-	}
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:18w50a"
-	mappings "net.fabricmc:yarn:18w50a.90"
+	minecraft "com.mojang:minecraft:19w03a"
+	mappings "net.fabricmc:yarn:19w03a.7"
 	modCompile "net.fabricmc:fabric-loader:0.3.0.75"
 	modCompile "net.fabricmc:fabric:0.1.2.64"
 	implementation "com.google.code.findbugs:jsr305:3.0.2"
 	modCompile "io.github.prospector.silk:SilkAPI:1.2.0-34"
 	
 	//the main cotton api.
-	modCompile "io.github.cottonmc:cotton:0.0.2+18w50a-SNAPSHOT"
-	modCompile "io.github.cottonmc:cotton-resources:0.0.1+18w50a-SNAPSHOT"
-	modCompile "io.github.cottonmc:cotton-energy:1.0.0+18w50a-SNAPSHOT"
-	modCompile "io.github.cottonmc:cotton-ecs:1.0.0-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton:0.0.2+19w03a-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton-resources:0.0.1+19w03a-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton-energy:1.0.0+19w03a-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton-ecs:1.0.0+19w03a-SNAPSHOT"
 	
-	//here temporarily until jar-in-jar comes down the line
-	//implementation "blue.endless:jankson:1.0.0-7"
+	//if we need it
+	//implementation "blue.endless:jankson:1.1.0"
 }

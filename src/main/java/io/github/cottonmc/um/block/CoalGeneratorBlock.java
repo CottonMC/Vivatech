@@ -5,13 +5,16 @@ import java.util.Random;
 import io.github.cottonmc.um.block.entity.CoalGeneratorEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEntityProvider {
+public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEntityProvider, InventoryProvider {
 	
 	public CoalGeneratorBlock() {
 	}
@@ -45,5 +48,13 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		return this.getDefaultState().with(FACING, context.getPlayerHorizontalFacing().getOpposite());
+	}
+
+	@Override
+	public SidedInventory getInventory(BlockState state, IWorld world, BlockPos pos) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be!=null && be instanceof CoalGeneratorEntity) {
+			return ((CoalGeneratorEntity)be).getInventory();
+		}
 	}
 }

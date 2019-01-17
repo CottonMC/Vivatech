@@ -3,7 +3,6 @@ package io.github.cottonmc.um.component;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.TextComponent;
 
 public interface InventoryDelegate extends Inventory {
 	Inventory getInventoryDelegate();
@@ -51,10 +50,5 @@ public interface InventoryDelegate extends Inventory {
 	@Override
 	default void clearInv() {
 		getInventoryDelegate().clearInv();
-	}
-
-	@Override
-	default TextComponent getName() {
-		return getInventoryDelegate().getName();
 	}
 }

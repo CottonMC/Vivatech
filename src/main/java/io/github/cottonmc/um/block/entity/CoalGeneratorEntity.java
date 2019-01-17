@@ -8,27 +8,30 @@ import io.github.cottonmc.energy.api.SidedEnergyComponentHolder;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.InventoryDelegate;
 import io.github.cottonmc.um.component.SimpleItemComponent;
+import io.github.cottonmc.um.component.wrapper.SidedItemView;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
-import net.minecraft.container.Container;
 import net.minecraft.container.LockContainer;
-import net.minecraft.container.LockableContainer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-public class CoalGeneratorEntity extends BlockEntity implements InventoryDelegate, LockableContainer {
+import net.minecraft.world.IWorld;
+public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider {
 	public static int MAX_WU = 4;
 	public static int FUEL_PER_WU = 5; //Fractional fuel will get banked; generators are lossless.
 	public static int PULSE_LENGTH = 30; //Might shorten to 20, we'll see how it feels in-game.
 	
-	private LockContainer lock;
+	private LockContainer lock; //TODO: Awaiting design direction, to be decided alongside Locky
 	private int remainingTicks;
 	private int totalTicks;
 	private int wuBuffer;
 	private SimpleItemComponent itemStorage = new SimpleItemComponent(1);
+	//private EnergyHandler energyStorage = new EnergyHandler(MAX_WU);
 	
 	public CoalGeneratorEntity() {
 		super(UMBlocks.COAL_GENERATOR_ENTITY);
@@ -41,6 +44,7 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryDelegat
 		
 		result.put("Items", itemStorage.toTag());
 		
+		//result.put("Energy", energyStorage.toTag());
 		CompoundTag energyTag = new CompoundTag();
 		energyTag.putInt("Stored", wuBuffer);
 		energyTag.putInt("Limit", MAX_WU);
@@ -149,41 +153,8 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryDelegat
 	}
 	
 	@Override
-	public Inventory getInventoryDelegate() {
-		return itemStorage;
+	public SidedInventory getInventory(BlockState var1, IWorld var2, BlockPos var3) {
+		return new SidedItemView(itemStorage);
 	}
 	
-	//implements ContainerProvider (implied by LockableContainer) {
-		
-		@Override
-		public Container createContainer(PlayerInventory var1, PlayerEntity var2) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public String getContainerId() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	//}
-	
-	//implements LockableContainer {
-		@Override
-		public boolean hasContainerLock() {
-			return lock!=null && !lock.isEmpty();
-		}
-
-		@Override
-		public void setContainerLock(LockContainer lock) {
-			this.lock = lock;
-		}
-
-		@Override
-		public LockContainer getContainerLock() {
-			return lock;
-		}
-	//}
-
-		
 }
