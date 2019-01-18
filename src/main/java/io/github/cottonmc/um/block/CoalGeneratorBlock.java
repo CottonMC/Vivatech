@@ -54,7 +54,9 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 	public SidedInventory getInventory(BlockState state, IWorld world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be!=null && be instanceof CoalGeneratorEntity) {
-			return ((CoalGeneratorEntity)be).getInventory();
+			return ((CoalGeneratorEntity)be).getInventory(state, world, pos);
+		} else {
+			return null;
 		}
 	}
 }
