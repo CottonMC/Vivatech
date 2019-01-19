@@ -42,7 +42,7 @@ dependencies {
 	mappings "net.fabricmc:yarn:19w03a.7"
 	modCompile "net.fabricmc:fabric-loader:0.3.0.75"
 	modCompile "net.fabricmc:fabric:0.1.2.64"
-	implementation "com.google.code.findbugs:jsr305:3.0.2"
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 	modCompile "io.github.prospector.silk:SilkAPI:1.2.0-34"
 	
 	//the main cotton api.
