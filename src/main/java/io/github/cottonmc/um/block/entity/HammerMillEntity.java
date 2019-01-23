@@ -1,11 +1,8 @@
 package io.github.cottonmc.um.block.entity;
 
 import io.github.cottonmc.cotton.registry.CommonItems;
-import io.github.cottonmc.energy.CottonEnergy;
-import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import io.github.cottonmc.energy.impl.EnergyHandler;
 import io.github.cottonmc.energy.impl.EnergySerializer;
-import io.github.cottonmc.resources.CottonResources;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
@@ -93,7 +90,7 @@ public class HammerMillEntity extends BlockEntity implements InventoryProvider {
 		 *
 		 */
 		if (needsTick()) {
-			world.getBlockTickScheduler().schedule(pos, UMBlocks.COAL_GENERATOR, 1);
+			world.getBlockTickScheduler().schedule(pos, UMBlocks.HAMMER_MILL, 1);
 		}
 	}
 
