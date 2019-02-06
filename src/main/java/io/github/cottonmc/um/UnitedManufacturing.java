@@ -1,6 +1,7 @@
 package io.github.cottonmc.um;
 
 import io.github.cottonmc.um.block.UMBlocks;
+import io.github.cottonmc.um.recipe.UMRecipes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -13,6 +14,7 @@ public class UnitedManufacturing implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		UMBlocks.init();
+		UMRecipes.init();
 	}
 	
 	
