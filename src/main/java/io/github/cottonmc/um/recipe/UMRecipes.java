@@ -21,12 +21,13 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
 
 public class UMRecipes {
-	public static RecipeType<HammerMillRecipe> HAMMER_MILL = register("hammer_mill");
+	public static RecipeType<HammerMillRecipe> HAMMER_MILL;
 
 	//public static RecipeSerializer<HammerMillRecipe> HAMMER_MILL_SERIALIZER = register("hammer_mill", new MachineRecipeSerializer<HammerMillRecipe>(HammerMillRecipe::new, 200));
 
 	public static void init() {
-		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:hammer_mill", HammerMillRecipe.SERIALIZER);
+		HAMMER_MILL = register("united-manufacturing:hammer_mill");
+		Registry.register(Registry.RECIPE_SERIALIZER, "united-manufacturing:hammer_mill", HammerMillRecipe.SERIALIZER);
 	}
 	
 	/*

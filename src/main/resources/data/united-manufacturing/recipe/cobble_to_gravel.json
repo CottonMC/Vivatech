@@ -1,0 +1,7 @@
+{
+	"type": "united-manufacturing:hammer_mill",
+	"ingredient": "minecraft:cobblestone",
+	"result": "minecraft:gravel",
+	"duration": 60,
+	"energy": 10
+}

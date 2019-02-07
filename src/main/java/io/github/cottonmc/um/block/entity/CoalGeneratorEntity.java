@@ -1,55 +1,55 @@
 package io.github.cottonmc.um.block.entity;
 
-import io.github.cottonmc.energy.CottonEnergy;
-import io.github.cottonmc.energy.api.ActionType;
-import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.google.common.collect.Sets;
+
+import io.github.cottonmc.ecs.api.Component;
+import io.github.cottonmc.ecs.api.SidedComponentContainer;
 import io.github.cottonmc.energy.api.EnergyComponent;
-import io.github.cottonmc.energy.api.SidedEnergyComponentHolder;
+import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.um.block.UMBlocks;
-import io.github.cottonmc.um.component.InventoryDelegate;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
+import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
-import net.minecraft.container.LockContainer;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.IWorld;
-public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider {
+public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider, SidedComponentContainer {
 	public static int MAX_WU = 4;
 	public static int FUEL_PER_WU = 5; //Fractional fuel will get banked; generators are lossless.
 	public static int PULSE_LENGTH = 30; //Might shorten to 20, we'll see how it feels in-game.
 	
-	private LockContainer lock; //TODO: Awaiting design direction, to be decided alongside Locky
+	//private ContainerLock lock; //TODO: Awaiting design direction, to be decided alongside Locky
 	private int remainingTicks;
 	private int totalTicks;
-	private int wuBuffer;
-	private SimpleItemComponent itemStorage = new SimpleItemComponent(1);
-	//private EnergyHandler energyStorage = new EnergyHandler(MAX_WU);
+	//private int wuBuffer;
+	private SimpleItemComponent items = new SimpleItemComponent(1);
+	private SimpleEnergyComponent energy = new SimpleEnergyComponent(MAX_WU);
 	
 	public CoalGeneratorEntity() {
 		super(UMBlocks.COAL_GENERATOR_ENTITY);
-		itemStorage.addObserver(this::markDirty); //TODO: on markDirty, check if we need to schedule a tick!
+		
+		items.addObserver(this::markDirty);
+		energy.listen(this::markDirty);
 	}
 	
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		CompoundTag result = super.toTag(tag);
 		
-		result.put("Items", itemStorage.toTag());
-		
-		//result.put("Energy", energyStorage.toTag());
-		CompoundTag energyTag = new CompoundTag();
-		energyTag.putInt("Stored", wuBuffer);
-		energyTag.putInt("Limit", MAX_WU);
-		energyTag.putString("Type", CottonEnergy.ENERGY_REGISTRY.getId(DefaultEnergyTypes.LOW_VOLTAGE).toString());
-		result.put("Energy", energyTag);
+		result.put("Items", items.toTag());
+		result.put("Energy", energy.toTag());
 		
 		result.putInt("BurnTime", remainingTicks);
 		result.putInt("BurnTimeTotal", totalTicks);
@@ -61,15 +61,8 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	public void fromTag(CompoundTag tag) {
 		super.fromTag(tag);
 		
-		if (tag.containsKey("Items", 9)) {
-			itemStorage.fromTag(tag.getList("Items", 10)); //10 is CompoundTag
-		}
-		
-		if (tag.containsKey("Energy", 10)) {
-			CompoundTag energyTag = tag.getCompound("Energy");
-			wuBuffer = energyTag.getInt("Stored");
-			//Ignore limit and type
-		}
+		if (tag.containsKey("Items")) items.fromTag(tag.getTag("Items"));
+		if (tag.containsKey("Energy")) energy.fromTag(tag.getTag("Energy"));
 		
 		remainingTicks = tag.getInt("BurnTime");
 		totalTicks = tag.getInt("BurnTimeTotal");
@@ -87,16 +80,16 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	public void pulse() {
 		
 		//[continue to] flush any stored energy
-		if (wuBuffer>0) {
+		if (energy.getCurrentEnergy()>0) {
 			pushEnergy();
 		}
 		
 		//[continue to] spend stored fuel-ticks to create energy
 		burn:
 		for(int i=0; i<5; i++) {
-			if (wuBuffer<MAX_WU && remainingTicks>FUEL_PER_WU) {
+			if (energy.getCurrentEnergy()<MAX_WU && remainingTicks>FUEL_PER_WU) {
 				remainingTicks -= FUEL_PER_WU;
-				wuBuffer++;
+				energy.insertEnergy(1, ActionType.PERFORM);
 				markDirty();
 			} else break burn;
 		}
@@ -104,15 +97,15 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 		//Consume fuel to recharge fuel-ticks
 		if (remainingTicks<FUEL_PER_WU) {
 			//TODO: Consume fuel
-			ItemStack fuelStack = itemStorage.get(0);
+			ItemStack fuelStack = items.get(0);
 			if (!fuelStack.isEmpty()) {
-				int burnTime = FurnaceBlockEntity.createBurnableMap().getOrDefault(fuelStack.getItem(), 0);
+				int burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(fuelStack.getItem(), 0);
 				if (burnTime>0) {
 					remainingTicks += burnTime;
 					totalTicks = remainingTicks;
 					
 					fuelStack.subtractAmount(1);
-					itemStorage.setInvStack(0, (fuelStack.isEmpty()) ? ItemStack.EMPTY : fuelStack); //Stuff it back in to trigger a markDirty
+					items.setInvStack(0, (fuelStack.isEmpty()) ? ItemStack.EMPTY : fuelStack); //Stuff it back in to trigger a markDirty
 				}
 			}
 		}
@@ -131,16 +124,23 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	
 	public void pushEnergy() {
 		for(Direction d : Direction.values()) {
+			/*
+			BlockState state = world.getBlockState(pos.offset(d));
+			//TODO: Add "world, pos" arguments to SidedComponentContainer so this can work
+			if (!state.isAir() && (state.getBlock() instanceof SidedComponentContainer)) {
+				((SidedComponentContainer)state.getBlock()).getComponent(d.getOpposite(), EnergyComponent.class, "low_voltage");
+			}*/
+			
 			BlockEntity be = world.getBlockEntity(pos.offset(d));
-			if (be!=null && be instanceof SidedEnergyComponentHolder) {
+			if (be!=null && be instanceof SidedComponentContainer) {
 				//This is a valid target
-				//TODO: Use ECS once we have a solid call on whether a BlockEntity is a SidedComponentHolder or the holder of a SidedComponentMap; a component-component if you will
 				
-				EnergyComponent target = ((SidedEnergyComponentHolder)be).getEnergyComponent(d.getOpposite(), DefaultEnergyTypes.LOW_VOLTAGE);
-				if (!target.canInsertEnergy()) continue;
-				int toInsert = Math.min(4, wuBuffer);
-				wuBuffer -= toInsert;
-				wuBuffer += target.insertEnergy(4, ActionType.PERFORM);
+				EnergyComponent target = ((SidedComponentContainer)be).getComponent(d.getOpposite(), EnergyComponent.class, "cotton:low_voltage");
+				if (target==null || !target.canInsertEnergy()) continue;
+				int toInsert = Math.min(4, energy.getCurrentEnergy());
+				toInsert = energy.extractEnergy(toInsert, ActionType.PERFORM);
+				int leftover = target.insertEnergy(4, ActionType.PERFORM);
+				if (leftover>0) energy.insertEnergy(leftover, ActionType.PERFORM);
 				markDirty();
 			}
 		}
@@ -148,13 +148,44 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	
 	public boolean needsPulse() {
 		return
-			wuBuffer>0 ||
-			(wuBuffer<MAX_WU && remainingTicks>FUEL_PER_WU);
+			energy.getCurrentEnergy()>0 ||
+			(energy.getCurrentEnergy()<MAX_WU && remainingTicks>FUEL_PER_WU);
 	}
 	
 	@Override
 	public SidedInventory getInventory(BlockState var1, IWorld var2, BlockPos var3) {
-		return new SidedItemView(itemStorage);
+		return new SidedItemView(items);
 	}
 	
+	//implements SidedComponentContainer {
+		@Override
+		public <T extends Component> boolean registerExtraComponent(Direction side, Class<T> componentClass, String key, T component) {
+			return false;
+		}
+	
+		@Override
+		public <T extends Component> boolean registerExtraComponent(Class<T> componentClass, String key, T component) {
+			return false;
+		}
+	
+		@SuppressWarnings("unchecked")
+		@Override
+		@Nullable
+		public <T extends Component> T getComponent(Direction side, Class<T> componentClass, String key) {
+			if (componentClass==EnergyComponent.class) {
+				return (T)energy; //TODO: Wrap it
+			}
+			return null;
+		}
+	
+		@Override
+		@Nonnull
+		public Set<String> getComponentKeys(Direction side, Class<? extends Component> componentClass) {
+			if (componentClass==EnergyComponent.class) {
+				return Sets.newHashSet("cotton:low_voltage");
+			} else {
+				return Sets.newHashSet();
+			}
+		}
+	//}
 }

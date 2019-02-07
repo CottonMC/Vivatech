@@ -26,11 +26,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "united-manufacturing"
-version = "0.0.1+19w03a"
+version = "0.0.1+19w05a"
 
 
 repositories {
 	//mavenCentral()
+	//mavenLocal()
 	maven {
 		//cotton
 		url "http://server.bbkr.space:8081/artifactory/libs-snapshot"
@@ -38,18 +39,18 @@ repositories {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:19w03a"
-	mappings "net.fabricmc:yarn:19w03a.7"
-	modCompile "net.fabricmc:fabric-loader:0.3.0.75"
-	modCompile "net.fabricmc:fabric:0.1.2.64"
+	minecraft "com.mojang:minecraft:19w05a"
+	mappings "net.fabricmc:yarn:19w05a.6"
+	modCompile "net.fabricmc:fabric-loader:0.3.5.106"
+	modCompile "net.fabricmc:fabric:0.1.5.88" //0.1.2.64"
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 	modCompile "io.github.prospector.silk:SilkAPI:1.2.0-34"
 	
 	//the main cotton api.
-	modCompile "io.github.cottonmc:cotton:0.0.2+19w03a-SNAPSHOT"
-	modCompile "io.github.cottonmc:cotton-resources:0.0.1+19w03a-SNAPSHOT"
-	modCompile "io.github.cottonmc:cotton-energy:1.0.0+19w03a-SNAPSHOT"
-	modCompile "io.github.cottonmc:cotton-ecs:1.0.0+19w03a-SNAPSHOT"
+	//modCompile "io.github.cottonmc:cotton:0.0.2+19w03a-SNAPSHOT"
+	//modCompile "io.github.cottonmc:cotton-resources:0.0.1+19w03a-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton-energy:1.0.0+19w05a-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton-ecs:1.0.0+19w05a-SNAPSHOT"
 	
 	//if we need it
 	//implementation "blue.endless:jankson:1.1.0"

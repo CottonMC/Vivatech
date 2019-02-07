@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.DirectionProperty;
@@ -27,6 +28,11 @@ public class AbstractMachineBlock extends Block {
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.with(FACING, STATUS);
+	}
+	
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return this.getDefaultState().with(FACING, context.getPlayerHorizontalFacing().getOpposite());
 	}
 	
 	@Override
