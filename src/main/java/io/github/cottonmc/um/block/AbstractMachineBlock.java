@@ -1,6 +1,6 @@
 package io.github.cottonmc.um.block;
 
-import net.fabricmc.fabric.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
@@ -23,7 +23,7 @@ public class AbstractMachineBlock extends Block {
 	public AbstractMachineBlock() {
 		super(FabricBlockSettings.of(Material.METAL, DyeColor.WHITE).build());
 	}
-	
+
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);

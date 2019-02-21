@@ -26,7 +26,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "united-manufacturing"
-version = "0.0.1+19w05a"
+version = "0.0.1+19w08a"
 
 
 repositories {
@@ -39,10 +39,10 @@ repositories {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:19w05a"
-	mappings "net.fabricmc:yarn:19w05a.6"
-	modCompile "net.fabricmc:fabric-loader:0.3.5.106"
-	modCompile "net.fabricmc:fabric:0.1.5.88" //0.1.2.64"
+	minecraft "com.mojang:minecraft:19w08a"
+	mappings "net.fabricmc:yarn:19w08a.4"
+	modCompile "net.fabricmc:fabric-loader:0.3.7.108"
+	modCompile "net.fabricmc:fabric:0.2.2.103"
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 	modCompile "io.github.prospector.silk:SilkAPI:1.2.0-34"
 	
