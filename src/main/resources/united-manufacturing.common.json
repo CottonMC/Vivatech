@@ -3,6 +3,7 @@
   "package": "io.github.cottonmc.um.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "FluidTagContainerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

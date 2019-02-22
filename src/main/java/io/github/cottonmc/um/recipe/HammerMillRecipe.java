@@ -30,13 +30,7 @@ public class HammerMillRecipe implements Recipe<Inventory> {
 	protected int duration;
 	
 	public HammerMillRecipe(Identifier id, Ingredient ingredient, ItemStack result, int energy, int duration) {
-		this.identifier = id;
-		this.ingredient = ingredient;
-		this.result = result;
-		this.energy = energy;
-		this.duration = duration;
-		this.extraResult = ItemStack.EMPTY;
-		this.extraChance = 0.0f;
+		this(id, ingredient, result, ItemStack.EMPTY, 0.0f, energy, duration);
 	}
 	
 	public HammerMillRecipe(Identifier id, Ingredient ingredient, ItemStack result, ItemStack extraResult, float extraChance, int energy, int duration) {

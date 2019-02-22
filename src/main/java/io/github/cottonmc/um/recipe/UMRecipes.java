@@ -9,6 +9,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
+import io.github.cottonmc.um.recipe.polytype.PolyTypeRecipe;
+import io.github.cottonmc.um.recipe.polytype.PolyTypeRecipeSerializer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -22,6 +24,8 @@ import net.minecraft.util.registry.Registry;
 
 public class UMRecipes {
 	public static RecipeType<HammerMillRecipe> HAMMER_MILL;
+
+	public static Registry<PolyTypeRecipeSerializer> POLY_TYPE_RECIPE_SERIALIZER;
 
 	//public static RecipeSerializer<HammerMillRecipe> HAMMER_MILL_SERIALIZER = register("hammer_mill", new MachineRecipeSerializer<HammerMillRecipe>(HammerMillRecipe::new, 200));
 
