@@ -55,8 +55,8 @@ public class SidedItemView implements SidedInventory {
 	}
 
 	@Override
-	public void clearInv() {
-		delegate.clearInv();
+	public void clear() {
+		delegate.clear();
 	}
 
 	@Override

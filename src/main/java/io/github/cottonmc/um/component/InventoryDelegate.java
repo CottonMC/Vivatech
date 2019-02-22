@@ -48,7 +48,7 @@ public interface InventoryDelegate extends Inventory {
 	}
 
 	@Override
-	default void clearInv() {
-		getInventoryDelegate().clearInv();
+	default void clear() {
+		getInventoryDelegate().clear();
 	}
 }

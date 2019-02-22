@@ -180,7 +180,7 @@ public class SimpleItemComponent implements Component, ItemComponent, Inventory,
 		
 		//From class_3829 a.k.a. Clearable, implied by Inventory
 		@Override
-		public void clearInv() {
+		public void clear() {
 			for(int i=0; i<storage.size(); i++) {
 				storage.set(i, ItemStack.EMPTY);
 			}
@@ -292,5 +292,6 @@ public class SimpleItemComponent implements Component, ItemComponent, Inventory,
 		public int getMaxStackSize(int slotIndex) {
 			return getMaxStackSize(slotIndex, ItemStack.EMPTY);
 		}
+
 	//}
 }
