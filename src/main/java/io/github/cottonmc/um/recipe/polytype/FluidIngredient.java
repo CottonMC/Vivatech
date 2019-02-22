@@ -26,7 +26,7 @@ public final class FluidIngredient implements Predicate<FluidInstance> {
 	private static final Predicate<? super FluidIngredient.Entry> NON_EMPTY = (entry) -> !entry.getFluids().stream().allMatch(FluidInstance::isEmpty);
 	public static final FluidIngredient EMPTY = new FluidIngredient(Stream.empty());
 	private final FluidIngredient.Entry[] entries;
-	private FluidInstance[] stackArray;
+	private FluidInstance[] instanceArray;
 	private IntList ids;
 
 	private FluidIngredient(Stream<? extends FluidIngredient.Entry> stream_1) {
@@ -36,29 +36,26 @@ public final class FluidIngredient implements Predicate<FluidInstance> {
 	@Environment(EnvType.CLIENT)
 	public FluidInstance[] getInstanceArray() {
 		this.createInstanceArray();
-		return this.stackArray;
+		return this.instanceArray;
 	}
 
 	private void createInstanceArray() {
-		if (this.stackArray == null) {
-			this.stackArray = Arrays.stream(this.entries).flatMap((entry) -> entry.getFluids().stream()).distinct().toArray(FluidInstance[]::new);
+		if (this.instanceArray == null) {
+			this.instanceArray = Arrays.stream(this.entries).flatMap((entry) -> entry.getFluids().stream()).distinct().toArray(FluidInstance[]::new);
 		}
 
 	}
 
-	public boolean matches(@Nullable FluidInstance inst) {
-		if (inst == null) {
+	public boolean matches(@Nullable FluidInstance fluid) {
+		if (fluid == null) {
 			return false;
 		} else if (this.entries.length == 0) {
-			return inst.isEmpty();
+			return fluid.isEmpty();
 		} else {
 			this.createInstanceArray();
-			FluidInstance[] var2 = this.stackArray;
-			int var3 = var2.length;
 
-			for(int var4 = 0; var4 < var3; ++var4) {
-				FluidInstance fluidInstance_2 = var2[var4];
-				if (fluidInstance_2.getFluid() == inst.getFluid()) {
+			for(FluidInstance instance : this.instanceArray) {
+				if (instance.getFluid() == fluid.getFluid()) {
 					return true;
 				}
 			}
@@ -70,13 +67,10 @@ public final class FluidIngredient implements Predicate<FluidInstance> {
 	public IntList getIds() {
 		if (this.ids == null) {
 			this.createInstanceArray();
-			this.ids = new IntArrayList(this.stackArray.length);
-			FluidInstance[] var1 = this.stackArray;
-			int var2 = var1.length;
+			this.ids = new IntArrayList(this.instanceArray.length);
 
-			for(int var3 = 0; var3 < var2; ++var3) {
-				FluidInstance fluidInstance_1 = var1[var3];
-				this.ids.add(FluidRecipeUtils.getFluidId(fluidInstance_1));
+			for(FluidInstance instance : instanceArray) {
+				this.ids.add(FluidRecipeUtils.getFluidId(instance));
 			}
 
 			this.ids.sort(IntComparators.NATURAL_COMPARATOR);
@@ -87,10 +81,10 @@ public final class FluidIngredient implements Predicate<FluidInstance> {
 
 	public void write(PacketByteBuf buf) {
 		this.createInstanceArray();
-		buf.writeVarInt(this.stackArray.length);
+		buf.writeVarInt(this.instanceArray.length);
 
-		for(int int_1 = 0; int_1 < this.stackArray.length; ++int_1) {
-			FluidRecipeUtils.writeFluidInstance(buf, this.stackArray[int_1]);
+		for(FluidInstance instance : instanceArray) {
+			FluidRecipeUtils.writeFluidInstance(buf, instance);
 		}
 
 	}
@@ -100,12 +94,9 @@ public final class FluidIngredient implements Predicate<FluidInstance> {
 			return this.entries[0].toJson();
 		} else {
 			JsonArray json = new JsonArray();
-			FluidIngredient.Entry[] var2 = this.entries;
-			int var3 = var2.length;
 
-			for(int var4 = 0; var4 < var3; ++var4) {
-				FluidIngredient.Entry ingredient$Entry_1 = var2[var4];
-				json.add(ingredient$Entry_1.toJson());
+			for(FluidIngredient.Entry entry : this.entries) {
+				json.add(entry.toJson());
 			}
 
 			return json;
@@ -113,7 +104,7 @@ public final class FluidIngredient implements Predicate<FluidInstance> {
 	}
 
 	public boolean isEmpty() {
-		return this.entries.length == 0 && (this.stackArray == null || this.stackArray.length == 0) && (this.ids == null || this.ids.isEmpty());
+		return this.entries.length == 0 && (this.instanceArray == null || this.instanceArray.length == 0) && (this.ids == null || this.ids.isEmpty());
 	}
 
 	private static FluidIngredient ofEntries(Stream<? extends FluidIngredient.Entry> stream_1) {
@@ -122,14 +113,12 @@ public final class FluidIngredient implements Predicate<FluidInstance> {
 	}
 
 	public static FluidIngredient ofFluids(FluidProvider... providers) {
-		return ofEntries(Arrays.stream(providers).map((provider) -> {
-			return new FluidIngredient.InstanceEntry(new FluidInstance(provider.getFluid()));
-		}));
+		return ofEntries(Arrays.stream(providers).map((provider) -> new InstanceEntry(new FluidInstance(provider.getFluid()))));
 	}
 
 	@Environment(EnvType.CLIENT)
 	public static FluidIngredient ofInstances(FluidInstance... instances) {
-		return ofEntries(Arrays.stream(instances).map((inst) -> new InstanceEntry(inst)));
+		return ofEntries(Arrays.stream(instances).map(InstanceEntry::new));
 	}
 
 	public static FluidIngredient fromTag(Tag<Fluid> tag_1) {
