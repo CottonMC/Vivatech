@@ -59,7 +59,15 @@ public class HammerMillRecipe implements Recipe<Inventory> {
 		public ItemStack getOutput() {
 			return result;
 		}
-	
+
+		public ItemStack getExtraOutput() {
+			return extraResult;
+		}
+
+		public int getDuration() {
+			return duration;
+		}
+
 		@Override
 		public Identifier getId() {
 			return identifier;

@@ -5,10 +5,14 @@ import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
+import io.github.cottonmc.um.recipe.HammerMillRecipe;
+import io.github.cottonmc.um.recipe.UMRecipes;
+import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.ContainerLock;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
 
@@ -30,7 +34,7 @@ public class HammerMillEntity extends BlockEntity {
 	long operationLength = 0L;
 	
 	/** A Recipe indicating the operation currently in progress. */
-	Recipe<Inventory> operation;
+	HammerMillRecipe operation;
 	
 	
 	public HammerMillEntity() {
@@ -75,18 +79,30 @@ public class HammerMillEntity extends BlockEntity {
 	
 	public void pulse() {
 		if (world==null) return;
+		if (operation != world.getRecipeManager().get(UMRecipes.HAMMER_MILL, getInventory(), world).orElse(null)) {
+			operation = null;
+			operationLength = 0;
+		}
 		if (world.getTime()>=operationStart+operationLength) {
 			//TODO: Pulse logic goes here.
+
 			if (operation==null && !items.get(SLOT_WORK).isEmpty()) {
-				
+				operation = world.getRecipeManager().get(UMRecipes.HAMMER_MILL, getInventory(), world).orElse(null);
+				if (operation != null) {
+					operationStart = world.getTime();
+					operationLength = operation.getDuration();
+				}
+
+			} else {
+				items.getInvStack(SLOT_INGREDIENT).subtractAmount(1); // probably put an amount in the Recipe
+				items.insert(SLOT_RESULT, operation.getOutput(), ActionType.PERFORM);
+				items.insert(SLOT_RESULT_EXTRA, operation.getExtraOutput(), ActionType.PERFORM); // change when random-chance gets implemented
 			}
 			
 			
 			if (needsPulse()) {
 				world.getBlockTickScheduler().schedule(pos, UMBlocks.HAMMER_MILL, (int)operationLength);
 			}
-		} else {
-			
 		}
 	}
 	
