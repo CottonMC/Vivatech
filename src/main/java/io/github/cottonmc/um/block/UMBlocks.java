@@ -56,7 +56,7 @@ public class UMBlocks {
 	
 	public static <T extends BlockEntity> BlockEntityType<T> registerType(String id, Supplier<T> supplier) {
 		BlockEntityType<T> result = BlockEntityType.Builder.create(supplier).build(null);
-		Registry.register(Registry.BLOCK_ENTITY, "united-manufacturing"+id, result);
+		Registry.register(Registry.BLOCK_ENTITY, "united-manufacturing:"+id, result);
 		return result;
 	}
 }

@@ -67,10 +67,12 @@ public class ConveyorEntity extends BlockEntity {
 		 	Direction insertSide = world.getBlockState(pos).get(ConveyorBlock.FACING).getOpposite();
 		 	if (block instanceof InventoryProvider) {
 		 		SidedInventory inv = ((InventoryProvider) block).getInventory(state, world, dropoff);
-			 	int insertSlot = getAvailableSlot(inv, (inv).getInvAvailableSlots(insertSide));
-			 	if (insertSlot >= 0) {
-			 		inv.setInvStack(insertSlot, items.getInvStack(0));
-			 		items.removeInvStack(0);
+		 		if (inv != null) {
+					int insertSlot = getAvailableSlot(inv, (inv).getInvAvailableSlots(insertSide));
+					if (insertSlot >= 0) {
+						inv.setInvStack(insertSlot, items.getInvStack(0));
+						items.removeInvStack(0);
+					}
 				}
 		 	} else if (state.isAir()) {
 				ItemEntity item = new ItemEntity(world, dropoff.getX(), dropoff.getY(), dropoff.getZ(), items.getInvStack(0));
