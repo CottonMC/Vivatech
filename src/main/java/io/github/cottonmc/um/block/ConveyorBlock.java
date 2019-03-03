@@ -1,6 +1,4 @@
 package io.github.cottonmc.um.block;
-
-import com.sun.istack.internal.Nullable;
 import io.github.cottonmc.um.block.entity.ConveyorEntity;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.BlockEntityProvider;
@@ -24,7 +22,6 @@ public class ConveyorBlock extends AbstractMachineBlock implements BlockEntityPr
 		super(FabricBlockSettings.of(Material.METAL, DyeColor.ORANGE).noCollision().build());
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockView blockView) {
 		return new ConveyorEntity();

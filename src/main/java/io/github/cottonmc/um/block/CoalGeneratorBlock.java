@@ -28,16 +28,12 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 	@Override
 	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (world.isClient) {
-			System.out.println("CLIENT TICK");
+			System.out.println("Client tick");
 		} else {
-			System.out.println("SERVER-LOGIC-TICK");
+			System.out.println("Server tick");
 			
 			BlockEntity entity = world.getBlockEntity(pos);
-			if (entity!=null && entity instanceof CoalGeneratorEntity) {
-				
-				
-				
-				
+			if (entity instanceof CoalGeneratorEntity) {
 				
 			} else {
 				setStatus(world, pos, MachineStatus.ERROR);
