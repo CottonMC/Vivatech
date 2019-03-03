@@ -2,7 +2,7 @@ package io.github.cottonmc.um.recipe.polytype;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
-import io.github.cottonmc.um.mixin.FluidTagsContainerMixin;
+import io.github.cottonmc.um.mixin.FluidTagContainerMixin;
 import io.github.prospector.silk.fluid.FluidInstance;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
@@ -160,7 +160,7 @@ public final class FluidIngredient implements Predicate<FluidInstance> {
 				return new FluidIngredient.InstanceEntry(new FluidInstance(fluid));
 			} else if (json.has("tag")) {
 				id = new Identifier(JsonHelper.getString(json, "tag"));
-				Tag<Fluid> tag = FluidTagsContainerMixin.getContainer().get(id);
+				Tag<Fluid> tag = FluidTagContainerMixin.getContainer().get(id);
 				if (tag == null) {
 					throw new JsonSyntaxException("Unknown fluid tag '" + id + "'");
 				} else {

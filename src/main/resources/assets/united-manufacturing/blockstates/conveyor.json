@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "facing=north,status=inactive": { "model": "united-manufacturing:block/generator" },
+    "facing=east,status=inactive" : { "model": "united-manufacturing:block/generator", "y":  90 },
+    "facing=south,status=inactive": { "model": "united-manufacturing:block/generator", "y": 180 },
+    "facing=west,status=inactive" : { "model": "united-manufacturing:block/generator", "y": 270 },
+
+    "facing=north,status=active"  : { "model": "united-manufacturing:block/generator_on" },
+    "facing=east,status=active"   : { "model": "united-manufacturing:block/generator_on", "y":  90 },
+    "facing=south,status=active"  : { "model": "united-manufacturing:block/generator_on", "y": 180 },
+    "facing=west,status=active"   : { "model": "united-manufacturing:block/generator_on", "y": 270 },
+
+    "facing=north,status=error"   : { "model": "united-manufacturing:block/generator_error" },
+    "facing=east,status=error"    : { "model": "united-manufacturing:block/generator_error", "y":  90 },
+    "facing=south,status=error"   : { "model": "united-manufacturing:block/generator_error", "y": 180 },
+    "facing=west,status=error"    : { "model": "united-manufacturing:block/generator_error", "y": 270 }
+  }
+}

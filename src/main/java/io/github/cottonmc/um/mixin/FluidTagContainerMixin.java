@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(FluidTags.class)
-public abstract class FluidTagsContainerMixin {
+public abstract class FluidTagContainerMixin {
 
 	@Shadow private static TagContainer<Fluid> container;
 

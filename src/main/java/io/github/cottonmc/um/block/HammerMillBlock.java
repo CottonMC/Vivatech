@@ -1,5 +1,6 @@
 package io.github.cottonmc.um.block;
 
+import com.sun.istack.internal.Nullable;
 import io.github.cottonmc.um.block.entity.HammerMillEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -11,7 +12,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class HammerMillBlock extends AbstractMachineBlock implements BlockEntityProvider, InventoryProvider {

@@ -21,7 +21,11 @@ public class AbstractMachineBlock extends Block {
 	public static EnumProperty<MachineStatus> STATUS = EnumProperty.create("status", MachineStatus.class);
 	
 	public AbstractMachineBlock() {
-		super(FabricBlockSettings.of(Material.METAL, DyeColor.WHITE).build());
+		this(FabricBlockSettings.of(Material.METAL, DyeColor.WHITE).build());
+	}
+
+	public AbstractMachineBlock(Block.Settings settings) {
+		super(settings);
 	}
 
 	@Override

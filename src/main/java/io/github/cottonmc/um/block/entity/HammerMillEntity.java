@@ -10,11 +10,8 @@ import io.github.cottonmc.um.recipe.UMRecipes;
 import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.ContainerLock;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.Recipe;
 
 public class HammerMillEntity extends BlockEntity {
 	public static final int SLOT_INGREDIENT = 0;
