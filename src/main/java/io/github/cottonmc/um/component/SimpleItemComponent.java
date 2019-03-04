@@ -203,7 +203,7 @@ public class SimpleItemComponent implements Component, ItemComponent, Inventory,
 	
 		@Override
 		public boolean isEmpty() {
-			return storage.isEmpty();
+			return isInvEmpty();
 		}
 	
 		@Override

@@ -31,13 +31,17 @@ public class ConveyorBlock extends AbstractMachineBlock implements BlockEntityPr
 	}
 
 	@Override
-	public SidedInventory getInventory(BlockState blockState, IWorld iWorld, BlockPos blockPos) {
+	public SidedInventory getInventory(BlockState blockState, IWorld world, BlockPos pos) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof ConveyorEntity) {
+			return ((ConveyorEntity)be).getInventory();
+		}
 		return null;
 	}
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayerHorizontalFacing());
+		return this.getDefaultState().with(FACING, context.getPlayerHorizontalFacing()).with(STATUS, MachineStatus.INACTIVE);
 	}
 
 	@Override

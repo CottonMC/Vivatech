@@ -12,7 +12,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -20,13 +19,13 @@ import net.minecraft.util.math.Direction;
 
 public class ConveyorEntity extends BlockEntity {
 
+	//for now, a line of conveyors can only carry one stack at a time
+	private SimpleItemComponent items = new SimpleItemComponent(1);
+
 	public ConveyorEntity() {
 		super(UMBlocks.CONVEYOR_ENTITY);
 		items.addObserver(this::markDirty);
 	}
-
-	//for now, a line of conveyors can only carry one stack at a time
-	private SimpleItemComponent items = new SimpleItemComponent(1);
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
@@ -55,9 +54,9 @@ public class ConveyorEntity extends BlockEntity {
 	}
 
 	public void pulse() {
-		if (world==null) return;
+		if (world==null || items.isEmpty()) return;
 		BlockPos dropoff = findDropoff();
-		 if (world.getBlockState(pos).get(ConveyorBlock.STATUS)== MachineStatus.INACTIVE) {
+		 if (world.getBlockState(pos).get(ConveyorBlock.STATUS) == MachineStatus.INACTIVE) {
 			 double diff = pos.distanceTo(dropoff);
 			 world.setBlockState(pos, world.getBlockState(pos).with(ConveyorBlock.STATUS, MachineStatus.ACTIVE));
 			 world.getBlockTickScheduler().schedule(pos, UMBlocks.CONVEYOR, (int)diff);
@@ -67,10 +66,12 @@ public class ConveyorEntity extends BlockEntity {
 		 	Direction insertSide = world.getBlockState(pos).get(ConveyorBlock.FACING).getOpposite();
 		 	if (block instanceof InventoryProvider) {
 		 		SidedInventory inv = ((InventoryProvider) block).getInventory(state, world, dropoff);
+		 		System.out.println(inv);
 		 		if (inv != null) {
 					int insertSlot = getAvailableSlot(inv, (inv).getInvAvailableSlots(insertSide));
 					if (insertSlot >= 0) {
 						inv.setInvStack(insertSlot, items.getInvStack(0));
+						inv.markDirty();
 						items.removeInvStack(0);
 					}
 				}
