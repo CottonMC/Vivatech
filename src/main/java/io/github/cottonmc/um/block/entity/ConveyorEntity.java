@@ -77,7 +77,6 @@ public class ConveyorEntity extends BlockEntity implements Tickable {
 					}
 				}
 		 	} else if (world.getBlockEntity(dropoff) instanceof Inventory) {
-		 		System.out.println("Inserting into inventory!");
 		 		Inventory inv = (Inventory)world.getBlockEntity(dropoff);
 				//if (inv instanceof ChestBlockEntity && block instanceof ChestBlock) {
 				//	inv = ChestBlock.method_17458(state, world, dropoff, true);
@@ -88,16 +87,10 @@ public class ConveyorEntity extends BlockEntity implements Tickable {
 						inv.setInvStack(insertSlot, items.getInvStack(0).copy());
 						inv.markDirty();
 						items.setInvStack(0, ItemStack.EMPTY);
-						//items.removeInvStack(0);
 						this.markDirty();
-					} else {
-						System.out.println("Can't find a free spot!");
 					}
-				} else {
-					System.out.println("Null inventory!");
 				}
 			} else if (!state.isFullBoundsCubeForCulling()) {
-		 		System.out.println("Dropping item!");
 				ItemEntity item = new ItemEntity(world, dropoff.getX()+0.5, dropoff.getY()+0.5, dropoff.getZ()+0.5, items.getInvStack(0).copy());
 				items.setInvStack(0, ItemStack.EMPTY);
 				this.markDirty();
