@@ -1,6 +1,5 @@
 package io.github.cottonmc.um.block;
 
-import com.sun.istack.internal.Nullable;
 import io.github.cottonmc.um.block.entity.HammerMillEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -19,7 +18,6 @@ public class HammerMillBlock extends AbstractMachineBlock implements BlockEntity
 	public HammerMillBlock() {
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockView blockView) {
 		return new HammerMillEntity();

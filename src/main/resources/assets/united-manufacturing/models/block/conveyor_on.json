@@ -1,0 +1,8 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top":   "united-manufacturing:block/struct/conveyor",
+    "front": "united-manufacturing:block/struct/structure_block",
+    "side":  "united-manufacturing:block/struct/structure_block"
+  }
+}
