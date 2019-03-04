@@ -16,14 +16,17 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 
-public class ConveyorEntity extends BlockEntity {
+public class ConveyorEntity extends BlockEntity implements Tickable {
 
 	//for now, a line of conveyors can only carry one stack at a time
 	private SimpleItemComponent items = new SimpleItemComponent(1);
+	int targetDistance = 0;
+	int travel = 0;
 
 	public ConveyorEntity() {
 		super(UMBlocks.CONVEYOR_ENTITY);
@@ -35,6 +38,8 @@ public class ConveyorEntity extends BlockEntity {
 		CompoundTag result = super.toTag(tag);
 
 		result.put("Items", items.toTag());
+		result.putInt("Target", targetDistance);
+		result.putInt("Travel", travel);
 
 		return result;
 	}
@@ -44,33 +49,23 @@ public class ConveyorEntity extends BlockEntity {
 		super.fromTag(tag);
 
 		items.fromTag(tag.getTag("Items"));
+		targetDistance = tag.getInt("Target");
+		travel = tag.getInt("Travel");
 
 	}
 
-	@Override
-	public void markDirty() {
-		super.markDirty();
-		if (!world.getBlockTickScheduler().isScheduled(pos, UMBlocks.CONVEYOR)) {
-			//Check if we need to start pulsing again
-			if (needsPulse()) world.getBlockTickScheduler().schedule(pos, UMBlocks.CONVEYOR, 1);
-		}
-	}
-
-	public void pulse() {
-		if (world==null || items.isEmpty()) return;
+	public void tick() {
+		if (world==null || items.isEmpty() || world.isClient) return;
 		BlockPos dropoff = findDropoff();
-		System.out.println(items.get(0).getItem());
-		 if (world.getBlockState(pos).get(ConveyorBlock.STATUS) == MachineStatus.INACTIVE) {
-		 	System.out.println("Scheduling transfer!");
-			 double diff = pos.distanceTo(dropoff);
-			 world.setBlockState(pos, world.getBlockState(pos).with(ConveyorBlock.STATUS, MachineStatus.ACTIVE));
-			 world.getBlockTickScheduler().schedule(pos, UMBlocks.CONVEYOR, (int)diff);
-		 } else {
+		double diff = pos.distanceTo(dropoff);
+		targetDistance = (int)(10*diff);
+		if (travel < targetDistance) {
+			travel++;
+		} else {
 		 	BlockState state = world.getBlockState(dropoff);
 		 	Block block = state.getBlock();
 		 	Direction insertSide = world.getBlockState(pos).get(ConveyorBlock.FACING).getOpposite();
 		 	if (block instanceof InventoryProvider) {
-		 		System.out.println("Inserting into provider!");
 		 		SidedInventory inv = ((InventoryProvider) block).getInventory(state, world, dropoff);
 		 		if (inv != null) {
 					int insertSlot = getAvailableSlot(inv, (inv).getInvAvailableSlots(insertSide));
@@ -101,21 +96,15 @@ public class ConveyorEntity extends BlockEntity {
 				} else {
 					System.out.println("Null inventory!");
 				}
-			} else if (state.isAir()) {
+			} else if (!state.isFullBoundsCubeForCulling()) {
 		 		System.out.println("Dropping item!");
-				ItemEntity item = new ItemEntity(world, dropoff.getX(), dropoff.getY(), dropoff.getZ(), items.getInvStack(0));
-				items.removeInvStack(0);
+				ItemEntity item = new ItemEntity(world, dropoff.getX()+0.5, dropoff.getY()+0.5, dropoff.getZ()+0.5, items.getInvStack(0).copy());
+				items.setInvStack(0, ItemStack.EMPTY);
 				this.markDirty();
 				world.spawnEntity(item);
-			}
-		 	if (!needsPulse()) world.setBlockState(pos, world.getBlockState(pos).with(ConveyorBlock.STATUS, MachineStatus.INACTIVE));
-		 	else world.getBlockTickScheduler().schedule(pos, UMBlocks.CONVEYOR, 1);
-		 }
-
-	}
-
-	public boolean needsPulse() {
-		return !items.isEmpty(); // only need to tick while we have items
+		 	}
+		 	travel = 0;
+		}
 	}
 
 	//@Override
@@ -126,12 +115,11 @@ public class ConveyorEntity extends BlockEntity {
 	public BlockPos findDropoff() {
 		Direction dir = world.getBlockState(pos).get(ConveyorBlock.FACING);
 		BlockPos checkPos = pos;
-		boolean foundDropoff = false;
-		while (!foundDropoff) {
+		for (int i = 0; i < 64; i++) {
 			checkPos = checkPos.offset(dir);
 			if (world.getBlockState(checkPos).getBlock() == UMBlocks.CONVEYOR) {
-				foundDropoff = world.getBlockState(checkPos).get(ConveyorBlock.FACING).equals(dir);
-			} else foundDropoff = true;
+				if (!world.getBlockState(checkPos).get(ConveyorBlock.FACING).equals(dir)) return checkPos;
+			} else return checkPos;
 		}
 		return checkPos;
 	}

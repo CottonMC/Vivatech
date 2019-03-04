@@ -1,22 +1,24 @@
 package io.github.cottonmc.um.block;
 import io.github.cottonmc.um.block.entity.ConveyorEntity;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.InventoryProvider;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.VerticalEntityPosition;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.state.StateFactory;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 
-import java.util.Random;
+public class ConveyorBlock extends Block implements BlockEntityProvider, InventoryProvider {
 
-public class ConveyorBlock extends AbstractMachineBlock implements BlockEntityProvider, InventoryProvider {
+	public static DirectionProperty FACING = Properties.FACING_HORIZONTAL;
 
 	public ConveyorBlock() {
 		super(FabricBlockSettings.of(Material.METAL, DyeColor.ORANGE).noCollision().build());
@@ -38,22 +40,17 @@ public class ConveyorBlock extends AbstractMachineBlock implements BlockEntityPr
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayerHorizontalFacing()).with(STATUS, MachineStatus.INACTIVE);
+		return this.getDefaultState().with(FACING, context.getPlayerHorizontalFacing());
 	}
 
 	@Override
-	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random random) {
-		if (world.isClient) {
-			System.out.println("CLIENT TICK");
-		} else {
-			System.out.println("SERVER-LOGIC-TICK");
+	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
+		super.appendProperties(builder);
+		builder.with(FACING);
+	}
 
-			BlockEntity entity = world.getBlockEntity(pos);
-			if (entity instanceof ConveyorEntity) {
-				((ConveyorEntity) entity).pulse();
-			} else {
-				setStatus(world, pos, MachineStatus.ERROR);
-			}
-		}
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, VerticalEntityPosition entityPos) {
+		return VoxelShapes.cube(0, 0, 0, 1, 0.5, 1);
 	}
 }
