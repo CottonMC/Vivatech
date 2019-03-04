@@ -14,6 +14,7 @@ import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -77,26 +78,34 @@ public class ConveyorEntity extends BlockEntity {
 						inv.setInvStack(insertSlot, items.getInvStack(0));
 						inv.markDirty();
 						items.removeInvStack(0);
+						this.markDirty();
 					}
 				}
 		 	} else if (world.getBlockEntity(dropoff) instanceof Inventory) {
 		 		System.out.println("Inserting into inventory!");
 		 		Inventory inv = (Inventory)world.getBlockEntity(dropoff);
-				if (inv instanceof ChestBlockEntity && block instanceof ChestBlock) {
-					inv = ChestBlock.method_17458(state, world, dropoff, true);
-				}
+				//if (inv instanceof ChestBlockEntity && block instanceof ChestBlock) {
+				//	inv = ChestBlock.method_17458(state, world, dropoff, true);
+				//}
 				if (inv != null) {
 					int insertSlot = getAvailableSlot(inv);
 					if (insertSlot >= 0) {
-						inv.setInvStack(insertSlot, items.getInvStack(0));
+						inv.setInvStack(insertSlot, items.getInvStack(0).copy());
 						inv.markDirty();
-						items.removeInvStack(0);
+						items.setInvStack(0, ItemStack.EMPTY);
+						//items.removeInvStack(0);
+						this.markDirty();
+					} else {
+						System.out.println("Can't find a free spot!");
 					}
-				} else System.out.println("Null inventory!");
+				} else {
+					System.out.println("Null inventory!");
+				}
 			} else if (state.isAir()) {
 		 		System.out.println("Dropping item!");
 				ItemEntity item = new ItemEntity(world, dropoff.getX(), dropoff.getY(), dropoff.getZ(), items.getInvStack(0));
 				items.removeInvStack(0);
+				this.markDirty();
 				world.spawnEntity(item);
 			}
 		 	if (!needsPulse()) world.setBlockState(pos, world.getBlockState(pos).with(ConveyorBlock.STATUS, MachineStatus.INACTIVE));
