@@ -34,7 +34,7 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 			
 			BlockEntity entity = world.getBlockEntity(pos);
 			if (entity instanceof CoalGeneratorEntity) {
-				
+				((CoalGeneratorEntity)entity).pulse();
 			} else {
 				setStatus(world, pos, MachineStatus.ERROR);
 			}
