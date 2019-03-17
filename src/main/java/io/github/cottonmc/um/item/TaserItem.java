@@ -61,7 +61,7 @@ public class TaserItem extends Item {
 		CompoundTag tag = stack.getTag().getCompound("Energy");
 		SimpleEnergyComponent energy = new SimpleEnergyComponent(tag.getInt("MaxEnergy"));
 		energy.fromTag(tag);
-		return energy;
+		return energy.setSaveMax(true);
 	}
 
 	public static ItemStack setEnergyComponent(ItemStack stack, SimpleEnergyComponent component) {
