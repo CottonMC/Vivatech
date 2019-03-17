@@ -30,7 +30,7 @@ public class ConveyorEntity extends BlockEntity implements Tickable {
 
 	public ConveyorEntity() {
 		super(UMBlocks.CONVEYOR_ENTITY);
-		items.addObserver(this::markDirty);
+		items.listen(this::markDirty);
 	}
 
 	@Override

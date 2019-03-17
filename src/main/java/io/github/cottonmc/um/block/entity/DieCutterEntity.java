@@ -33,7 +33,7 @@ public class DieCutterEntity extends BlockEntity {
 
 	public DieCutterEntity() {
 		super(UMBlocks.DIE_CUTTER_ENTITY);
-		items.addObserver(this::markDirty);
+		items.listen(this::markDirty);
 		energy.listen(this::markDirty);
 	}
 

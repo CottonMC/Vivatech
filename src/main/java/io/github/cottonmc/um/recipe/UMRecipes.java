@@ -29,31 +29,23 @@ public class UMRecipes {
 
 	public static Registry<PolyTypeRecipeSerializer> POLY_TYPE_RECIPE_SERIALIZER;
 
-	//public static RecipeSerializer<HammerMillRecipe> HAMMER_MILL_SERIALIZER = register("hammer_mill", new MachineRecipeSerializer<HammerMillRecipe>(HammerMillRecipe::new, 200));
-
 	public static void init() {
-		HAMMER_MILL = register("united-manufacturing:hammer_mill", HammerMillRecipe.SERIALIZER);
-		ROLLER = registerSimple("united-manufacturing:roller");
-		DIE_CUTTER = registerSimple("united-manufacturing:die_cutter");
-	}
-	
-	/*
-	public static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(String name, S serializer) {
-		return Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:"+name, serializer);
-	}*/
+		//TODO: figure out how to automatically register serializers
+		HAMMER_MILL = register("united-manufacturing:hammer_mill");
+		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:hammer_mill", HammerMillRecipe.SERIALIZER);
+		ROLLER = register("united-manufacturing:roller");
+		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:roller", new SimpleProcessingRecipe.Serializer());
+		DIE_CUTTER = register("united-manufacturing:die_cutter");
+		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:hammer_mill", new SimpleProcessingRecipe.Serializer());
 
-	public static <T extends Recipe<?>> RecipeType<T> registerSimple(final String id) {
-		return register(id, SimpleProcessingRecipe.SERIALIZER);
 	}
 
-	public static <T extends Recipe<?>> RecipeType<T> register(final String id, RecipeSerializer serializer) {
-		Registry.register(Registry.RECIPE_SERIALIZER, id, serializer);
+	public static <T extends Recipe<?>> RecipeType<T> register(final String id) {
 		return Registry.register(Registry.RECIPE_TYPE, new Identifier(id), new RecipeType<T>() {
 			public String toString() {
 				return id;
 			}
 		});
-
 	}
 	
 	public static Ingredient getIngredient(JsonElement elem, String elemKey) throws JsonSyntaxException {

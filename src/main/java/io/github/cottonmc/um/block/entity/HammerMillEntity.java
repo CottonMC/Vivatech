@@ -34,7 +34,7 @@ public class HammerMillEntity extends BlockEntity {
 
 	public HammerMillEntity() {
 		super(UMBlocks.HAMMER_MILL_ENTITY);
-		items.addObserver(this::markDirty);
+		items.listen(this::markDirty);
 		energy.listen(this::markDirty);
 	}
 

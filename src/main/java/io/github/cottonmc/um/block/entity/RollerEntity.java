@@ -35,7 +35,7 @@ public class RollerEntity extends BlockEntity {
 
 	public RollerEntity() {
 		super(UMBlocks.ROLLER_ENTITY);
-		items.addObserver(this::markDirty);
+		items.listen(this::markDirty);
 		energy.listen(this::markDirty);
 	}
 

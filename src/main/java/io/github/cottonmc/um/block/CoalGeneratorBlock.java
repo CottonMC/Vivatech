@@ -2,6 +2,7 @@ package io.github.cottonmc.um.block;
 
 import java.util.Random;
 
+import io.github.cottonmc.ecs.api.ComponentContainer;
 import io.github.cottonmc.um.block.entity.CoalGeneratorEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -21,16 +22,16 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 	
 	@Override
 	public BlockEntity createBlockEntity(BlockView var1) {
-		System.out.println("BlockEntity created.");
+		//System.out.println("BlockEntity created.");
 		return new CoalGeneratorEntity();
 	}
 	
 	@Override
 	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (world.isClient) {
-			System.out.println("Client tick");
+			//System.out.println("Client tick");
 		} else {
-			System.out.println("Server tick");
+			//System.out.println("Server tick");
 			
 			BlockEntity entity = world.getBlockEntity(pos);
 			if (entity instanceof CoalGeneratorEntity) {

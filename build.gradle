@@ -44,10 +44,10 @@ dependencies {
 	modCompile "net.fabricmc:fabric-loader:0.3.7.109"
 	modCompile "net.fabricmc:fabric:0.2.3.111"
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
-	modCompile "io.github.prospector.silk:SilkAPI:1.2.1-35"
+	modCompile "io.github.prospector.silk:SilkAPI:1.2.3-38"
 	
 	//the main cotton api.
-	//modCompile "io.github.cottonmc:cotton:0.0.2+19w03a-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton:0.0.5+19w11b-SNAPSHOT"
 	//modCompile "io.github.cottonmc:cotton-resources:0.0.1+19w03a-SNAPSHOT"
 	modCompile "io.github.cottonmc:cotton-energy:1.0.0+19w11b-SNAPSHOT"
 	modCompile "io.github.cottonmc:cotton-ecs:1.0.0+19w11b-SNAPSHOT"

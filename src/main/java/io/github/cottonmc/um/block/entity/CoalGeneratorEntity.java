@@ -40,7 +40,7 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	public CoalGeneratorEntity() {
 		super(UMBlocks.COAL_GENERATOR_ENTITY);
 		
-		items.addObserver(this::markDirty);
+		items.listen(this::markDirty);
 		energy.listen(this::markDirty);
 	}
 	

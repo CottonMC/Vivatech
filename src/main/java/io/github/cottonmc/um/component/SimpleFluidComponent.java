@@ -3,6 +3,7 @@ package io.github.cottonmc.um.component;
 import java.util.ArrayList;
 
 import io.github.cottonmc.ecs.api.Component;
+import io.github.cottonmc.ecs.api.Observable;
 import io.github.prospector.silk.fluid.FluidContainer;
 import io.github.prospector.silk.fluid.FluidInstance;
 import io.github.prospector.silk.util.ActionType;
@@ -34,7 +35,7 @@ public class SimpleFluidComponent implements Component, FluidComponent, FluidCon
 	}
 	
 	//implements Observable {
-		public void addObserver(Runnable onChanged) {
+		public void listen(Runnable onChanged) {
 			observers.add(onChanged);
 		}
 	//}
