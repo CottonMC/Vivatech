@@ -18,11 +18,15 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.world.World;
 
-public class HammerMillRecipe extends SimpleProcessingRecipe {
+public class HammerMillRecipe implements Recipe<Inventory> {
 	public static final Serializer SERIALIZER = new Serializer();
 
+	protected transient final Identifier identifier;
+	protected final Ingredient ingredient;
+	protected final ItemStack result;
 	protected final ItemStack extraResult;
 	protected final float extraChance;
+	protected final int energy;
 	protected int duration;
 	
 	public HammerMillRecipe(Identifier id, Ingredient ingredient, ItemStack result, int energy, int duration) {
@@ -30,24 +34,69 @@ public class HammerMillRecipe extends SimpleProcessingRecipe {
 	}
 	
 	public HammerMillRecipe(Identifier id, Ingredient ingredient, ItemStack result, ItemStack extraResult, float extraChance, int energy, int duration) {
-		super(id, ingredient, result, energy, duration);
+		this.identifier = id;
+		this.ingredient = ingredient;
+		this.result = result;
+		this.energy = energy;
+		this.duration = duration;
 		this.extraResult = extraResult;
 		this.extraChance = extraChance;
 	}
 
-	public ItemStack getExtraOutput() {
-		return extraResult;
-	}
+	//implements Recipe {
+		@Override
+		public boolean matches(Inventory inventory, World world) {
+			return ingredient.method_8093(inventory.getInvStack(0));
+		}
 
-	public float getExtraOutputChance() {
-		return extraChance;
-	}
+		@Override
+		public ItemStack craft(Inventory inventory) {
+			return result.copy();
+		}
 
-	public RecipeSerializer<SimpleProcessingRecipe> getSerializer() {
+		/** DO NOT MODIFY the returned itemStack! */
+		@Override
+		public ItemStack getOutput() {
+			return result;
+		}
+
+		public ItemStack getExtraOutput() {
+			return extraResult;
+		}
+
+		public int getDuration() {
+			return duration;
+		}
+
+		@Override
+		public Identifier getId() {
+			return identifier;
+		}
+
+		@Override
+		public RecipeSerializer<HammerMillRecipe> getSerializer() {
 			return SERIALIZER;
 		}
+
+		@Override
+		public RecipeType<?> getType() {
+			return UMRecipes.HAMMER_MILL;
+		}
+
+		@Environment(EnvType.CLIENT)
+		@Override
+		public boolean fits(int gridWidth, int gridHeight) {
+			return true;
+		}
+
+		@Environment(EnvType.CLIENT)
+		@Override
+		public ItemStack getRecipeKindIcon() {
+			return new ItemStack(UMBlocks.HAMMER_MILL);
+		}
+	//}
 	
-	public static class Serializer extends SimpleProcessingRecipe.Serializer {
+	public static class Serializer implements RecipeSerializer<HammerMillRecipe> {
 		@Override
 		public HammerMillRecipe read(Identifier id, JsonObject json) {
 			JsonElement ingredientElem = json.get("ingredient");
@@ -83,8 +132,7 @@ public class HammerMillRecipe extends SimpleProcessingRecipe {
 		}
 
 		@Override
-		public void write(PacketByteBuf buffer, SimpleProcessingRecipe base) {
-			HammerMillRecipe recipe = (HammerMillRecipe) base;
+		public void write(PacketByteBuf buffer, HammerMillRecipe recipe) {
 			recipe.ingredient.write(buffer);
 			buffer.writeItemStack(recipe.result);
 			buffer.writeItemStack(recipe.extraResult);
