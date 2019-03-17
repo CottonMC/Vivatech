@@ -46,7 +46,7 @@ public class HammerMillRecipe implements Recipe<Inventory> {
 	//implements Recipe {
 		@Override
 		public boolean matches(Inventory inventory, World world) {
-			return ingredient.matches(inventory.getInvStack(0));
+			return ingredient.method_8093(inventory.getInvStack(0));
 		}
 	
 		@Override

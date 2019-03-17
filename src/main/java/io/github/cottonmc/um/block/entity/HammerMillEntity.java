@@ -1,6 +1,5 @@
 package io.github.cottonmc.um.block.entity;
 
-import io.github.cottonmc.energy.impl.EnergySerializer;
 import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
@@ -32,11 +31,10 @@ public class HammerMillEntity extends BlockEntity {
 	
 	/** A Recipe indicating the operation currently in progress. */
 	HammerMillRecipe operation;
-	
-	
+
 	public HammerMillEntity() {
 		super(UMBlocks.HAMMER_MILL_ENTITY);
-		items.addObserver(this::markDirty); //TODO: on markDirty, check if we need to schedule a tick!
+		items.addObserver(this::markDirty);
 		energy.listen(this::markDirty);
 	}
 
@@ -46,7 +44,7 @@ public class HammerMillEntity extends BlockEntity {
 
 		result.put("Items", items.toTag());
 
-		result.put("Energy", EnergySerializer.serialize(energy));
+		result.put("Energy", energy.toTag());
 		result.putLong("OperationStart", operationStart);
 		result.putInt("OperationLength", (int)operationLength);
 		
@@ -81,7 +79,6 @@ public class HammerMillEntity extends BlockEntity {
 			operationLength = 0;
 		}
 		if (world.getTime()>=operationStart+operationLength) {
-			//TODO: Pulse logic goes here.
 
 			if (operation==null && !items.get(SLOT_WORK).isEmpty()) {
 				operation = world.getRecipeManager().get(UMRecipes.HAMMER_MILL, getInventory(), world).orElse(null);

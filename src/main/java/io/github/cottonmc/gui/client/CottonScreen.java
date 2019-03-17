@@ -24,8 +24,8 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 		this.container = container;
 		super.width = 18*9;
 		super.height = 18*9;
-		this.containerWidth = 18*9;
-		this.containerHeight = 18*9;
+		this.width = 18*9;
+		this.height = 18*9;
 	}
 	
 	/*
@@ -45,18 +45,18 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	
 	
 	@Override
-	public void initialize(MinecraftClient minecraftClient_1, int width, int height) {
+	public void initialize(MinecraftClient minecraftClient_1, int screenWidth, int screenHeight) {
 		//container.validate();
 		super.initialize(minecraftClient_1, width, height);
 		
 		WPanel basePanel = container.getRootPanel();
 		if (basePanel!=null) {
-			containerWidth = basePanel.getWidth();
-			containerHeight = basePanel.getHeight();
+			width = basePanel.getWidth();
+			height = basePanel.getHeight();
 		}
 		
-		left = (width  / 2) - (containerWidth / 2);
-		top =  (height / 2) - (containerHeight / 2);
+		left = (screenWidth  / 2) - (width / 2);
+		top =  (screenHeight / 2) - (height / 2);
 	}
 	
 	//Will probably re-activate for animation!
@@ -194,13 +194,13 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 			ScreenDrawing.drawGuiPanel(
 					left - PADDING,
 					top - PADDING,
-					containerWidth + ((PADDING - 1) * 2),
-					containerHeight + ((PADDING - 1) * 2),
-					
+					width + ((PADDING - 1) * 2),
+					height + ((PADDING - 1) * 2),
+
 					shadowColor, panelColor, hilightColor, 0xFF000000);
 		}
 		
-		if (this.slots != null && root != null) {
+		if (this.cursorDragSlots != null && root != null) {
 			root.paintBackground(left, top);
 		}
 		
@@ -213,7 +213,7 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	
 	@Override
 	protected void drawForeground(int mouseX, int mouseY) {
-		if (slots != null && this.container.getRootPanel() != null) {
+		if (cursorDragSlots != null && this.container.getRootPanel() != null) {
 			this.container.getRootPanel().paintForeground(left, top, mouseX, mouseY);
 		}
 	}
