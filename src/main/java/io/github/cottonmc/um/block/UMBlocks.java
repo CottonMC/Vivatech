@@ -19,12 +19,14 @@ public class UMBlocks {
 	public static RollerBlock ROLLER;
 	public static DieCutterBlock DIE_CUTTER;
 	public static ConveyorBlock CONVEYOR;
+	public static ChannelBlock CHANNEL;
 
 	public static BlockEntityType<CoalGeneratorEntity> COAL_GENERATOR_ENTITY;
 	public static BlockEntityType<HammerMillEntity> HAMMER_MILL_ENTITY;
 	public static BlockEntityType<RollerEntity> ROLLER_ENTITY;
 	public static BlockEntityType<DieCutterEntity> DIE_CUTTER_ENTITY;
 	public static BlockEntityType<ConveyorEntity> CONVEYOR_ENTITY;
+	public static BlockEntityType<ChannelEntity> CHANNEL_ENTITY;
 	
 	public static void init() {
 		COAL_GENERATOR = block("coal_generator", new CoalGeneratorBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
@@ -32,12 +34,14 @@ public class UMBlocks {
 		ROLLER = block("roller", new RollerBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
 		DIE_CUTTER = block("die_cutter", new DieCutterBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
 		CONVEYOR = block("conveyor", new ConveyorBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
+		CHANNEL = block("channel", new ChannelBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
 
 		COAL_GENERATOR_ENTITY = registerType("coal_generator", CoalGeneratorEntity::new);
 		HAMMER_MILL_ENTITY = registerType("hammer_mill", HammerMillEntity::new);
 		ROLLER_ENTITY = registerType("roller", RollerEntity::new);
 		DIE_CUTTER_ENTITY = registerType("die_cutter", DieCutterEntity::new);
 		CONVEYOR_ENTITY = registerType("conveyor", ConveyorEntity::new);
+		CHANNEL_ENTITY = registerType("channel", ChannelEntity::new);
 	}
 	
 

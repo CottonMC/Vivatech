@@ -21,7 +21,7 @@ public class ConveyorBlock extends Block implements BlockEntityProvider, Invento
 	public static DirectionProperty FACING = Properties.FACING_HORIZONTAL;
 
 	public ConveyorBlock() {
-		super(FabricBlockSettings.of(Material.METAL, DyeColor.ORANGE).build());
+		super(FabricBlockSettings.of(Material.METAL, DyeColor.LIGHT_GRAY).build());
 	}
 
 	@Override

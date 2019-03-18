@@ -37,7 +37,7 @@ public class TaserItem extends Item {
 			if (player.world.isClient) player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYER, 1.0F, random.nextFloat() * 0.4F + 0.8F);
 			else {
 				player.addChatMessage(new StringTextComponent("Battery inserted!"), true);
-				player.setStackInHand(hand, setEnergyComponent(stack, new SimpleEnergyComponent(MAX_ENERGY).setCurrentEnergy(MAX_ENERGY).setSaveMax(true)));
+				player.setStackInHand(hand, setEnergyComponent(stack, new SimpleEnergyComponent(MAX_ENERGY).setCurrentEnergy(MAX_ENERGY)));
 			}
 			return true;
 		}
@@ -58,10 +58,9 @@ public class TaserItem extends Item {
 
 	public static SimpleEnergyComponent getEnergyComponent(ItemStack stack) {
 		if (!stack.hasTag() || !stack.getTag().containsKey("Energy")) return NO_COMPONENT;
-		CompoundTag tag = stack.getTag().getCompound("Energy");
-		SimpleEnergyComponent energy = new SimpleEnergyComponent(tag.getInt("MaxEnergy"));
-		energy.fromTag(tag);
-		return energy.setSaveMax(true);
+		SimpleEnergyComponent energy = new SimpleEnergyComponent(MAX_ENERGY);
+		energy.fromTag(stack.getTag().getTag("Energy"));
+		return energy;
 	}
 
 	public static ItemStack setEnergyComponent(ItemStack stack, SimpleEnergyComponent component) {
