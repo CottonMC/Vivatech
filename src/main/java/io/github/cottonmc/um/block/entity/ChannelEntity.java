@@ -6,6 +6,8 @@ import io.github.prospector.silk.fluid.DropletValues;
 import io.github.prospector.silk.fluid.FluidContainer;
 import io.github.prospector.silk.fluid.FluidContainerProvider;
 import io.github.prospector.silk.fluid.FluidInstance;
+import io.github.prospector.silk.util.ActionType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -42,7 +44,8 @@ public class ChannelEntity extends BlockEntity implements Tickable {
 		FluidInstance self = fluids.get(0);
 		for (Direction dir : Direction.values()) {
 			BlockPos checkPos = pos.offset(dir);
-			if (world.getBlockState(checkPos).getBlock() == UMBlocks.CHANNEL) {
+			BlockState checkState = world.getBlockState(checkPos);
+			if (checkState.getBlock() == UMBlocks.CHANNEL) {
 				ChannelEntity channel = (ChannelEntity)world.getBlockEntity(checkPos);
 				FluidContainer otherFluids = channel.getFluids();
 				FluidInstance other = otherFluids.getFluids(dir.getOpposite())[0];
@@ -53,7 +56,12 @@ public class ChannelEntity extends BlockEntity implements Tickable {
 					self.subtractAmount(transfer);
 				}
 			} else if (world.getBlockState(checkPos).getBlock() instanceof FluidContainerProvider) {
-				
+				FluidContainer container = ((FluidContainerProvider)checkState.getBlock()).getContainer(checkState, world, checkPos);
+				int amountToTransfer = Math.min(DropletValues.INGOT, self.getAmount());
+				if (container.canInsertFluid(dir.getOpposite(), self.getFluid(), amountToTransfer)) {
+					int transferred = container.tryPartialInsertFluid(dir.getOpposite(), self.getFluid(), amountToTransfer, ActionType.PERFORM);
+					self.subtractAmount(transferred);
+				}
 			}
 		}
 	}

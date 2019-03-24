@@ -17,8 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
 
-import javax.annotation.Nullable;
-
 public class ChannelBlock extends Block implements BlockEntityProvider, FluidContainerProvider {
 
 	public static final BooleanProperty NORTH = Properties.NORTH_BOOL;
@@ -37,7 +35,6 @@ public class ChannelBlock extends Block implements BlockEntityProvider, FluidCon
 		return ((ChannelEntity)world.getBlockEntity(pos)).getFluids();
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockView view) {
 		return new ChannelEntity();
