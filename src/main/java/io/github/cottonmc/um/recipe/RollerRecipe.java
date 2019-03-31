@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import io.github.cottonmc.um.block.UMBlocks;
+import io.github.cottonmc.um.component.SimpleItemComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.Inventory;
@@ -34,7 +35,12 @@ public class RollerRecipe implements Recipe<Inventory> {
 		this.energy = energy;
 		this.duration = duration;
 	}
-
+	
+	//TODO: Replace with LBA class?
+	public boolean matches(SimpleItemComponent comp) {
+		return ingredient.method_8093(comp.get(0));
+	}
+	
 	//implements Recipe {
 		@Override
 		public boolean matches(Inventory inventory, World world) {

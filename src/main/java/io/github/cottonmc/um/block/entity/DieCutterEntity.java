@@ -87,8 +87,10 @@ public class DieCutterEntity extends BlockEntity {
 				}
 
 			} else {
-				items.getInvStack(SLOT_INGREDIENT).subtractAmount(1); // probably put an amount in the Recipe
-				items.insert(SLOT_RESULT, operation.getOutput(), ActionType.PERFORM);
+				if (operation!=null) {
+					items.getInvStack(SLOT_INGREDIENT).subtractAmount(1); // probably put an amount in the Recipe
+					items.insert(SLOT_RESULT, operation.getOutput(), ActionType.PERFORM);
+				}
 			}
 
 

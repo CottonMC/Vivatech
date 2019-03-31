@@ -74,10 +74,12 @@ public class RollerEntity extends BlockEntity {
 
 	public void pulse() {
 		if (world==null) return;
-		if (operation != world.getRecipeManager().get(UMRecipes.ROLLER, getInventory(), world).orElse(null)) {
+		
+		if (operation==null || !operation.matches(getInventory(), world)) {
 			operation = null;
 			operationLength = 0;
 		}
+		
 		if (world.getTime()>=operationStart+operationLength) {
 
 			if (operation==null && !items.get(SLOT_WORK).isEmpty()) {
@@ -88,8 +90,10 @@ public class RollerEntity extends BlockEntity {
 				}
 
 			} else {
-				items.getInvStack(SLOT_INGREDIENT).subtractAmount(1); // probably put an amount in the Recipe
-				items.insert(SLOT_RESULT, operation.getOutput(), ActionType.PERFORM);
+				if (operation!=null) {
+					items.getInvStack(SLOT_INGREDIENT).subtractAmount(1); // probably put an amount in the Recipe
+					items.insert(SLOT_RESULT, operation.getOutput(), ActionType.PERFORM);
+				}
 			}
 
 
