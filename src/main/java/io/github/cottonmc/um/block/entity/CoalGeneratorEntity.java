@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 
 import io.github.cottonmc.ecs.api.Component;
-import io.github.cottonmc.ecs.api.SidedComponentContainer;
+import io.github.cottonmc.ecs.api.BlockComponentContainer;
 import io.github.cottonmc.energy.api.EnergyComponent;
 import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.um.block.UMBlocks;
@@ -25,7 +25,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.IWorld;
-public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider, SidedComponentContainer {
+
+public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider {
 	public static int MAX_WU = 4;
 	public static int FUEL_PER_WU = 5; //Fractional fuel will get banked; generators are lossless.
 	public static int PULSE_LENGTH = 30; //Might shorten to 20, we'll see how it feels in-game.
@@ -130,19 +131,20 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 			if (!state.isAir() && (state.getBlock() instanceof SidedComponentContainer)) {
 				((SidedComponentContainer)state.getBlock()).getComponent(d.getOpposite(), EnergyComponent.class, "low_voltage");
 			}*/
-			
+			//TODO: Fix up for LBA
+			/*
 			BlockEntity be = world.getBlockEntity(pos.offset(d));
-			if (be!=null && be instanceof SidedComponentContainer) {
+			if (be!=null && be instanceof BlockComponentContainer) {
 				//This is a valid target
 				
-				EnergyComponent target = ((SidedComponentContainer)be).getComponent(d.getOpposite(), EnergyComponent.class, "cotton:low_voltage");
+				EnergyComponent target = ((BlockComponentContainer)be).getComponent(d.getOpposite(), EnergyComponent.class, "cotton:low_voltage");
 				if (target==null || !target.canInsertEnergy()) continue;
 				int toInsert = Math.min(4, energy.getCurrentEnergy());
 				toInsert = energy.extractEnergy(toInsert, ActionType.PERFORM);
 				int leftover = target.insertEnergy(4, ActionType.PERFORM);
 				if (leftover>0) energy.insertEnergy(leftover, ActionType.PERFORM);
 				markDirty();
-			}
+			}*/
 		}
 	}
 	
@@ -156,6 +158,8 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	public SidedInventory getInventory(BlockState var1, IWorld var2, BlockPos var3) {
 		return new SidedItemView(items);
 	}
+	
+	/*
 	
 	//implements SidedComponentContainer {
 		@Override
@@ -187,5 +191,5 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 				return Sets.newHashSet();
 			}
 		}
-	//}
+	//} */
 }

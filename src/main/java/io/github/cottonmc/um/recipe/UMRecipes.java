@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
-import io.github.cottonmc.um.recipe.polytype.PolyTypeRecipeSerializer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -24,19 +23,20 @@ import net.minecraft.util.registry.Registry;
 
 public class UMRecipes {
 	public static RecipeType<HammerMillRecipe> HAMMER_MILL;
-	public static RecipeType<SimpleProcessingRecipe> ROLLER;
-	public static RecipeType<SimpleProcessingRecipe> DIE_CUTTER;
+	//public static RecipeType<SimpleProcessingRecipe> ROLLER;
+	//public static RecipeType<SimpleProcessingRecipe> DIE_CUTTER;
 
-	public static Registry<PolyTypeRecipeSerializer> POLY_TYPE_RECIPE_SERIALIZER;
+	//public static Registry<PolyTypeRecipeSerializer> POLY_TYPE_RECIPE_SERIALIZER;
 
 	public static void init() {
-		//TODO: figure out how to automatically register serializers
 		HAMMER_MILL = register("united-manufacturing:hammer_mill");
 		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:hammer_mill", HammerMillRecipe.SERIALIZER);
-		ROLLER = register("united-manufacturing:roller");
-		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:roller", new SimpleProcessingRecipe.Serializer());
-		DIE_CUTTER = register("united-manufacturing:die_cutter");
-		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:hammer_mill", new SimpleProcessingRecipe.Serializer());
+
+		//TODO: Fix these
+		//ROLLER = register("united-manufacturing:roller");
+		//Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:roller", new SimpleProcessingRecipe.Serializer());
+		//DIE_CUTTER = register("united-manufacturing:die_cutter");
+		//Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:die_cutter", new SimpleProcessingRecipe.Serializer());
 
 	}
 

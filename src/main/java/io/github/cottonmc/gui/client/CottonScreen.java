@@ -1,14 +1,10 @@
 package io.github.cottonmc.gui.client;
 
-import java.io.IOException;
-
 import io.github.cottonmc.gui.CottonScreenController;
 import io.github.cottonmc.gui.widget.WPanel;
 import io.github.cottonmc.gui.widget.WWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.ContainerScreen;
-import net.minecraft.client.gui.Screen;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.TextComponent;
 import net.minecraft.text.TranslatableTextComponent;
@@ -200,9 +196,9 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 					shadowColor, panelColor, hilightColor, 0xFF000000);
 		}
 		
-		if (this.cursorDragSlots != null && root != null) {
+		//if (this.cursorDragSlots != null && root != null) {
 			root.paintBackground(left, top);
-		}
+		//}
 		
 		//TODO: Change this to a label that lives in the rootPanel instead?
 		if (container instanceof Nameable) {
@@ -213,9 +209,9 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	
 	@Override
 	protected void drawForeground(int mouseX, int mouseY) {
-		if (cursorDragSlots != null && this.container.getRootPanel() != null) {
+		//if (cursorDragSlots != null && this.container.getRootPanel() != null) {
 			this.container.getRootPanel().paintForeground(left, top, mouseX, mouseY);
-		}
+		//}
 	}
 	
 	@Override

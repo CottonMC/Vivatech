@@ -4,9 +4,6 @@ import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
-import io.github.cottonmc.um.recipe.SimpleProcessingRecipe;
-import io.github.cottonmc.um.recipe.UMRecipes;
-import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.ContainerLock;
 import net.minecraft.inventory.SidedInventory;
@@ -31,7 +28,8 @@ public class RollerEntity extends BlockEntity {
 	long operationLength = 0L;
 
 	/** A Recipe indicating the operation currently in progress. */
-	SimpleProcessingRecipe operation;
+	//TODO: Fix up with a real recipe class
+	//SimpleProcessingRecipe operation;
 
 	public RollerEntity() {
 		super(UMBlocks.ROLLER_ENTITY);
@@ -74,6 +72,7 @@ public class RollerEntity extends BlockEntity {
 	}
 
 	public void pulse() {
+		/*
 		if (world==null) return;
 		if (operation != world.getRecipeManager().get(UMRecipes.ROLLER, getInventory(), world).orElse(null)) {
 			operation = null;
@@ -98,6 +97,7 @@ public class RollerEntity extends BlockEntity {
 				world.getBlockTickScheduler().schedule(pos, UMBlocks.HAMMER_MILL, (int)operationLength);
 			}
 		}
+		*/
 	}
 
 	public boolean needsPulse() {

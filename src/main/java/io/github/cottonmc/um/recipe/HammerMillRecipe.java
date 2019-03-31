@@ -114,7 +114,7 @@ public class HammerMillRecipe implements Recipe<Inventory> {
 			int energy = JsonHelper.getInt(json, "energy", 0);
 			int processTime = JsonHelper.getInt(json, "duration");
 			
-			System.out.println("Recipe '"+id+"' read successfully.");
+			//System.out.println("#######################Recipe '"+id+"' read successfully.");
 			
 			return new HammerMillRecipe(id, input, result, extraResult, randomChance, energy, processTime);
 		}
@@ -128,6 +128,7 @@ public class HammerMillRecipe implements Recipe<Inventory> {
 			int energy = buffer.readInt();
 			int processTime = buffer.readInt();
 			
+			//System.out.println("################################Received recipe "+id+" on client.");
 			return new HammerMillRecipe(id, ingredient, result, extraResult, randomChance, energy, processTime);
 		}
 
