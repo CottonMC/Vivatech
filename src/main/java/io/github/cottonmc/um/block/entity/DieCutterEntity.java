@@ -4,6 +4,7 @@ import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
+import io.github.cottonmc.um.recipe.DieCutterRecipe;
 import io.github.cottonmc.um.recipe.UMRecipes;
 import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.entity.BlockEntity;
@@ -28,8 +29,7 @@ public class DieCutterEntity extends BlockEntity {
 	long operationLength = 0L;
 
 	/** A Recipe indicating the operation currently in progress. */
-	//TODO: Replace with a real recipe class
-	//SimpleProcessingRecipe operation;
+	DieCutterRecipe operation;
 
 	public DieCutterEntity() {
 		super(UMBlocks.DIE_CUTTER_ENTITY);
@@ -72,7 +72,6 @@ public class DieCutterEntity extends BlockEntity {
 	}
 
 	public void pulse() {
-		/*
 		if (world==null) return;
 		if (operation != world.getRecipeManager().get(UMRecipes.DIE_CUTTER, getInventory(), world).orElse(null)) {
 			operation = null;
@@ -96,7 +95,7 @@ public class DieCutterEntity extends BlockEntity {
 			if (needsPulse()) {
 				world.getBlockTickScheduler().schedule(pos, UMBlocks.DIE_CUTTER, (int)operationLength);
 			}
-		}*/
+		}
 	}
 
 	public boolean needsPulse() {

@@ -13,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.Tag;
@@ -23,20 +22,16 @@ import net.minecraft.util.registry.Registry;
 
 public class UMRecipes {
 	public static RecipeType<HammerMillRecipe> HAMMER_MILL;
-	//public static RecipeType<SimpleProcessingRecipe> ROLLER;
-	//public static RecipeType<SimpleProcessingRecipe> DIE_CUTTER;
-
-	//public static Registry<PolyTypeRecipeSerializer> POLY_TYPE_RECIPE_SERIALIZER;
+	public static RecipeType<RollerRecipe> ROLLER;
+	public static RecipeType<DieCutterRecipe> DIE_CUTTER;
 
 	public static void init() {
 		HAMMER_MILL = register("united-manufacturing:hammer_mill");
 		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:hammer_mill", HammerMillRecipe.SERIALIZER);
-
-		//TODO: Fix these
-		//ROLLER = register("united-manufacturing:roller");
-		//Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:roller", new SimpleProcessingRecipe.Serializer());
-		//DIE_CUTTER = register("united-manufacturing:die_cutter");
-		//Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:die_cutter", new SimpleProcessingRecipe.Serializer());
+		ROLLER = register("united-manufacturing:roller");
+		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:roller", RollerRecipe.SERIALIZER);
+		DIE_CUTTER = register("united-manufacturing:die_cutter");
+		Registry.register(Registry.RECIPE_SERIALIZER, "unitedmanufacturing:die_cutter", DieCutterRecipe.SERIALIZER);
 
 	}
 

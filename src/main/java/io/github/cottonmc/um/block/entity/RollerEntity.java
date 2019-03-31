@@ -4,6 +4,9 @@ import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
+import io.github.cottonmc.um.recipe.RollerRecipe;
+import io.github.cottonmc.um.recipe.UMRecipes;
+import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.ContainerLock;
 import net.minecraft.inventory.SidedInventory;
@@ -14,12 +17,11 @@ public class RollerEntity extends BlockEntity {
 	public static final int SLOT_INGREDIENT = 0;
 	public static final int SLOT_WORK = 1;
 	public static final int SLOT_RESULT = 2;
-	public static final int SLOT_RESULT_EXTRA = 3;
 
 	private ContainerLock lock; //TODO: Awaiting design direction, to be decided alongside Locky
 
 	/** The machine's internal item storage. */
-	private SimpleItemComponent items = new SimpleItemComponent(4);
+	private SimpleItemComponent items = new SimpleItemComponent(3);
 	/** The machine's internal energy buffer. */
 	SimpleEnergyComponent energy = new SimpleEnergyComponent(32);
 	/** The WorldTickTime when the machine started the current operation. */
@@ -28,8 +30,7 @@ public class RollerEntity extends BlockEntity {
 	long operationLength = 0L;
 
 	/** A Recipe indicating the operation currently in progress. */
-	//TODO: Fix up with a real recipe class
-	//SimpleProcessingRecipe operation;
+	RollerRecipe operation;
 
 	public RollerEntity() {
 		super(UMBlocks.ROLLER_ENTITY);
@@ -72,7 +73,6 @@ public class RollerEntity extends BlockEntity {
 	}
 
 	public void pulse() {
-		/*
 		if (world==null) return;
 		if (operation != world.getRecipeManager().get(UMRecipes.ROLLER, getInventory(), world).orElse(null)) {
 			operation = null;
@@ -97,7 +97,6 @@ public class RollerEntity extends BlockEntity {
 				world.getBlockTickScheduler().schedule(pos, UMBlocks.HAMMER_MILL, (int)operationLength);
 			}
 		}
-		*/
 	}
 
 	public boolean needsPulse() {
