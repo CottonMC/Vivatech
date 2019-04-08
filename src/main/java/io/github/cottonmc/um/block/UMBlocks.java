@@ -29,7 +29,7 @@ public class UMBlocks {
 	public static BlockEntityType<ChannelEntity> CHANNEL_ENTITY;
 	
 	public static void init() {
-		COAL_GENERATOR = block("coal_generator", new CoalGeneratorBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
+		COAL_GENERATOR = block(CoalGeneratorBlock.ID, new CoalGeneratorBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
 		HAMMER_MILL = block("hammer_mill", new HammerMillBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
 		ROLLER = block("roller", new RollerBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
 		DIE_CUTTER = block("die_cutter", new DieCutterBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
@@ -54,7 +54,10 @@ public class UMBlocks {
 	
 	public static <T extends Block> T block(String name, T block, ItemGroup tab) {
 		Identifier id = new Identifier("united-manufacturing", name);
+		return block(id, block, tab);
+	}
 		
+	public static <T extends Block> T block(Identifier id, T block, ItemGroup tab) {
 		Registry.register(Registry.BLOCK, id, block);
 		BlockItem item = new BlockItem(block, new Item.Settings().itemGroup(tab));
 		Registry.register(Registry.ITEM, id, item);

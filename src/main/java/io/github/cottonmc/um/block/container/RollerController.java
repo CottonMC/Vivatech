@@ -1,6 +1,7 @@
 package io.github.cottonmc.um.block.container;
 
 import io.github.cottonmc.gui.CottonScreenController;
+import io.github.cottonmc.um.block.entity.RollerEntity;
 import net.minecraft.container.ContainerType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -13,6 +14,11 @@ public class RollerController extends CottonScreenController {
 
 	@Override
 	public int getCraftingResultSlotIndex() {
-		return 2;
+		return RollerEntity.SLOT_RESULT;
+	}
+
+	@Override
+	public void setup() {
+		//TODO: Add components
 	}
 }

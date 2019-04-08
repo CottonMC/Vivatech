@@ -116,6 +116,12 @@ public class ScreenDrawing {
 		drawGuiPanel(x, y, width, height, 0xFF555555, 0xFFC6C6C6, 0xFFFFFFFF, 0xFF000000);
 	}
 	
+	public static void drawGuiPanel(int x, int y, int width, int height, int panelColor) {
+		int shadowColor = multiplyColor(panelColor, 0.50f);
+		int hilightColor = multiplyColor(panelColor, 1.25f);
+		
+		drawGuiPanel(x, y, width, height, shadowColor, panelColor, hilightColor, 0xFF000000);
+	}
 	
 	public static void drawGuiPanel(int x, int y, int width, int height, int shadow, int panel, int hilight, int outline) {
 		rect(x + 3,         y + 3,          width - 6, height - 6, panel); //Main panel area
@@ -195,5 +201,26 @@ public class ScreenDrawing {
 		int a = (int)(opacity * 255.0f);
 		
 		return (opaque & 0xFFFFFF) | (a << 24);
-}
+	}
+	
+	public static int multiplyColor(int color, float amount) {
+		int a = color & 0xFF000000;
+		float r = (color >> 16 & 255) / 255.0F;
+		float g = (color >> 8  & 255) / 255.0F;
+		float b = (color       & 255) / 255.0F;
+		
+		r = Math.min(r*amount, 1.0f);
+		g = Math.min(g*amount, 1.0f);
+		b = Math.min(b*amount, 1.0f);
+		
+		int ir = (int)(r*255);
+		int ig = (int)(g*255);
+		int ib = (int)(b*255);
+		
+		return
+				 a |
+				(ir << 16) |
+				(ig <<  8) |
+				 ib;
+	}
 }

@@ -43,15 +43,32 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	@Override
 	public void initialize(MinecraftClient minecraftClient_1, int screenWidth, int screenHeight) {
 		//container.validate();
-		super.initialize(minecraftClient_1, width, height);
+		super.initialize(minecraftClient_1, screenWidth, screenHeight);
 		
 		WPanel basePanel = container.getRootPanel();
 		if (basePanel!=null) {
-			width = basePanel.getWidth();
-			height = basePanel.getHeight();
+			basePanel.validate(container);
 		}
 		
-		left = (screenWidth  / 2) - (width / 2);
+		reposition();
+	}
+	
+	public void reposition() {
+		WPanel basePanel = container.getRootPanel();
+		if (basePanel!=null) {
+			basePanel.validate(container);
+			
+			width = basePanel.getWidth();
+			height = basePanel.getHeight();
+			
+			//DEBUG
+			if (width<16) width=300;
+			if (height<16) height=300;
+			//if (left<0 || left>300) left = 10;
+			//if (top<0 || top>300) top = 10;
+		}
+		
+		left = (screenWidth / 2) - (width / 2);
 		top =  (screenHeight / 2) - (height / 2);
 	}
 	
@@ -150,7 +167,13 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 		
 	}
 	*/
-	
+	@Override
+	public void onScaleChanged(MinecraftClient minecraftClient_1, int int_1, int int_2) {
+		//super.onScaleChanged(minecraftClient_1, int_1, int_2);
+		this.screenWidth = int_1;
+		this.screenHeight = int_2;
+		reposition();
+	}
 	
 	/*
 	 * SPECIAL FUNCTIONS: Where possible, we want to draw everything based on *actual GUI state and composition* rather
@@ -179,26 +202,14 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	
 	@Override
 	protected void drawBackground(float partialTicks, int mouseX, int mouseY) {
+		if (this.container==null) {
+			System.out.println("CONTAINER IS NULL.");
+			return;
+		}
 		WPanel root = this.container.getRootPanel();
 		if (root==null) return;
 		
-		if (container.shouldDrawPanel()) {
-			int panelColor = container.getColor();
-			int shadowColor = multiplyColor(panelColor, 0.50f);
-			int hilightColor = multiplyColor(panelColor, 1.25f);
-			
-			ScreenDrawing.drawGuiPanel(
-					left - PADDING,
-					top - PADDING,
-					width + ((PADDING - 1) * 2),
-					height + ((PADDING - 1) * 2),
-
-					shadowColor, panelColor, hilightColor, 0xFF000000);
-		}
-		
-		//if (this.cursorDragSlots != null && root != null) {
-			root.paintBackground(left, top);
-		//}
+		root.paintBackground(left, top);
 		
 		//TODO: Change this to a label that lives in the rootPanel instead?
 		if (container instanceof Nameable) {
@@ -210,7 +221,14 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	@Override
 	protected void drawForeground(int mouseX, int mouseY) {
 		//if (cursorDragSlots != null && this.container.getRootPanel() != null) {
-			this.container.getRootPanel().paintForeground(left, top, mouseX, mouseY);
+			if (this.container==null) {
+				System.out.println("CONTAINER IS NULL.");
+				return;
+			}
+			
+			if (this.container.getRootPanel()!=null) {
+				this.container.getRootPanel().paintForeground(left, top, mouseX, mouseY);
+			}
 		//}
 	}
 	

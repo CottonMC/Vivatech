@@ -15,4 +15,9 @@ public class DieCutterController extends CottonScreenController {
 	public int getCraftingResultSlotIndex() {
 		return 2;
 	}
+
+	@Override
+	public void setup() {
+		//TODO: Add components
+	}
 }

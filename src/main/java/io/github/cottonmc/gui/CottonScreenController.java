@@ -1,5 +1,6 @@
 package io.github.cottonmc.gui;
 
+import io.github.cottonmc.gui.client.BackgroundPainter;
 import io.github.cottonmc.gui.widget.WPanel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,23 +20,24 @@ import net.minecraft.world.World;
 public abstract class CottonScreenController extends CraftingContainer<Inventory> {
 	protected Inventory inventory;
 	protected PlayerInventory playerInventory;
-	protected RecipeType<? extends Inventory> recipeType;
+	protected RecipeType<?> recipeType;
 	protected World world;
 	protected PropertyDelegate propertyDelegate;
 	
-	protected WPanel rootPanel;
-	protected boolean shouldDrawPanel = true;
-	protected int color = 0xFFC6C6C6;
+	protected WPanel rootPanel = new WPanel();
 	protected int titleColor = 0xFF404040;
-	protected float bevelStrength = 0.72f;
 	
-	public CottonScreenController(ContainerType<?> containerType,  RecipeType<? extends Inventory> recipeType, int syncId, PlayerInventory playerInventory) {
+	public CottonScreenController(ContainerType<?> containerType,  RecipeType<?> recipeType, int syncId, PlayerInventory playerInventory) {
 		super(containerType, syncId);
 		this.inventory = null;
 		this.playerInventory = playerInventory;
 		this.recipeType = recipeType;
 		this.world = playerInventory.player.world;
 		this.propertyDelegate = new ArrayPropertyDelegate(1);
+		
+		if (playerInventory.player.world.isClient) {
+			addPainters();
+		}
 	}
 	
 	public CottonScreenController(ContainerType<?> containerType,  RecipeType<? extends Inventory> recipeType, int syncId, PlayerInventory playerInventory, Inventory blockInventory, PropertyDelegate propertyDelegate) {
@@ -44,26 +46,18 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		this.playerInventory = playerInventory;
 		this.recipeType = recipeType;
 		this.world = playerInventory.player.world;
+		
+		if (playerInventory.player.world.isClient) {
+			addPainters();
+		}
 	}
 	
 	public WPanel getRootPanel() {
 		return rootPanel;
 	}
 	
-	public boolean shouldDrawPanel() {
-		return shouldDrawPanel;
-	}
-	
-	public int getColor() {
-		return color;
-	}
-	
 	public int getTitleColor() {
 		return titleColor;
-	}
-	
-	public float getBevelStrength() {
-		return bevelStrength;
 	}
 	
 	public CottonScreenController setRootPanel(WPanel panel) {
@@ -71,19 +65,18 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		return this;
 	}
 	
-	public CottonScreenController setShouldDrawPanel(boolean drawPanel) {
-		this.shouldDrawPanel = drawPanel;
-		return this;
-	}
-	
-	public CottonScreenController setColor(int color) {
-		this.color = color;
-		return this;
-	}
-	
 	public CottonScreenController setTitleColor(int color) {
 		this.titleColor = color;
 		return this;
+	}
+	
+	public abstract void setup();
+	
+	@Environment(EnvType.CLIENT)
+	public void addPainters() {
+		if (this.rootPanel!=null) {
+			this.rootPanel.setBackgroundPainter(BackgroundPainter.VANILLA);
+		}
 	}
 	
 	//TODO: port ValidatedSlot

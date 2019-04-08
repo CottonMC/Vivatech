@@ -1,15 +1,19 @@
 package io.github.cottonmc.gui.widget;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.google.common.collect.Lists;
 
 import io.github.cottonmc.gui.CottonScreenController;
+import io.github.cottonmc.gui.client.BackgroundPainter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class WPanel extends WWidget {
-protected final List<WWidget> children = Lists.newArrayList();
+	protected final List<WWidget> children = Lists.newArrayList();
+	@Environment(EnvType.CLIENT)
+	private BackgroundPainter backgroundPainter = null;
 	
 	@Override
 	public void createPeers(CottonScreenController c) {
@@ -25,6 +29,12 @@ protected final List<WWidget> children = Lists.newArrayList();
 	@Override
 	public boolean canResize() {
 		return true;
+	}
+	
+	@Environment(EnvType.CLIENT)
+	public WPanel setBackgroundPainter(BackgroundPainter painter) {
+		this.backgroundPainter = painter;
+		return this;
 	}
 	
 	/**
@@ -113,6 +123,8 @@ protected final List<WWidget> children = Lists.newArrayList();
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void paintBackground(int x, int y) {
+		if (backgroundPainter!=null) backgroundPainter.paintBackground(x, y, this);
+		
 		for(WWidget child : children) {
 			child.paintBackground(x + child.getX(), y + child.getY());
 		}

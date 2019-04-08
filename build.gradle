@@ -33,8 +33,12 @@ repositories {
 	//mavenCentral()
 	//mavenLocal()
 	maven {
-		//cotton
+		name = "Cotton"
 		url "http://server.bbkr.space:8081/artifactory/libs-snapshot"
+	}
+	maven {
+		name = "BuildCraft"
+		url = "https://mod-buildcraft.com/maven"
 	}
 }
 
@@ -51,6 +55,7 @@ dependencies {
 	//modCompile "io.github.cottonmc:cotton-resources:0.0.1+19w03a-SNAPSHOT"
 	modCompile "io.github.cottonmc:cotton-energy:1.0.0+19w11b-SNAPSHOT"
 	modCompile "io.github.cottonmc:cotton-ecs:1.0.0+19w11b-SNAPSHOT"
+	modCompile "alexiil.mc.lib:libblockattributes:0.3.0"
 	
 	//if we need it
 	//implementation "blue.endless:jankson:1.1.0"

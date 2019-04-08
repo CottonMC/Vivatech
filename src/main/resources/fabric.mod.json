@@ -7,7 +7,8 @@
     "fabric": "*"
   },
   "initializers": [
-    "io.github.cottonmc.um.UnitedManufacturing"
+    "io.github.cottonmc.um.UnitedManufacturing",
+    "io.github.cottonmc.um.client.UMClient"
   ],
   "mixins": {
     "client": "united-manufacturing.client.json",

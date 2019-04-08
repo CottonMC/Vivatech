@@ -1,35 +1,45 @@
 package io.github.cottonmc.um.block.entity;
 
-import java.util.Set;
+//import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+//import javax.annotation.Nonnull;
+//import javax.annotation.Nullable;
 
-import com.google.common.collect.Sets;
+//import com.google.common.collect.Sets;
 
-import io.github.cottonmc.ecs.api.Component;
-import io.github.cottonmc.ecs.api.BlockComponentContainer;
-import io.github.cottonmc.energy.api.EnergyComponent;
+//import io.github.cottonmc.ecs.api.Component;
+//import io.github.cottonmc.ecs.api.BlockComponentContainer;
+//import io.github.cottonmc.energy.api.EnergyComponent;
 import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.um.block.UMBlocks;
+import io.github.cottonmc.um.block.container.CoalGeneratorController;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
+import io.github.cottonmc.um.recipe.UMRecipes;
 import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
+import net.minecraft.container.BlockContext;
+import net.minecraft.container.Container;
+import net.minecraft.container.NameableContainerProvider;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.TextComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.IWorld;
 
-public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider {
+public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider, NameableContainerProvider {
 	public static int MAX_WU = 4;
 	public static int FUEL_PER_WU = 5; //Fractional fuel will get banked; generators are lossless.
 	public static int PULSE_LENGTH = 30; //Might shorten to 20, we'll see how it feels in-game.
+	
+	public static final int SLOT_FUEL = 0;
 	
 	//private ContainerLock lock; //TODO: Awaiting design direction, to be decided alongside Locky
 	private int remainingTicks;
@@ -157,6 +167,16 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	@Override
 	public SidedInventory getInventory(BlockState var1, IWorld var2, BlockPos var3) {
 		return new SidedItemView(items);
+	}
+	
+	@Override
+	public Container createMenu(int var1, PlayerInventory var2, PlayerEntity var3) {
+		return new CoalGeneratorController(var1, var2, BlockContext.create(this.world, this.pos));
+	}
+
+	@Override
+	public TextComponent getDisplayName() {
+		return items.getDisplayName();
 	}
 	
 	/*

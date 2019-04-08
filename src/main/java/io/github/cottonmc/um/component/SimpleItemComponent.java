@@ -3,7 +3,6 @@ package io.github.cottonmc.um.component;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import io.github.cottonmc.ecs.api.Observable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -14,10 +13,9 @@ import net.minecraft.text.TextComponent;
 import net.minecraft.text.TranslatableTextComponent;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Nameable;
-import io.github.cottonmc.ecs.api.Component;
 import io.github.prospector.silk.util.ActionType;
 
-public class SimpleItemComponent implements Component, ItemComponent, Inventory, Nameable, Observable {
+public class SimpleItemComponent implements ItemComponent, Inventory, Nameable {
 	protected TextComponent name = new TranslatableTextComponent("container.inventory"); //en_us: "Inventory"
 	protected final DefaultedList<ItemStack> storage;// = DefaultedList.create(ItemStack.EMPTY);
 	protected final ArrayList<Runnable> observers = new ArrayList<>();

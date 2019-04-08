@@ -1,6 +1,5 @@
 package io.github.cottonmc.um.block;
 
-import io.github.cottonmc.ecs.api.ComponentContainer;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

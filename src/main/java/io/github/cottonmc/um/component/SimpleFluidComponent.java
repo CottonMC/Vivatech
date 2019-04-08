@@ -2,8 +2,6 @@ package io.github.cottonmc.um.component;
 
 import java.util.ArrayList;
 
-import io.github.cottonmc.ecs.api.Component;
-import io.github.cottonmc.ecs.api.Observable;
 import io.github.prospector.silk.fluid.FluidContainer;
 import io.github.prospector.silk.fluid.FluidInstance;
 import io.github.prospector.silk.util.ActionType;
@@ -15,7 +13,7 @@ import net.minecraft.util.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 /** Simple FluidComponent where every tank is the same size. */
-public class SimpleFluidComponent implements Component, FluidComponent, FluidContainer, Observable {
+public class SimpleFluidComponent implements FluidComponent, FluidContainer {
 	private FluidInstance EMPTY = new FluidInstance(); //TODO: As soon as possible, switch to FluidInstance.EMPTY
 	protected DefaultedList<FluidInstance> storage;
 	protected final ArrayList<Runnable> observers = new ArrayList<>();
@@ -149,7 +147,7 @@ public class SimpleFluidComponent implements Component, FluidComponent, FluidCon
 	//}
 	
 	//implements Component {
-		@Override
+		//@Override
 		public void fromTag(Tag tag) {
 			if (tag instanceof CompoundTag) {
 				//single-slot
@@ -171,7 +169,7 @@ public class SimpleFluidComponent implements Component, FluidComponent, FluidCon
 			}
 		}
 		
-		@Override
+		//@Override
 		public Tag toTag() {
 			if (storage.size()==1) {
 				return storage.get(0).toTag(new CompoundTag());
