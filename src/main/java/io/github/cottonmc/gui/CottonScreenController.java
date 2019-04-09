@@ -1,6 +1,7 @@
 package io.github.cottonmc.gui;
 
 import io.github.cottonmc.gui.client.BackgroundPainter;
+import io.github.cottonmc.gui.widget.WGridPanel;
 import io.github.cottonmc.gui.widget.WPanel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,7 +25,7 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 	protected World world;
 	protected PropertyDelegate propertyDelegate;
 	
-	protected WPanel rootPanel = new WPanel();
+	protected WPanel rootPanel = new WGridPanel();
 	protected int titleColor = 0xFF404040;
 	
 	public CottonScreenController(ContainerType<?> containerType,  RecipeType<?> recipeType, int syncId, PlayerInventory playerInventory) {
@@ -34,10 +35,6 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		this.recipeType = recipeType;
 		this.world = playerInventory.player.world;
 		this.propertyDelegate = new ArrayPropertyDelegate(1);
-		
-		if (playerInventory.player.world.isClient) {
-			addPainters();
-		}
 	}
 	
 	public CottonScreenController(ContainerType<?> containerType,  RecipeType<? extends Inventory> recipeType, int syncId, PlayerInventory playerInventory, Inventory blockInventory, PropertyDelegate propertyDelegate) {
@@ -46,10 +43,6 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		this.playerInventory = playerInventory;
 		this.recipeType = recipeType;
 		this.world = playerInventory.player.world;
-		
-		if (playerInventory.player.world.isClient) {
-			addPainters();
-		}
 	}
 	
 	public WPanel getRootPanel() {
@@ -70,8 +63,6 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		return this;
 	}
 	
-	public abstract void setup();
-	
 	@Environment(EnvType.CLIENT)
 	public void addPainters() {
 		if (this.rootPanel!=null) {
@@ -79,12 +70,15 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		}
 	}
 	
-	//TODO: port ValidatedSlot
-	/*public void initContainerSlot(int slot, int x, int y) {
+	//TODO: Is this one needed?
+	/*
+	public void initContainerSlot(int slot, int x, int y) {
 		this.addSlot(new ValidatedSlot(inventory, slot, x * 18, y * 18));
 	}*/
 	
-	
+	public void addSlotPeer(ValidatedSlot slot) {
+		this.addSlot(slot);
+	}
 	
 	//extends CraftingContainer<Inventory> {
 		@Override

@@ -16,9 +16,4 @@ public class RollerController extends CottonScreenController {
 	public int getCraftingResultSlotIndex() {
 		return RollerEntity.SLOT_RESULT;
 	}
-
-	@Override
-	public void setup() {
-		//TODO: Add components
-	}
 }

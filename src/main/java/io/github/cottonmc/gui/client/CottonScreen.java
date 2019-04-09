@@ -42,13 +42,9 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	
 	@Override
 	public void initialize(MinecraftClient minecraftClient_1, int screenWidth, int screenHeight) {
-		//container.validate();
 		super.initialize(minecraftClient_1, screenWidth, screenHeight);
 		
-		WPanel basePanel = container.getRootPanel();
-		if (basePanel!=null) {
-			basePanel.validate(container);
-		}
+		container.addPainters();
 		
 		reposition();
 	}

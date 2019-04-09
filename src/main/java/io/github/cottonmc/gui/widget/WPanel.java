@@ -1,7 +1,6 @@
 package io.github.cottonmc.gui.widget;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import com.google.common.collect.Lists;
 
@@ -17,9 +16,11 @@ public class WPanel extends WWidget {
 	
 	@Override
 	public void createPeers(CottonScreenController c) {
+		System.out.println("Creating peers - before: "+c.slotList.size());
 		for(WWidget child : children) {
 			child.createPeers(c);
 		}
+		System.out.println("Peers created - after: "+c.slotList.size());
 	}
 	
 	public void remove(WWidget w) {

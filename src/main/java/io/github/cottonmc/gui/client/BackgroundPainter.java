@@ -1,6 +1,6 @@
 package io.github.cottonmc.gui.client;
 
-import io.github.cottonmc.gui.widget.WPanel;
+import io.github.cottonmc.gui.widget.WWidget;
 
 public interface BackgroundPainter {
 	/**
@@ -9,12 +9,12 @@ public interface BackgroundPainter {
 	 * @param top The absolute position of the top of the panel, in gui-screen coordinates
 	 * @param panel The panel being painted
 	 */
-	public void paintBackground(int left, int top, WPanel panel);
+	public void paintBackground(int left, int top, WWidget panel);
 	
 	
 	
 	public static BackgroundPainter VANILLA = (left, top, panel) -> {
-		ScreenDrawing.drawGuiPanel(left, top, panel.getWidth(), panel.getHeight());
+		ScreenDrawing.drawGuiPanel(left-8, top-8, panel.getWidth()+16, panel.getHeight()+16);
 		
 	};
 	
@@ -22,7 +22,7 @@ public interface BackgroundPainter {
 	
 	public static BackgroundPainter createColorful(int panelColor) {
 		return (left, top, panel) -> {
-			ScreenDrawing.drawGuiPanel(left, top, panel.getWidth(), panel.getHeight(), panelColor);
+			ScreenDrawing.drawGuiPanel(left-8, top-8, panel.getWidth()+16, panel.getHeight()+16, panelColor);
 		};
 	}
 	
@@ -31,7 +31,7 @@ public interface BackgroundPainter {
 			int shadowColor = ScreenDrawing.multiplyColor(panelColor, 1.0f - contrast);
 			int hilightColor = ScreenDrawing.multiplyColor(panelColor, 1.0f + contrast);
 			
-			ScreenDrawing.drawGuiPanel(left, top, panel.getWidth(), panel.getHeight(), shadowColor, panelColor, hilightColor, 0xFF000000);
+			ScreenDrawing.drawGuiPanel(left-8, top-8, panel.getWidth()+16, panel.getHeight()+16, shadowColor, panelColor, hilightColor, 0xFF000000);
 		};
 	}
 }
