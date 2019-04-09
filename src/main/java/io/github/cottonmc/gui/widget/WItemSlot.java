@@ -23,6 +23,7 @@ public class WItemSlot extends WWidget {
 	private int slotsHigh = 1;
 	private boolean big = false;
 	//private boolean ltr = true;
+	private float opacity = 0.2f;
 	
 	public WItemSlot(Inventory inventory, int startIndex, int slotsWide, int slotsHigh, boolean big, boolean ltr) {
 		this.inventory = inventory;
@@ -123,13 +124,13 @@ public class WItemSlot extends WWidget {
 		} else {
 			for (int xi = 0; xi < slotsWide; xi++) {
 				for (int yi = 0; yi < slotsHigh; yi++) {
-					int lo = ScreenDrawing.colorAtOpacity(0x000000, 0.72f);
-					int bg = ScreenDrawing.colorAtOpacity(0x000000, 0.29f);
-					int hi = ScreenDrawing.colorAtOpacity(0xFFFFFF, 1.0f);
+					//int lo = ScreenDrawing.colorAtOpacity(0x000000, 0.72f);
+					//int bg = ScreenDrawing.colorAtOpacity(0x000000, 0.29f);
+					//int hi = ScreenDrawing.colorAtOpacity(0xFFFFFF, 1.0f);
 					//if (container!=null) {
-					//	lo = ScreenDrawing.colorAtOpacity(0x000000, container.getBevelStrength());
-					//	bg = ScreenDrawing.colorAtOpacity(0x000000, container.getBevelStrength()/2.4f);
-					//	hi = ScreenDrawing.colorAtOpacity(0xFFFFFF, container.getBevelStrength());
+						int lo = ScreenDrawing.colorAtOpacity(0x000000, opacity);
+						int bg = ScreenDrawing.colorAtOpacity(0x000000, opacity/2.4f);
+						int hi = ScreenDrawing.colorAtOpacity(0xFFFFFF, opacity);
 					//}
 					
 					if (big) {
