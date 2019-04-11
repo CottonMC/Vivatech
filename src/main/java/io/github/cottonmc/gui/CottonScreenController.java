@@ -83,12 +83,6 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		}
 	}
 	
-	//TODO: Is this one needed?
-	/*
-	public void initContainerSlot(int slot, int x, int y) {
-		this.addSlot(new ValidatedSlot(inventory, slot, x * 18, y * 18));
-	}*/
-	
 	public void addSlotPeer(ValidatedSlot slot) {
 		this.addSlot(slot);
 	}
@@ -108,63 +102,43 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 				return ItemStack.EMPTY;
 			}
 			
-			/*
-			{
-				//Concrete's transferSlot
-				ItemStack srcStack = ItemStack.EMPTY;
-				if (slot.hasStack()) {
-					srcStack = slot.getStack();
-					
-					if (slot.inventory == playerInventory) {
-						//Try to push the stack from the player-inventory to the container-inventory.
-						ItemStack remaining = transferToInventory(srcStack, this.blockInventory);
-						slot.setStack(remaining);
-						return ItemStack.EMPTY;
-					} else {
-						//Try to push the stack from the container-inventory to the player-inventory
-						ItemStack remaining = transferToInventory(srcStack, playerInventory);
-						slot.setStack(remaining);
-						return ItemStack.EMPTY;
-					}
-				} else {
-					//Shift-clicking on an invalid or empty slot does nothing.
-				}
-				
-				slot.setStack(srcStack);
-				return ItemStack.EMPTY;
-			}*/
-			
-			
-			
-			//{
-				// Hopper's transferSlot:
-				ItemStack remaining = ItemStack.EMPTY;
-				if (slot != null && slot.hasStack()) {
-					ItemStack toTransfer = slot.getStack();
-					remaining = toTransfer.copy();
-					//if (slot.inventory==blockInventory) {
+			ItemStack remaining = ItemStack.EMPTY;
+			if (slot != null && slot.hasStack()) {
+				ItemStack toTransfer = slot.getStack();
+				remaining = toTransfer.copy();
+				//if (slot.inventory==blockInventory) {
+				if (blockInventory!=null) {
 					if (slotNumber < this.blockInventory.getInvSize()) {
-						/* Hopper assumes all the blockInventory slots come first, which is a fairly good assumption */
+						/* Assumes all the blockInventory slots come first, which is a fairly good assumption */
 						if (!this.insertItem(toTransfer, this.blockInventory.getInvSize(), this.slotList.size(), true)) {
 							return ItemStack.EMPTY;
 						}
 					} else if (!this.insertItem(toTransfer, 0, this.blockInventory.getInvSize(), false)) {
 						return ItemStack.EMPTY;
 					}
-	
-					if (toTransfer.isEmpty()) {
-						slot.setStack(ItemStack.EMPTY);
+				} else {
+					//Transfer between hotbar and inventory. Assumes PlayerInventory is structured with hotbar first, then storage, which is only wrong in the craziest mixin scenarios
+					if (PlayerInventory.isValidHotbarIndex(slotNumber)) {
+						//Transfer from hotbar to storage
+						if (!this.insertItem(toTransfer, PlayerInventory.getHotbarSize(), this.playerInventory.getInvSize(), false)) {
+							return ItemStack.EMPTY;
+						}
 					} else {
-						slot.markDirty();
+						//Transfer from storage to hotbar
+						if (!this.insertItem(toTransfer, 0, PlayerInventory.getHotbarSize(), false)) {
+							return ItemStack.EMPTY;
+						}
 					}
 				}
-	
-				return remaining;
-			//}
+				
+				if (toTransfer.isEmpty()) {
+					slot.setStack(ItemStack.EMPTY);
+				} else {
+					slot.markDirty();
+				}
+			}
 			
-			
-			
-			//return ItemStack.EMPTY;
+			return remaining;
 		} else {
 			return super.onSlotClick(slotNumber, button, action, player);
 		}
