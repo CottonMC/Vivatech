@@ -39,4 +39,8 @@ public class ValidatedSlot extends Slot {
 		
 		return result;
 	}
+	
+	public int getInventoryIndex() {
+		return slotNumber;
+	}
 }

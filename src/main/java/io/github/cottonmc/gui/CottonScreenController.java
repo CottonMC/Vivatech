@@ -1,5 +1,9 @@
 package io.github.cottonmc.gui;
 
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
 import alexiil.mc.lib.attributes.item.impl.EmptyFixedItemInv;
 import alexiil.mc.lib.attributes.item.impl.FixedInventoryVanillaWrapper;
 import io.github.cottonmc.gui.client.BackgroundPainter;
@@ -89,7 +93,6 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 	
 	@Override
 	public ItemStack onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
-		System.out.println("SlotClick: "+action.name()+" pos:"+slotNumber+","+button);
 		if (action==SlotActionType.QUICK_MOVE) {
 			
 			if (slotNumber < 0) {
@@ -108,26 +111,18 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 				remaining = toTransfer.copy();
 				//if (slot.inventory==blockInventory) {
 				if (blockInventory!=null) {
-					if (slotNumber < this.blockInventory.getInvSize()) {
-						/* Assumes all the blockInventory slots come first, which is a fairly good assumption */
-						if (!this.insertItem(toTransfer, this.blockInventory.getInvSize(), this.slotList.size(), true)) {
+					if (slot.inventory==blockInventory) {
+						//Try to transfer the item from the block into the player's inventory
+						if (!this.insertItem(toTransfer, this.playerInventory, true)) {
 							return ItemStack.EMPTY;
 						}
-					} else if (!this.insertItem(toTransfer, 0, this.blockInventory.getInvSize(), false)) {
+					} else if (!this.insertItem(toTransfer, this.blockInventory, false)) { //Try to transfer the item from the player to the block
 						return ItemStack.EMPTY;
 					}
 				} else {
-					//Transfer between hotbar and inventory. Assumes PlayerInventory is structured with hotbar first, then storage, which is only wrong in the craziest mixin scenarios
-					if (PlayerInventory.isValidHotbarIndex(slotNumber)) {
-						//Transfer from hotbar to storage
-						if (!this.insertItem(toTransfer, PlayerInventory.getHotbarSize(), this.playerInventory.getInvSize(), false)) {
-							return ItemStack.EMPTY;
-						}
-					} else {
-						//Transfer from storage to hotbar
-						if (!this.insertItem(toTransfer, 0, PlayerInventory.getHotbarSize(), false)) {
-							return ItemStack.EMPTY;
-						}
+					//There's no block, just swap between the player's storage and their hotbar
+					if (!swapHotbar(toTransfer, slotNumber, this.playerInventory)) {
+						return ItemStack.EMPTY;
 					}
 				}
 				
@@ -142,6 +137,151 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		} else {
 			return super.onSlotClick(slotNumber, button, action, player);
 		}
+	}
+	
+	/** WILL MODIFY toInsert! Returns true if anything was inserted. */
+	private boolean insertIntoExisting(ItemStack toInsert, Slot slot) {
+		ItemStack curSlotStack = slot.getStack();
+		if (!curSlotStack.isEmpty() && canStacksCombine(toInsert, curSlotStack)) {
+			int combinedAmount = curSlotStack.getAmount() + toInsert.getAmount();
+			if (combinedAmount <= toInsert.getMaxAmount()) {
+				toInsert.setAmount(0);
+				curSlotStack.setAmount(combinedAmount);
+				slot.markDirty();
+				return true;
+			} else if (curSlotStack.getAmount() < toInsert.getMaxAmount()) {
+				toInsert.subtractAmount(toInsert.getMaxAmount() - curSlotStack.getAmount());
+				curSlotStack.setAmount(toInsert.getMaxAmount());
+				slot.markDirty();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/** WILL MODIFY toInsert! Returns true if anything was inserted. */
+	private boolean insertIntoEmpty(ItemStack toInsert, Slot slot) {
+		ItemStack curSlotStack = slot.getStack();
+		if (curSlotStack.isEmpty() && slot.canInsert(toInsert)) {
+			if (toInsert.getAmount() > slot.getMaxStackAmount()) {
+				slot.setStack(toInsert.split(slot.getMaxStackAmount()));
+			} else {
+				slot.setStack(toInsert.split(toInsert.getAmount()));
+			}
+
+			slot.markDirty();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean insertItem(ItemStack toInsert, Inventory inventory, boolean walkBackwards) {
+		//Make a unified list of slots *only from this inventory*
+		ArrayList<Slot> inventorySlots = new ArrayList<>();
+		for(Slot slot : slotList) {
+			if (slot.inventory==inventory) inventorySlots.add(slot);
+		}
+		if (inventorySlots.isEmpty()) return false;
+		
+		//Try to insert it on top of existing stacks
+		boolean inserted = false;
+		if (walkBackwards) {
+			for(int i=inventorySlots.size()-1; i>=0; i--) {
+				Slot curSlot = inventorySlots.get(i);
+				if (insertIntoExisting(toInsert, curSlot)) inserted = true;
+				if (toInsert.isEmpty()) break;
+			}
+		} else {
+			for(int i=0; i<inventorySlots.size(); i++) {
+				Slot curSlot = inventorySlots.get(i);
+				if (insertIntoExisting(toInsert, curSlot)) inserted = true;
+				if (toInsert.isEmpty()) break;
+			}
+			
+		}
+		
+		//If we still have any, shove them into empty slots
+		if (!toInsert.isEmpty()) {
+			if (walkBackwards) {
+				for(int i=inventorySlots.size()-1; i>=0; i--) {
+					Slot curSlot = inventorySlots.get(i);
+					if (insertIntoEmpty(toInsert, curSlot)) inserted = true;
+					if (toInsert.isEmpty()) break;
+				}
+			} else {
+				for(int i=0; i<inventorySlots.size(); i++) {
+					Slot curSlot = inventorySlots.get(i);
+					if (insertIntoEmpty(toInsert, curSlot)) inserted = true;
+					if (toInsert.isEmpty()) break;
+				}
+				
+			}
+		}
+		
+		return inserted;
+	}
+	
+	private boolean swapHotbar(ItemStack toInsert, int slotNumber, Inventory inventory) {
+		//Feel out the slots to see what's storage versus hotbar
+		ArrayList<Slot> storageSlots = new ArrayList<>();
+		ArrayList<Slot> hotbarSlots = new ArrayList<>();
+		boolean swapToStorage = true;
+		boolean inserted = false;
+		
+		for(Slot slot : slotList) {
+			if (slot.inventory==inventory && slot instanceof ValidatedSlot) {
+				int index = ((ValidatedSlot)slot).getInventoryIndex();
+				if (PlayerInventory.isValidHotbarIndex(index)) {
+					hotbarSlots.add(slot);
+				} else {
+					storageSlots.add(slot);
+					if (index==slotNumber) swapToStorage = false;
+				}
+			}
+		}
+		if (storageSlots.isEmpty() || hotbarSlots.isEmpty()) return false;
+		
+		if (swapToStorage) {
+			//swap from hotbar to storage
+			for(int i=0; i<storageSlots.size(); i++) {
+				Slot curSlot = storageSlots.get(i);
+				if (insertIntoExisting(toInsert, curSlot)) inserted = true;
+				if (toInsert.isEmpty()) break;
+			}
+			if (!toInsert.isEmpty()) {
+				for(int i=0; i<storageSlots.size(); i++) {
+					Slot curSlot = storageSlots.get(i);
+					if (insertIntoEmpty(toInsert, curSlot)) inserted = true;
+					if (toInsert.isEmpty()) break;
+				}
+			}
+		} else {
+			//swap from storage to hotbar
+			for(int i=0; i<hotbarSlots.size(); i++) {
+				Slot curSlot = hotbarSlots.get(i);
+				if (insertIntoExisting(toInsert, curSlot)) inserted = true;
+				if (toInsert.isEmpty()) break;
+			}
+			if (!toInsert.isEmpty()) {
+				for(int i=0; i<hotbarSlots.size(); i++) {
+					Slot curSlot = hotbarSlots.get(i);
+					if (insertIntoEmpty(toInsert, curSlot)) inserted = true;
+					if (toInsert.isEmpty()) break;
+				}
+			}
+		}
+		
+		return inserted;
+	}
+	
+	/**
+	 * Gets the PropertyDelegate associated with this Controller.
+	 */
+	@Nullable
+	public PropertyDelegate getPropertyDelegate() {
+		// TODO Auto-generated method stub
+		return propertyDelegate;
 	}
 	
 	public WPanel createPlayerInventoryPanel() {

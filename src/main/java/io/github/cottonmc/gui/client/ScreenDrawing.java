@@ -169,14 +169,6 @@ public class ScreenDrawing {
 	 * @param panel			color of the panel area
 	 * @param bottomright	color of the bottom/right bevel
 	 */
-	/*
-	public static void drawBeveledPanel(int x, int y, int width, int height, int topleft, int panel, int bottomright) {
-		rect(x,             y,              width,     height,     0x8b8b8b); //Center panel
-		rect(x,             y,              width - 1, 1,          0x373737); //Top shadow
-		rect(x,             y + 1,          1,         height - 2, 0x373737); //Left shadow
-		rect(x + width - 1, y + 1,          1,         height - 1, 0xFFFFFF); //Right hilight
-		rect(x + 1,         y + height - 1, width - 1, 1,          0xFFFFFF); //Bottom hilight
-	}*/
 	public static void drawBeveledPanel(int x, int y, int width, int height, int topleft, int panel, int bottomright) {
 		rect(x,             y,              width,     height,     panel); //Center panel
 		rect(x,             y,              width - 1, 1,          topleft); //Top shadow

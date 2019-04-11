@@ -2,6 +2,7 @@ package io.github.cottonmc.gui.widget;
 
 import java.util.List;
 
+import io.github.cottonmc.gui.CottonScreenController;
 import io.github.cottonmc.gui.client.ScreenDrawing;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -11,26 +12,26 @@ import net.minecraft.text.TranslatableTextComponent;
 import net.minecraft.util.Identifier;
 
 public class WBar extends WWidget {
-	private final Identifier bg;
-	private final Identifier bar;
-	private final int field;
-	private final int max;
-	private final PropertyDelegate properties;
-	private final Direction direction;
-	//private boolean renderTooltip;
-	private String tooltipLabel;
-	private TextComponent tooltipTextComponent;
+	protected final Identifier bg;
+	protected final Identifier bar;
+	protected final int field;
+	protected final int max;
+	protected int maxValue;
+	protected PropertyDelegate properties;
+	protected final Direction direction;
+	protected String tooltipLabel;
+	protected TextComponent tooltipTextComponent;
 	
-	public WBar(Identifier bg, Identifier bar, PropertyDelegate properties, int field, int maxfield) {
-		this(bg, bar, properties, field, maxfield, Direction.UP);
+	public WBar(Identifier bg, Identifier bar, int field, int maxfield) {
+		this(bg, bar, field, maxfield, Direction.UP);
 	}
 
-	public WBar(Identifier bg, Identifier bar, PropertyDelegate properties, int field, int maxfield, Direction dir) {
+	public WBar(Identifier bg, Identifier bar, int field, int maxfield, Direction dir) {
 		this.bg = bg;
 		this.bar = bar;
-		this.properties = properties;
 		this.field = field;
 		this.max = maxfield;
+		this.maxValue = 0;
 		this.direction = dir;
 	}
 
@@ -64,7 +65,11 @@ public class WBar extends WWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void paintBackground(int x, int y) {
-		ScreenDrawing.rect(bg, x, y, getWidth(), getHeight(), 0xFFFFFFFF);
+		if (bg!=null) {
+			ScreenDrawing.rect(bg, x, y, getWidth(), getHeight(), 0xFFFFFFFF);
+		} else {
+			ScreenDrawing.rect(x, y, getWidth(), getHeight(), ScreenDrawing.colorAtOpacity(0x000000, 0.25f));
+		}
 		
 		float percent = properties.get(field) / (float) properties.get(max);
 		if (percent < 0) percent = 0f;
@@ -82,22 +87,38 @@ public class WBar extends WWidget {
 				int left = x;
 				int top = y + getHeight();
 				top -= barSize;
-				ScreenDrawing.rect(bar, left, top, getWidth(), barSize, 0, 1 - percent, 1, 1, 0xFFFFFFFF);
+				if (bar!=null) {
+					ScreenDrawing.rect(bar, left, top, getWidth(), barSize, 0, 1 - percent, 1, 1, 0xFFFFFFFF);
+				} else {
+					ScreenDrawing.rect(left, top, getWidth(), barSize,  ScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
+				}
 				break;
 			}
 			case RIGHT: {
-				ScreenDrawing.rect(bar, x, y, barSize, getHeight(), 0, 0, percent, 1, 0xFFFFFFFF);
+				if (bar!=null) {
+					ScreenDrawing.rect(bar, x, y, barSize, getHeight(), 0, 0, percent, 1, 0xFFFFFFFF);
+				} else {
+					ScreenDrawing.rect(x, y, barSize, getHeight(), ScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
+				}
 				break;
 			}
 			case DOWN: {
-				ScreenDrawing.rect(bar, x, y, getWidth(), barSize, 0, 0, 1, percent, 0xFFFFFFFF);
+				if (bar!=null) {
+					ScreenDrawing.rect(bar, x, y, getWidth(), barSize, 0, 0, 1, percent, 0xFFFFFFFF);
+				} else {
+					ScreenDrawing.rect(x, y, getWidth(), barSize, ScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
+				}
 				break;
 			}
 			case LEFT: {
 				int left = x + getWidth();
 				int top = y;
 				left -= barSize;
-				ScreenDrawing.rect(bar, left, top, barSize, getHeight(), 1 - percent, 0, 1, 1, 0xFFFFFFFF);
+				if (bar!=null) {
+					ScreenDrawing.rect(bar, left, top, barSize, getHeight(), 1 - percent, 0, 1, 1, 0xFFFFFFFF);
+				} else {
+					ScreenDrawing.rect(left, top, barSize, getHeight(), ScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
+				}
 				break;
 			}
 		}
@@ -105,10 +126,36 @@ public class WBar extends WWidget {
 
 	@Override
 	public void addInformation(List<String> information) {
-		int value = properties.get(field);
-		int valMax = properties.get(max);
-		String formatted = new TranslatableTextComponent(tooltipLabel, Integer.valueOf(value), Integer.valueOf(valMax)).getFormattedText();
-		information.add(String.format(tooltipLabel, value, valMax));
+		if (tooltipLabel!=null) {
+			int value = (field>=0) ? properties.get(field) : 0;
+			int valMax = (max>=0) ? properties.get(max) : maxValue;
+			String formatted = new TranslatableTextComponent(tooltipLabel, Integer.valueOf(value), Integer.valueOf(valMax)).getFormattedText();
+			information.add(formatted);
+		}
+		if (tooltipTextComponent!=null) {
+			information.add(tooltipTextComponent.getFormattedText());
+		}
+	}
+	
+	@Override
+	public void createPeers(CottonScreenController c) {
+		if (properties==null) properties = c.getPropertyDelegate();
+	}
+	
+	/**
+	 * Creates a WBar that has a constant maximum-value instead of getting the maximum from a field.
+	 * @param bg         the background image to use for the bar
+	 * @param bar        the foreground image that represents the filled bar
+	 * @param properties the PropertyDelegate to pull bar values from
+	 * @param field      the field index for bar values
+	 * @param maxValue   the constant maximum value for the bar
+	 * @param dir        the direction the bar should grow towards
+	 * @return           a new WBar with a constant maximum value.
+	 */
+	public static WBar withConstantMaximum(Identifier bg, Identifier bar, int field, int maxValue, Direction dir) {
+		WBar result = new WBar(bg, bar, field, -1, dir);
+		result.maxValue = maxValue;
+		return result;
 	}
 
 	public static enum Direction {

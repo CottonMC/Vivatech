@@ -11,6 +11,7 @@ package io.github.cottonmc.um.block.entity;
 //import io.github.cottonmc.ecs.api.BlockComponentContainer;
 //import io.github.cottonmc.energy.api.EnergyComponent;
 import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
+import io.github.cottonmc.gui.PropertyDelegateHolder;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.block.container.CoalGeneratorController;
 import io.github.cottonmc.um.component.SimpleItemComponent;
@@ -24,6 +25,7 @@ import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.BlockContext;
 import net.minecraft.container.Container;
 import net.minecraft.container.NameableContainerProvider;
+import net.minecraft.container.PropertyDelegate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
@@ -34,7 +36,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.IWorld;
 
-public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider, NameableContainerProvider {
+public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider, NameableContainerProvider, PropertyDelegateHolder {
 	public static int MAX_WU = 4;
 	public static int FUEL_PER_WU = 5; //Fractional fuel will get banked; generators are lossless.
 	public static int PULSE_LENGTH = 30; //Might shorten to 20, we'll see how it feels in-game.
@@ -177,6 +179,42 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	@Override
 	public TextComponent getDisplayName() {
 		return items.getDisplayName();
+	}
+
+	@Override
+	public PropertyDelegate getPropertyDelegate() {
+		return new PropertyDelegate() {
+			@Override
+			public int get(int index) {
+				switch(index) {
+				case 0: return 10; //CoalGeneratorEntity.this.remainingTicks;
+					//return (int)((CoalGeneratorEntity.this.remainingTicks / (float)CoalGeneratorEntity.this.totalTicks) * 100);
+				case 1: return 20; //CoalGeneratorEntity.this.totalTicks;
+				case 2: return 10;
+				case 3: return 20;
+				default: return 0;
+				}
+			}
+
+			@Override
+			public void set(int index, int value) {
+				switch(index) {
+				case 0: CoalGeneratorEntity.this.remainingTicks = value; break;
+				case 1: CoalGeneratorEntity.this.totalTicks = value; break;
+				case 2: CoalGeneratorEntity.this.energy.setCurrentEnergy(value); //TODO: Probably scale this number so it'll always fit in a short!
+					break;
+				case 3: CoalGeneratorEntity.this.energy.setMaxEnergy(value); //TODO: '   '
+					break;
+				default: break;
+				}
+			}
+
+			@Override
+			public int size() {
+				return 2;
+			}
+			
+		};
 	}
 	
 	/*
