@@ -4,9 +4,11 @@ import io.github.cottonmc.gui.CottonScreenController;
 import io.github.cottonmc.gui.client.BackgroundPainter;
 import io.github.cottonmc.gui.widget.WGridPanel;
 import io.github.cottonmc.gui.widget.WItemSlot;
+import io.github.cottonmc.gui.widget.WLabel;
 import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.text.TranslatableTextComponent;
 
 public class CoalGeneratorController extends CottonScreenController {
 
@@ -14,10 +16,15 @@ public class CoalGeneratorController extends CottonScreenController {
 		super(RecipeType.SMELTING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 		
 		WGridPanel rootPanel = (WGridPanel) getRootPanel();
-		WItemSlot inputSlot = WItemSlot.of(blockInventory, 0);
-		rootPanel.add(inputSlot, 4, 1);
 		
-		rootPanel.add(this.createPlayerInventoryPanel(), 0, 3);
+		rootPanel.add(new WLabel(new TranslatableTextComponent("block.united-manufacturing.coal_generator"), 0xFF69c9b4), 0, 0);
+		
+		//WBar grating = new WBar();
+		
+		WItemSlot inputSlot = WItemSlot.of(blockInventory, 0);
+		rootPanel.add(inputSlot, 4, 3);
+		
+		rootPanel.add(this.createPlayerInventoryPanel(), 0, 5);
 		
 		rootPanel.validate(this);
 	}

@@ -185,7 +185,6 @@ public class ScreenDrawing {
 		rect(x + 1,         y + height - 1, width - 1, 1,          bottomright); //Bottom hilight
 	}
 	
-	
 	public static void drawString(String s, int x, int y, int color) {
 		MinecraftClient.getInstance().getFontManager().getTextRenderer(MinecraftClient.DEFAULT_TEXT_RENDERER_ID).draw(s, x, y, color);
 	}

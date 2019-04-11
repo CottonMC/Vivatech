@@ -7,6 +7,7 @@ import io.github.cottonmc.gui.CottonScreenController;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 
 public class WWidget {
 	protected WPanel parent;
@@ -161,7 +162,19 @@ public class WWidget {
 		int width = mc.window.getScaledWidth();
 		int height = mc.window.getScaledHeight();
 		//TODO: Hook into or copy Screen::drawStackTooltip or Screen::drawTooltip
-		//GuiUtils.drawHoveringText(info, tX, tY, width, height, -1, mc.fontRenderer);
+		TextRenderer renderer = mc.getFontManager().getTextRenderer(MinecraftClient.DEFAULT_TEXT_RENDERER_ID);
+		//Get width of the panel
+		int maxWidth = 0;
+		for(String s : info) {
+			maxWidth = Math.max(maxWidth, renderer.getStringWidth(s));
+		}
+		//TODO: Draw background panel
+		
+		//Draw strings
+		for(int i=0; i<info.size(); i++) {
+			//renderer.draw(info, tX, tY, renderer.getStringWidth(str))
+			//GuiUtils.drawHoveringText(info, tX, tY, width, height, -1, mc.fontRenderer);
+		}
 	}
 	
 	//public boolean isValid() {

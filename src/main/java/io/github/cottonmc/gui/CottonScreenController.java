@@ -17,6 +17,7 @@ import net.minecraft.container.ArrayPropertyDelegate;
 import net.minecraft.container.BlockContext;
 import net.minecraft.container.CraftingContainer;
 import net.minecraft.container.PropertyDelegate;
+import net.minecraft.container.Slot;
 import net.minecraft.container.SlotActionType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -93,14 +94,79 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 	}
 	
 	@Override
-	public ItemStack onSlotClick(int x, int y, SlotActionType action, PlayerEntity player) {
-		System.out.println("SlotClick: "+action.name()+" pos:"+x+","+y);
+	public ItemStack onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
+		System.out.println("SlotClick: "+action.name()+" pos:"+slotNumber+","+button);
 		if (action==SlotActionType.QUICK_MOVE) {
-			//TODO: Implement TransferStackInSlot. This override keeps it from crashing for now.
 			
-			return ItemStack.EMPTY;
+			if (slotNumber < 0) {
+				return ItemStack.EMPTY;
+			}
+			
+			if (slotNumber>=this.slotList.size()) return ItemStack.EMPTY;
+			Slot slot = this.slotList.get(slotNumber);
+			if (slot == null || !slot.canTakeItems(player)) {
+				return ItemStack.EMPTY;
+			}
+			
+			/*
+			{
+				//Concrete's transferSlot
+				ItemStack srcStack = ItemStack.EMPTY;
+				if (slot.hasStack()) {
+					srcStack = slot.getStack();
+					
+					if (slot.inventory == playerInventory) {
+						//Try to push the stack from the player-inventory to the container-inventory.
+						ItemStack remaining = transferToInventory(srcStack, this.blockInventory);
+						slot.setStack(remaining);
+						return ItemStack.EMPTY;
+					} else {
+						//Try to push the stack from the container-inventory to the player-inventory
+						ItemStack remaining = transferToInventory(srcStack, playerInventory);
+						slot.setStack(remaining);
+						return ItemStack.EMPTY;
+					}
+				} else {
+					//Shift-clicking on an invalid or empty slot does nothing.
+				}
+				
+				slot.setStack(srcStack);
+				return ItemStack.EMPTY;
+			}*/
+			
+			
+			
+			//{
+				// Hopper's transferSlot:
+				ItemStack remaining = ItemStack.EMPTY;
+				if (slot != null && slot.hasStack()) {
+					ItemStack toTransfer = slot.getStack();
+					remaining = toTransfer.copy();
+					//if (slot.inventory==blockInventory) {
+					if (slotNumber < this.blockInventory.getInvSize()) {
+						/* Hopper assumes all the blockInventory slots come first, which is a fairly good assumption */
+						if (!this.insertItem(toTransfer, this.blockInventory.getInvSize(), this.slotList.size(), true)) {
+							return ItemStack.EMPTY;
+						}
+					} else if (!this.insertItem(toTransfer, 0, this.blockInventory.getInvSize(), false)) {
+						return ItemStack.EMPTY;
+					}
+	
+					if (toTransfer.isEmpty()) {
+						slot.setStack(ItemStack.EMPTY);
+					} else {
+						slot.markDirty();
+					}
+				}
+	
+				return remaining;
+			//}
+			
+			
+			
+			//return ItemStack.EMPTY;
 		} else {
-			return super.onSlotClick(x, y, action, player);
+			return super.onSlotClick(slotNumber, button, action, player);
 		}
 	}
 	
