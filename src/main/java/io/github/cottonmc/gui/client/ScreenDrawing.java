@@ -14,10 +14,14 @@ public class ScreenDrawing {
 	private ScreenDrawing() {}
 	
 	public static void rect(Identifier texture, int left, int top, int width, int height, int color) {
-		rect(texture, left, top, width, height, 0, 0, 1, 1, color);
+		rect(texture, left, top, width, height, 0, 0, 1, 1, color, 0);
 	}
 	
 	public static void rect(Identifier texture, int left, int top, int width, int height, float u1, float v1, float u2, float v2, int color) {
+		rect(texture, left, top, width, height, u1, v1, u2, v2, 0xFFFFFFFF, 0);
+	}
+	
+	public static void rect(Identifier texture, int left, int top, int width, int height, float u1, float v1, float u2, float v2, int color, int z) {
 		MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
 		
 		//float scale = 0.00390625F;
@@ -35,10 +39,10 @@ public class ScreenDrawing {
 		GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager.color4f(r, g, b, 1.0f);
 		buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV); //I thought GL_QUADS was deprecated but okay, sure.
-		buffer.vertex(left,         top + height, 0.0D).texture(u1, v2).next();
-		buffer.vertex(left + width, top + height, 0.0D).texture(u2, v2).next();
-		buffer.vertex(left + width, top,          0.0D).texture(u2, v1).next();
-		buffer.vertex(left,         top,          0.0D).texture(u1, v1).next();
+		buffer.vertex(left,         top + height, z).texture(u1, v2).next();
+		buffer.vertex(left + width, top + height, z).texture(u2, v2).next();
+		buffer.vertex(left + width, top,          z).texture(u2, v1).next();
+		buffer.vertex(left,         top,          z).texture(u1, v1).next();
 		tessellator.draw();
 		//GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();
@@ -69,6 +73,20 @@ public class ScreenDrawing {
 		tessellator.draw();
 		GlStateManager.enableTexture();
 		GlStateManager.disableBlend();
+	}
+	
+	public static void maskedRect(Identifier mask, Identifier texture, int left, int top, int width, int height) {
+		
+		
+		rect(mask, left, top, width, height, 0, 0, 1, 1, 0xFFFFFFFF, 7);
+		
+		GlStateManager.enableDepthTest();
+		GlStateManager.depthFunc(GL11.GL_EQUAL);
+		
+		rect(texture, left, top, width, height, 0, 0, 1, 1, 0xFFFFFFFF, 7);
+		
+		GlStateManager.depthFunc(GL11.GL_LESS);
+		GlStateManager.disableDepthTest();
 	}
 
 	/**

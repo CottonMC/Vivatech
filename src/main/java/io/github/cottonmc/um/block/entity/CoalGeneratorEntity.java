@@ -187,11 +187,14 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 			@Override
 			public int get(int index) {
 				switch(index) {
-				case 0: return 10; //CoalGeneratorEntity.this.remainingTicks;
-					//return (int)((CoalGeneratorEntity.this.remainingTicks / (float)CoalGeneratorEntity.this.totalTicks) * 100);
-				case 1: return 20; //CoalGeneratorEntity.this.totalTicks;
-				case 2: return 10;
-				case 3: return 20;
+				case 0: return 10;
+					//return CoalGeneratorEntity.this.remainingTicks;
+				case 1: return 20;
+					//return CoalGeneratorEntity.this.totalTicks;
+				case 2: //return 10;
+					return CoalGeneratorEntity.this.energy.getCurrentEnergy();
+				case 3: //return 20;
+					return CoalGeneratorEntity.this.energy.getMaxEnergy();
 				default: return 0;
 				}
 			}

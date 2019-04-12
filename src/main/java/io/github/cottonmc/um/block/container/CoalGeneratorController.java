@@ -7,11 +7,13 @@ import io.github.cottonmc.gui.widget.WGridPanel;
 import io.github.cottonmc.gui.widget.WItemSlot;
 import io.github.cottonmc.gui.widget.WLabel;
 import io.github.cottonmc.gui.widget.WPanel;
+import io.github.cottonmc.um.client.gui.WFireGratingBar;
 import io.github.cottonmc.um.client.gui.WLEDBar;
 import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.text.TranslatableTextComponent;
+import net.minecraft.util.Identifier;
 
 public class CoalGeneratorController extends CottonScreenController {
 	WGridPanel machinePanel;
@@ -26,7 +28,10 @@ public class CoalGeneratorController extends CottonScreenController {
 		
 		machinePanel.add(new WLabel(new TranslatableTextComponent("block.united-manufacturing.coal_generator"), 0xFF69c9b4), 0, 0);
 		
-		WBar grating = new WBar(null, null, 0, 1, WBar.Direction.UP);
+		WBar grating = new WFireGratingBar(
+				//new Identifier("united-manufacturing","textures/gui/coal_generator_grating.png"),
+				//new Identifier("united-manufacturing","textures/gui/coal_generator_grating_lit.png"),
+				0, 1);//, WBar.Direction.UP);
 		machinePanel.add(grating, 1, 1, 7, 4);
 		
 		WItemSlot inputSlot = WItemSlot.of(blockInventory, 0);
