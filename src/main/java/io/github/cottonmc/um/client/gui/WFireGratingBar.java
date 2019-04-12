@@ -40,9 +40,7 @@ public class WFireGratingBar extends WBar {
 		int barMax = getHeight();
 		percent = ((int) (percent * barMax)) / (float) barMax; //Quantize to bar size
 		
-		int barSize = (int) (barMax * percent);
-		if (barSize <= 0) return;
-		
+		int barSize = barMax - (int) (barMax * percent);
 		
 		//int left = x;
 		//int top = y + getHeight();
@@ -70,7 +68,7 @@ public class WFireGratingBar extends WBar {
 		for(int i=0; i<numSegments; i++) {
 			int wavey = (int)(Math.cos(theta + i*THETA_PER_SEGMENT)*8);
 			float uHeight = 1f/numSegments;
-			rect(FIRE, x+wavey, y + (i*segmentHeight), getWidth(), segmentHeight, 0f, uHeight*i, 1f, uHeight*i + uHeight, 0.01);
+			rect(FIRE, x+wavey, y + (i*segmentHeight) + barSize, getWidth(), segmentHeight, 0f, uHeight*i, 1f, uHeight*i + uHeight, 0.01);
 		}
 		GL11.glPopMatrix();
 		/*
