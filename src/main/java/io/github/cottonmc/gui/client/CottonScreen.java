@@ -18,10 +18,10 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	public CottonScreen(T container, PlayerEntity player) {
 		super(container, player.inventory, new TranslatableTextComponent(""));
 		this.container = container;
-		super.width = 18*9;
-		super.height = 18*9;
-		this.width = 18*9;
-		this.height = 18*9;
+		width = 18*9;
+		height = 18*9;
+		this.containerWidth = 18*9;
+		this.containerHeight = 18*9;
 	}
 	
 	/*
@@ -39,10 +39,9 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	 * provide core GUI functionality.
 	 */
 	
-	
 	@Override
-	public void initialize(MinecraftClient minecraftClient_1, int screenWidth, int screenHeight) {
-		super.initialize(minecraftClient_1, screenWidth, screenHeight);
+	public void init(MinecraftClient minecraftClient_1, int screenWidth, int screenHeight) {
+		super.init(minecraftClient_1, screenWidth, screenHeight);
 		
 		container.addPainters();
 		
@@ -54,18 +53,17 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 		if (basePanel!=null) {
 			basePanel.validate(container);
 			
-			width = basePanel.getWidth();
-			height = basePanel.getHeight();
+			containerWidth = basePanel.getWidth();
+			containerHeight = basePanel.getHeight();
 			
 			//DEBUG
-			if (width<16) width=300;
-			if (height<16) height=300;
+			if (containerWidth<16) containerWidth=300;
+			if (containerHeight<16) containerHeight=300;
 			//if (left<0 || left>300) left = 10;
 			//if (top<0 || top>300) top = 10;
 		}
-		
-		left = (screenWidth / 2) - (width / 2);
-		top =  (screenHeight / 2) - (height / 2);
+		left = (width / 2) - (containerWidth / 2);
+		top =  (height / 2) - (containerHeight / 2);
 	}
 	
 	//Will probably re-activate for animation!
@@ -75,8 +73,8 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	//}
 	
 	@Override
-	public void onClosed() {
-		super.onClosed();
+	public void onClose() {
+		super.onClose();
 	}
 	
 	@Override
@@ -163,11 +161,12 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 		
 	}
 	*/
+	
 	@Override
-	public void onScaleChanged(MinecraftClient minecraftClient_1, int int_1, int int_2) {
+	public void resize(MinecraftClient minecraftClient_1, int int_1, int int_2) {
 		//super.onScaleChanged(minecraftClient_1, int_1, int_2);
-		this.screenWidth = int_1;
-		this.screenHeight = int_2;
+		this.width = int_1;
+		this.height = int_2;
 		reposition();
 	}
 	
@@ -210,7 +209,7 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 		//TODO: Change this to a label that lives in the rootPanel instead?
 		if (container instanceof Nameable) {
 			TextComponent name = ((Nameable)container).getDisplayName();
-			fontRenderer.draw(name.getFormattedText(), left, top, container.getTitleColor());
+			font.draw(name.getFormattedText(), left, top, container.getTitleColor());
 		}
 	}
 	
@@ -229,10 +228,10 @@ public class CottonScreen<T extends CottonScreenController> extends ContainerScr
 	}
 	
 	@Override
-	public void draw(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		this.drawBackground(partialTicks, mouseX, mouseY);
 		
-		super.draw(mouseX, mouseY, partialTicks);
+		super.render(mouseX, mouseY, partialTicks);
 		drawMouseoverTooltip(mouseX, mouseY);
 	}
 	

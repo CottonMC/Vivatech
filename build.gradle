@@ -12,7 +12,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "net.fabricmc:fabric-loom:0.2.0-SNAPSHOT"
+		classpath "net.fabricmc:fabric-loom:0.2.1-SNAPSHOT"
 	}
 }
 
@@ -26,7 +26,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "united-manufacturing"
-version = "0.0.1+19w11b"
+version = "0.0.1+19w14b"
 
 
 repositories {
@@ -43,18 +43,18 @@ repositories {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:19w11b"
-	mappings "net.fabricmc:yarn:19w11b.4"
-	modCompile "net.fabricmc:fabric-loader:0.3.7.109"
-	modCompile "net.fabricmc:fabric:0.2.3.111"
+	minecraft "com.mojang:minecraft:19w14b"
+	mappings "net.fabricmc:yarn:19w14b.4"
+	modCompile "net.fabricmc:fabric-loader:0.4.0+build.115"
+	modCompile "net.fabricmc:fabric:0.2.6.121"
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 	modCompile "io.github.prospector.silk:SilkAPI:1.2.3-38"
 	
 	//the main cotton api.
-	modCompile "io.github.cottonmc:cotton:0.0.5+19w11b-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton:0.5.0+19w14b-SNAPSHOT"
 	//modCompile "io.github.cottonmc:cotton-resources:0.0.1+19w03a-SNAPSHOT"
-	modCompile "io.github.cottonmc:cotton-energy:1.0.0+19w11b-SNAPSHOT"
-	modCompile "io.github.cottonmc:cotton-ecs:1.0.0+19w11b-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton-energy:1.1.2+19w14b-SNAPSHOT"
+	//modCompile "io.github.cottonmc:cotton-ecs:1.0.0+19w14b-SNAPSHOT"
 	modCompile "alexiil.mc.lib:libblockattributes:0.3.4"
 	
 	//if we need it

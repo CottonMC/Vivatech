@@ -13,7 +13,6 @@ import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.text.TranslatableTextComponent;
-import net.minecraft.util.Identifier;
 
 public class CoalGeneratorController extends CottonScreenController {
 	WGridPanel machinePanel;

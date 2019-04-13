@@ -1,6 +1,6 @@
 package io.github.cottonmc.um.block.entity;
 
-import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
+import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
@@ -23,7 +23,7 @@ public class HammerMillEntity extends BlockEntity {
 	/** The machine's internal item storage. */
 	private SimpleItemComponent items = new SimpleItemComponent(4);
 	/** The machine's internal energy buffer. */
-	SimpleEnergyComponent energy = new SimpleEnergyComponent(32);
+	SimpleEnergyAttribute energy = new SimpleEnergyAttribute(32);
 	/** The WorldTickTime when the machine started the current operation. */
 	long operationStart = 0L;
 	/** The duration of the current operation. */
@@ -74,14 +74,14 @@ public class HammerMillEntity extends BlockEntity {
 	
 	public void pulse() {
 		if (world==null) return;
-		if (operation != world.getRecipeManager().get(UMRecipes.HAMMER_MILL, getInventory(), world).orElse(null)) {
+		if (operation != world.getRecipeManager().getFirstMatch(UMRecipes.HAMMER_MILL, getInventory(), world).orElse(null)) {
 			operation = null;
 			operationLength = 0;
 		}
 		if (world.getTime()>=operationStart+operationLength) {
 
 			if (operation==null && !items.get(SLOT_WORK).isEmpty()) {
-				operation = world.getRecipeManager().get(UMRecipes.HAMMER_MILL, getInventory(), world).orElse(null);
+				operation = world.getRecipeManager().getFirstMatch(UMRecipes.HAMMER_MILL, getInventory(), world).orElse(null);
 				if (operation != null) {
 					operationStart = world.getTime();
 					operationLength = operation.getDuration();

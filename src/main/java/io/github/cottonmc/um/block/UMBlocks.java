@@ -2,6 +2,7 @@ package io.github.cottonmc.um.block;
 
 import java.util.function.Supplier;
 
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import io.github.cottonmc.um.UnitedManufacturing;
 import io.github.cottonmc.um.block.entity.*;
 import net.minecraft.block.Block;
@@ -20,6 +21,8 @@ public class UMBlocks {
 	public static DieCutterBlock DIE_CUTTER;
 	public static ConveyorBlock CONVEYOR;
 	public static ChannelBlock CHANNEL;
+	
+	public static CableBlock LV_CABLE;
 
 	public static BlockEntityType<CoalGeneratorEntity> COAL_GENERATOR_ENTITY;
 	public static BlockEntityType<HammerMillEntity> HAMMER_MILL_ENTITY;
@@ -35,7 +38,8 @@ public class UMBlocks {
 		DIE_CUTTER = block("die_cutter", new DieCutterBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
 		CONVEYOR = block("conveyor", new ConveyorBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
 		CHANNEL = block("channel", new ChannelBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
-
+		LV_CABLE = block("lv_cable", new CableBlock(DefaultEnergyTypes.LOW_VOLTAGE), UnitedManufacturing.ITEMGROUP_MACHINES);
+		
 		COAL_GENERATOR_ENTITY = registerType("coal_generator", CoalGeneratorEntity::new);
 		HAMMER_MILL_ENTITY = registerType("hammer_mill", HammerMillEntity::new);
 		ROLLER_ENTITY = registerType("roller", RollerEntity::new);

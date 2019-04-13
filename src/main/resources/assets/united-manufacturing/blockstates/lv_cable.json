@@ -1,0 +1,25 @@
+{
+	"multipart": [
+		{ "apply": { "model": "united-manufacturing:block/cable/lv_node" }},
+		{
+			"when": { "north": true },
+			"apply": { "model": "united-manufacturing:block/cable/lv_leg" }
+		},
+		{
+			"when": { "east": true },
+			"apply": { "model": "united-manufacturing:block/cable/lv_leg", "y": 90 }
+		},
+		{
+			"when": { "south": true },
+			"apply": { "model": "united-manufacturing:block/cable/lv_leg", "y": 180 }
+		},
+		{
+			"when": { "west": true },
+			"apply": { "model": "united-manufacturing:block/cable/lv_leg", "y": 270 }
+		},
+		{
+			"when": { "up": true },
+			"apply": { "model": "united-manufacturing:block/cable/lv_up" }
+		}
+	]
+}

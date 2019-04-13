@@ -1,0 +1,21 @@
+{
+	"textures": {
+		"material": "united-manufacturing:block/lv_material",
+		"particle": "united-manufacturing:block/lv_material"
+	},
+	"elements": [
+		{
+			"name": "Node",
+			"from": [7, 0, 7],
+			"to":   [9, 2, 9],
+			"faces": {
+				"north": {"texture": "#material"},
+				"east":  {"texture": "#material"},
+				"south": {"texture": "#material"},
+				"west":  {"texture": "#material"},
+				"up":    {"texture": "#material"},
+				"down":  {"texture": "#material", "cullface": "down"}
+			}
+		}
+	]
+}

@@ -57,7 +57,7 @@ public class ConveyorEntity extends BlockEntity implements Tickable {
 	public void tick() {
 		if (world==null || items.isEmpty() || world.isClient) return;
 		BlockPos dropoff = findDropoff();
-		double diff = pos.distanceTo(dropoff);
+		double diff = pos.getManhattanDistance(dropoff);
 		targetDistance = (int)(10*diff);
 		if (travel < targetDistance) {
 			travel++;

@@ -1,22 +1,13 @@
 package io.github.cottonmc.um.block.entity;
 
-//import java.util.Set;
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 
-//import javax.annotation.Nonnull;
-//import javax.annotation.Nullable;
-
-//import com.google.common.collect.Sets;
-
-//import io.github.cottonmc.ecs.api.Component;
-//import io.github.cottonmc.ecs.api.BlockComponentContainer;
-//import io.github.cottonmc.energy.api.EnergyComponent;
-import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
 import io.github.cottonmc.gui.PropertyDelegateHolder;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.block.container.CoalGeneratorController;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
-import io.github.cottonmc.um.recipe.UMRecipes;
 import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
@@ -48,7 +39,7 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	private int totalTicks;
 	//private int wuBuffer;
 	private SimpleItemComponent items = new SimpleItemComponent(1);
-	private SimpleEnergyComponent energy = new SimpleEnergyComponent(MAX_WU);
+	private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(MAX_WU);
 	
 	public CoalGeneratorEntity() {
 		super(UMBlocks.COAL_GENERATOR_ENTITY);
@@ -102,7 +93,7 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 		for(int i=0; i<5; i++) {
 			if (energy.getCurrentEnergy()<MAX_WU && remainingTicks>FUEL_PER_WU) {
 				remainingTicks -= FUEL_PER_WU;
-				energy.insertEnergy(1, ActionType.PERFORM);
+				energy.insertEnergy(DefaultEnergyTypes.LOW_VOLTAGE, 1, ActionType.PERFORM);
 				markDirty();
 			} else break burn;
 		}

@@ -1,6 +1,7 @@
 package io.github.cottonmc.um.item;
 
-import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import io.github.cottonmc.um.UnitedManufacturing;
 import io.github.prospector.silk.util.ActionType;
 import net.minecraft.entity.LightningEntity;
@@ -19,7 +20,7 @@ import net.minecraft.util.Hand;
 
 public class TaserItem extends Item {
 
-	public static final SimpleEnergyComponent NO_COMPONENT = new SimpleEnergyComponent(0);
+	public static final SimpleEnergyAttribute NO_COMPONENT = new SimpleEnergyAttribute(0);
 
 	public static final int ENERGY_PER_USE = 4;
 	public static final int MAX_ENERGY = 16;
@@ -30,22 +31,22 @@ public class TaserItem extends Item {
 
 	@Override
 	public boolean interactWithEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-		SimpleEnergyComponent energy = getEnergyComponent(stack);
+		SimpleEnergyAttribute energy = getEnergyAttribute(stack);
 		System.out.println("before: "+energy.getCurrentEnergy());
 		if (energy.getCurrentEnergy() < ENERGY_PER_USE) {
 			//TODO: change once we have a charger
-			if (player.world.isClient) player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYER, 1.0F, random.nextFloat() * 0.4F + 0.8F);
+			if (player.world.isClient) player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
 			else {
 				player.addChatMessage(new StringTextComponent("Battery inserted!"), true);
-				player.setStackInHand(hand, setEnergyComponent(stack, new SimpleEnergyComponent(MAX_ENERGY).setCurrentEnergy(MAX_ENERGY)));
+				player.setStackInHand(hand, setEnergyComponent(stack, new SimpleEnergyAttribute(MAX_ENERGY).setCurrentEnergy(MAX_ENERGY)));
 			}
 			return true;
 		}
 		if (player.world.isClient) {
-			player.playSound(SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYER, 1.0F, random.nextFloat() * 0.4F + 0.8F);
+			player.playSound(SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
 			return true;
 		}
-		energy.extractEnergy(ENERGY_PER_USE, ActionType.PERFORM);
+		energy.extractEnergy(DefaultEnergyTypes.LOW_VOLTAGE, ENERGY_PER_USE, ActionType.PERFORM);
 		player.setStackInHand(hand, setEnergyComponent(stack, energy));
 		System.out.println("after: "+energy.getCurrentEnergy());
 		LightningEntity lightning = new LightningEntity(target.world, target.getPos().getX(), target.getPos().getY(), target.getPos().getZ(), true);
@@ -56,14 +57,14 @@ public class TaserItem extends Item {
 		return super.interactWithEntity(stack, player, target, hand);
 	}
 
-	public static SimpleEnergyComponent getEnergyComponent(ItemStack stack) {
+	public static SimpleEnergyAttribute getEnergyAttribute(ItemStack stack) {
 		if (!stack.hasTag() || !stack.getTag().containsKey("Energy")) return NO_COMPONENT;
-		SimpleEnergyComponent energy = new SimpleEnergyComponent(MAX_ENERGY);
+		SimpleEnergyAttribute energy = new SimpleEnergyAttribute(MAX_ENERGY);
 		energy.fromTag(stack.getTag().getTag("Energy"));
 		return energy;
 	}
 
-	public static ItemStack setEnergyComponent(ItemStack stack, SimpleEnergyComponent component) {
+	public static ItemStack setEnergyComponent(ItemStack stack, SimpleEnergyAttribute component) {
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.containsKey("Energy")) tag.remove("Energy");
 		Tag nbt = component.toTag();

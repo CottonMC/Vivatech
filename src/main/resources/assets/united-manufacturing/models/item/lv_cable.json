@@ -1,0 +1,10 @@
+{
+	"multipart": [
+		{ "apply": { "model": "united-manufacturing:block/cable/lv_node"          } },
+		{ "apply": { "model": "united-manufacturing:block/cable/lv_leg"           } },
+		{ "apply": { "model": "united-manufacturing:block/cable/lv_leg", "y": 90  } },
+		{ "apply": { "model": "united-manufacturing:block/cable/lv_leg", "y": 180 } },
+		{ "apply": { "model": "united-manufacturing:block/cable/lv_leg", "y": 270 } }
+	]
+}
+

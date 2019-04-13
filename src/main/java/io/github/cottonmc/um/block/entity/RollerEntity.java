@@ -1,6 +1,6 @@
 package io.github.cottonmc.um.block.entity;
 
-import io.github.cottonmc.energy.impl.SimpleEnergyComponent;
+import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
@@ -23,7 +23,7 @@ public class RollerEntity extends BlockEntity {
 	/** The machine's internal item storage. */
 	private SimpleItemComponent items = new SimpleItemComponent(3);
 	/** The machine's internal energy buffer. */
-	SimpleEnergyComponent energy = new SimpleEnergyComponent(32);
+	SimpleEnergyAttribute energy = new SimpleEnergyAttribute(32);
 	/** The WorldTickTime when the machine started the current operation. */
 	long operationStart = 0L;
 	/** The duration of the current operation. */
@@ -83,7 +83,7 @@ public class RollerEntity extends BlockEntity {
 		if (world.getTime()>=operationStart+operationLength) {
 
 			if (operation==null && !items.get(SLOT_WORK).isEmpty()) {
-				operation = world.getRecipeManager().get(UMRecipes.ROLLER, getInventory(), world).orElse(null);
+				operation = world.getRecipeManager().getFirstMatch(UMRecipes.ROLLER, getInventory(), world).orElse(null);
 				if (operation != null) {
 					operationStart = world.getTime();
 					operationLength = operation.getDuration();

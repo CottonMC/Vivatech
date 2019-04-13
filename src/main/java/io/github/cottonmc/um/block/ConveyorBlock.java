@@ -51,6 +51,6 @@ public class ConveyorBlock extends Block implements BlockEntityProvider, Invento
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, VerticalEntityPosition entityPos) {
-		return VoxelShapes.cube(0, 0, 0, 1, 0.5, 1);
+		return VoxelShapes.cuboid(0, 0, 0, 1, 0.5, 1);
 	}
 }
