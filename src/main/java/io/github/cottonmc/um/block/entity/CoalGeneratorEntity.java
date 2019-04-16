@@ -1,12 +1,15 @@
 package io.github.cottonmc.um.block.entity;
 
+import alexiil.mc.lib.attributes.AttributeList;
 import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 
 import io.github.cottonmc.gui.PropertyDelegateHolder;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.block.container.CoalGeneratorController;
 import io.github.cottonmc.um.component.SimpleItemComponent;
+import io.github.cottonmc.um.component.wrapper.EnergyView;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
 import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.BlockState;
@@ -28,7 +31,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.IWorld;
 
 public class CoalGeneratorEntity extends BlockEntity implements InventoryProvider, NameableContainerProvider, PropertyDelegateHolder {
-	public static int MAX_WU = 4;
+	public static int MAX_WU = 10;
 	public static int FUEL_PER_WU = 5; //Fractional fuel will get banked; generators are lossless.
 	public static int PULSE_LENGTH = 30; //Might shorten to 20, we'll see how it feels in-game.
 	
@@ -76,12 +79,20 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	public void markDirty() {
 		super.markDirty();
 		if (!world.getBlockTickScheduler().isScheduled(pos, UMBlocks.COAL_GENERATOR)) {
+			if (needsPulse()) {
+				System.out.println("Scheduling next pulse");
+			} else {
+				System.out.println("Sleeping till a pulse is needed.");
+			}
+			
 			//Check if we need to start pulsing again
 			if (needsPulse()) world.getBlockTickScheduler().schedule(pos, UMBlocks.COAL_GENERATOR, PULSE_LENGTH);
 		}
 	}
 	
 	public void pulse() {
+		System.out.println("Pulse fuel:"+remainingTicks+"/"+totalTicks+" wu:"+energy.getCurrentEnergy()+"/"+energy.getMaxEnergy());
+		
 		
 		//[continue to] flush any stored energy
 		if (energy.getCurrentEnergy()>0) {
@@ -90,12 +101,15 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 		
 		//[continue to] spend stored fuel-ticks to create energy
 		burn:
-		for(int i=0; i<5; i++) {
-			if (energy.getCurrentEnergy()<MAX_WU && remainingTicks>FUEL_PER_WU) {
-				remainingTicks -= FUEL_PER_WU;
-				energy.insertEnergy(DefaultEnergyTypes.LOW_VOLTAGE, 1, ActionType.PERFORM);
-				markDirty();
-			} else break burn;
+		if (remainingTicks>0) {
+			for(int i=0; i<5; i++) {
+				if (energy.getCurrentEnergy()<MAX_WU && remainingTicks>=FUEL_PER_WU) {
+					remainingTicks -= FUEL_PER_WU;
+					energy.setCurrentEnergy(energy.getCurrentEnergy()+1); //IF THIS WORKS SIMPLENERGYCOMPONENT IS BROKEN'D
+					//energy.insertEnergy(DefaultEnergyTypes.LOW_VOLTAGE, 1, ActionType.PERFORM);
+					markDirty();
+				} else break burn;
+			}
 		}
 		
 		//Consume fuel to recharge fuel-ticks
@@ -126,35 +140,53 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 		}
 	}
 	
+	/**
+	 * @param facing which direction to push current in
+	 * @return how much energy was successfully pushed
+	 */
+	private int pushEnergyTo(Direction facing) {
+		if (energy.getCurrentEnergy()==0) return 0;
+		
+		AttributeList<EnergyAttribute> attributes = EnergyAttribute.ENERGY_ATTRIBUTE.getAll(world, pos.offset(facing));
+		for(int i=0; i<attributes.getCount(); i++) {
+			EnergyAttribute attribute = attributes.get(i);
+			if (!attribute.canInsertEnergy()) continue;
+			if ( energy.getPreferredType().isCompatibleWith(attribute.getPreferredType()) || attribute.getPreferredType().isCompatibleWith(energy.getPreferredType()) ) {
+				//One end or the other seems to think that the energy is compatible.
+				int transferSize = Math.min(energy.getPreferredType().getMaximumTransferSize(), energy.getCurrentEnergy());
+				
+				transferSize = transferSize - attribute.insertEnergy(energy.getPreferredType(), transferSize, ActionType.SIMULATE);
+				transferSize = energy.extractEnergy(energy.getPreferredType(), transferSize, ActionType.PERFORM); //Transfer actually starts here
+				int notTransferred = attribute.insertEnergy(energy.getPreferredType(), transferSize, ActionType.PERFORM);
+				if (notTransferred>0) {
+					//Complain loudly but keep working
+					new RuntimeException("Misbehaving EnergyAttribute "+attribute.getClass().getCanonicalName()+" accepted energy in SIMULATE then didn't accept the same or less energy in PERFORM").printStackTrace();
+					energy.insertEnergy(energy.getPreferredType(), notTransferred, ActionType.PERFORM);
+				}
+				return transferSize - notTransferred;
+			}
+			
+		}
+		return 0;
+	}
+	
 	public void pushEnergy() {
 		for(Direction d : Direction.values()) {
-			/*
-			BlockState state = world.getBlockState(pos.offset(d));
-			//TODO: Add "world, pos" arguments to SidedComponentContainer so this can work
-			if (!state.isAir() && (state.getBlock() instanceof SidedComponentContainer)) {
-				((SidedComponentContainer)state.getBlock()).getComponent(d.getOpposite(), EnergyComponent.class, "low_voltage");
-			}*/
-			//TODO: Fix up for LBA
-			/*
-			BlockEntity be = world.getBlockEntity(pos.offset(d));
-			if (be!=null && be instanceof BlockComponentContainer) {
-				//This is a valid target
-				
-				EnergyComponent target = ((BlockComponentContainer)be).getComponent(d.getOpposite(), EnergyComponent.class, "cotton:low_voltage");
-				if (target==null || !target.canInsertEnergy()) continue;
-				int toInsert = Math.min(4, energy.getCurrentEnergy());
-				toInsert = energy.extractEnergy(toInsert, ActionType.PERFORM);
-				int leftover = target.insertEnergy(4, ActionType.PERFORM);
-				if (leftover>0) energy.insertEnergy(leftover, ActionType.PERFORM);
-				markDirty();
-			}*/
+			pushEnergyTo(d);
 		}
 	}
 	
 	public boolean needsPulse() {
-		return
-			energy.getCurrentEnergy()>0 ||
-			(energy.getCurrentEnergy()<MAX_WU && remainingTicks>FUEL_PER_WU);
+		//We need to keep pushing the energy we've got out to consumers
+		if (energy.getCurrentEnergy()>0) return true;
+		
+		if (energy.getCurrentEnergy()<MAX_WU) {
+			//We might be able to put more energy in the buffer
+			if (remainingTicks>FUEL_PER_WU) return true;
+			if (!items.isEmpty()) return true;
+		}
+		
+		return false;
 	}
 	
 	@Override
@@ -178,10 +210,11 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 			@Override
 			public int get(int index) {
 				switch(index) {
-				case 0: return 10;
-					//return CoalGeneratorEntity.this.remainingTicks;
-				case 1: return 20;
-					//return CoalGeneratorEntity.this.totalTicks;
+				case 0: //return 10;
+					System.out.println("Getting remainingTicks=="+remainingTicks);
+					return CoalGeneratorEntity.this.remainingTicks;
+				case 1: //return 20;
+					return CoalGeneratorEntity.this.totalTicks;
 				case 2: //return 10;
 					return CoalGeneratorEntity.this.energy.getCurrentEnergy();
 				case 3: //return 20;
@@ -193,7 +226,9 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 			@Override
 			public void set(int index, int value) {
 				switch(index) {
-				case 0: CoalGeneratorEntity.this.remainingTicks = value; break;
+				case 0:
+					System.out.println("Setting remainingTicks="+value);
+					CoalGeneratorEntity.this.remainingTicks = value; break;
 				case 1: CoalGeneratorEntity.this.totalTicks = value; break;
 				case 2: CoalGeneratorEntity.this.energy.setCurrentEnergy(value); //TODO: Probably scale this number so it'll always fit in a short!
 					break;
@@ -209,6 +244,10 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 			}
 			
 		};
+	}
+
+	public EnergyAttribute getEnergy() {
+		return EnergyView.extractOnly(energy);
 	}
 	
 	/*

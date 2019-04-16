@@ -1,8 +1,10 @@
 package io.github.cottonmc.um.block.entity;
 
+import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
+import io.github.cottonmc.um.component.wrapper.EnergyView;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
 import io.github.cottonmc.um.recipe.HammerMillRecipe;
 import io.github.cottonmc.um.recipe.UMRecipes;
@@ -88,9 +90,11 @@ public class HammerMillEntity extends BlockEntity {
 				}
 
 			} else {
-				items.getInvStack(SLOT_INGREDIENT).subtractAmount(1); // probably put an amount in the Recipe
-				items.insert(SLOT_RESULT, operation.getOutput(), ActionType.PERFORM);
-				items.insert(SLOT_RESULT_EXTRA, operation.getExtraOutput(), ActionType.PERFORM); //TODO: change when random-chance gets implemented
+				if (operation!=null) {
+					items.getInvStack(SLOT_INGREDIENT).subtractAmount(1); // probably put an amount in the Recipe
+					items.insert(SLOT_RESULT, operation.getOutput(), ActionType.PERFORM);
+					items.insert(SLOT_RESULT_EXTRA, operation.getExtraOutput(), ActionType.PERFORM); //TODO: change when random-chance gets implemented
+				}
 			}
 
 			if (needsPulse()) {
@@ -109,5 +113,9 @@ public class HammerMillEntity extends BlockEntity {
 	//@Override
 	public SidedInventory getInventory() {
 		return new SidedItemView(items);
+	}
+
+	public EnergyAttribute getEnergy() {
+		return EnergyView.insertOnly(energy);
 	}
 }

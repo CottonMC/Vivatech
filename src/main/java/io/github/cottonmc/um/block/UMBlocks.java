@@ -30,6 +30,7 @@ public class UMBlocks {
 	public static BlockEntityType<DieCutterEntity> DIE_CUTTER_ENTITY;
 	public static BlockEntityType<ConveyorEntity> CONVEYOR_ENTITY;
 	public static BlockEntityType<ChannelEntity> CHANNEL_ENTITY;
+	public static BlockEntityType<CableEntity> CABLE_ENTITY;
 	
 	public static void init() {
 		COAL_GENERATOR = block(CoalGeneratorBlock.ID, new CoalGeneratorBlock(), UnitedManufacturing.ITEMGROUP_MACHINES);
@@ -46,6 +47,7 @@ public class UMBlocks {
 		DIE_CUTTER_ENTITY = registerType("die_cutter", DieCutterEntity::new);
 		CONVEYOR_ENTITY = registerType("conveyor", ConveyorEntity::new);
 		CHANNEL_ENTITY = registerType("channel", ChannelEntity::new);
+		CABLE_ENTITY = registerType("cable", CableEntity::new);
 	}
 	
 

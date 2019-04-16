@@ -2,12 +2,16 @@ package io.github.cottonmc.um.block;
 
 import java.util.Random;
 
+import alexiil.mc.lib.attributes.AttributeList;
+import alexiil.mc.lib.attributes.AttributeProvider;
+import io.github.cottonmc.gui.PropertyDelegateHolder;
 import io.github.cottonmc.um.block.entity.CoalGeneratorEntity;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.container.PropertyDelegate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemPlacementContext;
@@ -19,7 +23,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEntityProvider, InventoryProvider {
+public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEntityProvider, InventoryProvider, AttributeProvider {
 	public static final Identifier ID = new Identifier("united-manufacturing", "coal_generator");
 	
 	public CoalGeneratorBlock() {
@@ -36,7 +40,7 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 		if (world.isClient) {
 			//System.out.println("Client tick");
 		} else {
-			//System.out.println("Server tick");
+			System.out.println("Server tick");
 			
 			BlockEntity entity = world.getBlockEntity(pos);
 			if (entity instanceof CoalGeneratorEntity) {
@@ -77,5 +81,13 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 		}
 		
 		return true;
+	}
+
+	@Override
+	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be!=null && be instanceof CoalGeneratorEntity) {
+			to.offer(((CoalGeneratorEntity)be).getEnergy());
+		}
 	}
 }

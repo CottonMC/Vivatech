@@ -13,7 +13,10 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class HammerMillBlock extends AbstractMachineBlock implements BlockEntityProvider, InventoryProvider {
+import alexiil.mc.lib.attributes.AttributeList;
+import alexiil.mc.lib.attributes.AttributeProvider;
+
+public class HammerMillBlock extends AbstractMachineBlock implements BlockEntityProvider, InventoryProvider, AttributeProvider {
 
 	public HammerMillBlock() {
 	}
@@ -42,6 +45,14 @@ public class HammerMillBlock extends AbstractMachineBlock implements BlockEntity
 			return ((HammerMillEntity)be).getInventory();
 		} else {
 			return null;
+		}
+	}
+	
+	@Override
+	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be!=null && be instanceof HammerMillEntity) {
+			to.offer(((HammerMillEntity)be).getEnergy());
 		}
 	}
 }

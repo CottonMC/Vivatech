@@ -1,8 +1,10 @@
 package io.github.cottonmc.um.block.entity;
 
+import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.component.SimpleItemComponent;
+import io.github.cottonmc.um.component.wrapper.EnergyView;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
 import io.github.cottonmc.um.recipe.RollerRecipe;
 import io.github.cottonmc.um.recipe.UMRecipes;
@@ -113,6 +115,10 @@ public class RollerEntity extends BlockEntity {
 	//@Override
 	public SidedInventory getInventory() {
 		return new SidedItemView(items);
+	}
+
+	public EnergyAttribute getEnergy() {
+		return EnergyView.insertOnly(energy);
 	}
 
 }

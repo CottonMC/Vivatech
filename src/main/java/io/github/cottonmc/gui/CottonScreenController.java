@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import alexiil.mc.lib.attributes.item.impl.EmptyFixedItemInv;
-import alexiil.mc.lib.attributes.item.impl.FixedInventoryVanillaWrapper;
 import io.github.cottonmc.gui.client.BackgroundPainter;
 import io.github.cottonmc.gui.widget.WGridPanel;
 import io.github.cottonmc.gui.widget.WItemSlot;

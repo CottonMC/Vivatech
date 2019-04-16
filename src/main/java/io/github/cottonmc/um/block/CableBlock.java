@@ -1,13 +1,21 @@
 package io.github.cottonmc.um.block;
 
+import java.util.ArrayList;
+
+import alexiil.mc.lib.attributes.Attribute;
 import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
+import alexiil.mc.lib.attributes.SearchOptions;
+import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyType;
+import io.github.cottonmc.um.block.entity.CableEntity;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.Waterloggable;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.VerticalEntityPosition;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +34,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class CableBlock extends Block implements AttributeProvider, Waterloggable {
+public class CableBlock extends Block implements AttributeProvider, Waterloggable, BlockEntityProvider {
 	public static BooleanProperty NORTH = Properties.NORTH_BOOL;
 	public static BooleanProperty EAST = Properties.EAST_BOOL;
 	public static BooleanProperty SOUTH = Properties.SOUTH_BOOL;
@@ -63,27 +71,13 @@ public class CableBlock extends Block implements AttributeProvider, Waterloggabl
 		builder.with(NORTH, EAST, SOUTH, WEST, UP, WATERLOGGED);
 	}
 	
-	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
-		
-		//TODO: Search for energynet changes
-		
-		super.onPlaced(world, pos, state, entity, stack);
-	}
-	
-	@Override
-	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		
-		//TODO: Search for energynet changes
-		
-		super.onBreak(world, pos, state, player);
-	}
-	
-	
 	
 	@Override
 	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
-		//TODO: Add an energynet capability once known
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be!=null && be instanceof CableEntity) {
+			to.offer( ((CableEntity)be).energy );
+		}
 	}
 	
 	@Override
@@ -154,10 +148,8 @@ public class CableBlock extends Block implements AttributeProvider, Waterloggabl
 	
 	boolean canConnect(World world, BlockPos pos, Direction dir) {
 		if (world.getBlockState(pos.offset(dir)).getBlock()==this) return true;
-		
-		//EnergyAttribute.ENERGY_ATTRIBUTE.
-		
-		return false;
+		EnergyAttribute target = EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, pos.offset(dir), SearchOptions.matching((EnergyAttribute it)->it.getPreferredType()==voltageTier));
+		return (target!=null);
 	}
 	
 	@Override
@@ -167,5 +159,10 @@ public class CableBlock extends Block implements AttributeProvider, Waterloggabl
 		} else {
 			return Fluids.EMPTY.getDefaultState();
 		}
+	}
+
+	@Override
+	public BlockEntity createBlockEntity(BlockView var1) {
+		return new CableEntity();
 	}
 }

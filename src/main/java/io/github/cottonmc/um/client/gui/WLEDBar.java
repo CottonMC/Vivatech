@@ -67,7 +67,7 @@ public class WLEDBar extends WBar {
 		
 		for(int i=0; i<5; i++) {
 			float pct = i/5f;
-			Identifier cur = (pct<=percent) ? ledOn : ledOff;
+			Identifier cur = (pct<percent) ? ledOn : ledOff;
 			
 			ScreenDrawing.rect(cur, 4+ x+4+curX, y+4+curY, 14, 14, 0, 0, 1, 1, 0xFFFFFFFF);
 			
