@@ -40,7 +40,7 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 		if (world.isClient) {
 			//System.out.println("Client tick");
 		} else {
-			System.out.println("Server tick");
+			//System.out.println("Server tick");
 			
 			BlockEntity entity = world.getBlockEntity(pos);
 			if (entity instanceof CoalGeneratorEntity) {
@@ -72,7 +72,6 @@ public class CoalGeneratorBlock extends AbstractMachineBlock implements BlockEnt
 		
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be!=null && be instanceof CoalGeneratorEntity) {
-			System.out.println("Opening container");
 			
 			ContainerProviderRegistry.INSTANCE.openContainer(ID, player, (buf)->{
 				buf.writeBlockPos(pos);

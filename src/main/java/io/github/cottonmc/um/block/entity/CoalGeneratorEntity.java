@@ -40,7 +40,6 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	//private ContainerLock lock; //TODO: Awaiting design direction, to be decided alongside Locky
 	private int remainingTicks;
 	private int totalTicks;
-	//private int wuBuffer;
 	private SimpleItemComponent items = new SimpleItemComponent(1);
 	private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(MAX_WU);
 	
@@ -79,11 +78,6 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	public void markDirty() {
 		super.markDirty();
 		if (!world.getBlockTickScheduler().isScheduled(pos, UMBlocks.COAL_GENERATOR)) {
-			if (needsPulse()) {
-				System.out.println("Scheduling next pulse");
-			} else {
-				System.out.println("Sleeping till a pulse is needed.");
-			}
 			
 			//Check if we need to start pulsing again
 			if (needsPulse()) world.getBlockTickScheduler().schedule(pos, UMBlocks.COAL_GENERATOR, PULSE_LENGTH);
@@ -91,8 +85,7 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	}
 	
 	public void pulse() {
-		System.out.println("Pulse fuel:"+remainingTicks+"/"+totalTicks+" wu:"+energy.getCurrentEnergy()+"/"+energy.getMaxEnergy());
-		
+		if (energy.getMaxEnergy()<MAX_WU) energy.setMaxEnergy(MAX_WU);
 		
 		//[continue to] flush any stored energy
 		if (energy.getCurrentEnergy()>0) {
@@ -211,7 +204,6 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 			public int get(int index) {
 				switch(index) {
 				case 0: //return 10;
-					System.out.println("Getting remainingTicks=="+remainingTicks);
 					return CoalGeneratorEntity.this.remainingTicks;
 				case 1: //return 20;
 					return CoalGeneratorEntity.this.totalTicks;
@@ -227,12 +219,11 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 			public void set(int index, int value) {
 				switch(index) {
 				case 0:
-					System.out.println("Setting remainingTicks="+value);
 					CoalGeneratorEntity.this.remainingTicks = value; break;
 				case 1: CoalGeneratorEntity.this.totalTicks = value; break;
-				case 2: CoalGeneratorEntity.this.energy.setCurrentEnergy(value); //TODO: Probably scale this number so it'll always fit in a short!
+				case 2: CoalGeneratorEntity.this.energy.setCurrentEnergy(value);
 					break;
-				case 3: CoalGeneratorEntity.this.energy.setMaxEnergy(value); //TODO: '   '
+				case 3: CoalGeneratorEntity.this.energy.setMaxEnergy(value);
 					break;
 				default: break;
 				}
@@ -240,7 +231,7 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 
 			@Override
 			public int size() {
-				return 2;
+				return 4;
 			}
 			
 		};
@@ -249,38 +240,4 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 	public EnergyAttribute getEnergy() {
 		return EnergyView.extractOnly(energy);
 	}
-	
-	/*
-	
-	//implements SidedComponentContainer {
-		@Override
-		public <T extends Component> boolean registerExtraComponent(Direction side, Class<T> componentClass, String key, T component) {
-			return false;
-		}
-	
-		@Override
-		public <T extends Component> boolean registerExtraComponent(Class<T> componentClass, String key, T component) {
-			return false;
-		}
-	
-		@SuppressWarnings("unchecked")
-		@Override
-		@Nullable
-		public <T extends Component> T getComponent(Direction side, Class<T> componentClass, String key) {
-			if (componentClass==EnergyComponent.class) {
-				return (T)energy; //TODO: Wrap it
-			}
-			return null;
-		}
-	
-		@Override
-		@Nonnull
-		public Set<String> getComponentKeys(Direction side, Class<? extends Component> componentClass) {
-			if (componentClass==EnergyComponent.class) {
-				return Sets.newHashSet("cotton:low_voltage");
-			} else {
-				return Sets.newHashSet();
-			}
-		}
-	//} */
 }

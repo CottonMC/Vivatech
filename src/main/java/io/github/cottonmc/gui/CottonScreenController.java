@@ -48,7 +48,7 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		this.playerInventory = playerInventory;
 		this.recipeType = recipeType;
 		this.world = playerInventory.player.world;
-		this.propertyDelegate = new ArrayPropertyDelegate(1);
+		this.propertyDelegate = null;//new ArrayPropertyDelegate(1);
 	}
 	
 	public CottonScreenController(RecipeType<?> recipeType, int syncId, PlayerInventory playerInventory, Inventory blockInventory, PropertyDelegate propertyDelegate) {
@@ -58,6 +58,7 @@ public abstract class CottonScreenController extends CraftingContainer<Inventory
 		this.recipeType = recipeType;
 		this.world = playerInventory.player.world;
 		this.propertyDelegate = propertyDelegate;
+		if (propertyDelegate!=null && propertyDelegate.size()>0) this.addProperties(propertyDelegate);
 	}
 	
 	public WPanel getRootPanel() {

@@ -27,10 +27,7 @@ public class CoalGeneratorController extends CottonScreenController {
 		
 		machinePanel.add(new WLabel(new TranslatableTextComponent("block.united-manufacturing.coal_generator"), 0xFF69c9b4), 0, 0);
 		
-		WBar grating = new WFireGratingBar(
-				//new Identifier("united-manufacturing","textures/gui/coal_generator_grating.png"),
-				//new Identifier("united-manufacturing","textures/gui/coal_generator_grating_lit.png"),
-				0, 1);//, WBar.Direction.UP);
+		WBar grating = new WFireGratingBar(0, 1);
 		machinePanel.add(grating, 1, 1, 7, 4);
 		
 		WItemSlot inputSlot = WItemSlot.of(blockInventory, 0);
