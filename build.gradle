@@ -12,7 +12,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "net.fabricmc:fabric-loom:0.2.1-SNAPSHOT"
+		classpath "net.fabricmc:fabric-loom:0.2.1-20190421.164320-44"
 	}
 }
 
@@ -37,25 +37,38 @@ repositories {
 		url "http://server.bbkr.space:8081/artifactory/libs-snapshot"
 	}
 	maven {
-		name = "BuildCraft"
+		name = "BuildCraft" //For LibBlockAttributes
 		url = "https://mod-buildcraft.com/maven"
+	}
+	
+	maven {
+		url = "https://maven.fabricmc.net/"
 	}
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:19w14b"
-	mappings "net.fabricmc:yarn:19w14b.4"
-	modCompile "net.fabricmc:fabric-loader:0.4.0+build.115"
-	modCompile "net.fabricmc:fabric:0.2.6.121"
+	minecraft "com.mojang:minecraft:1.14 Pre-Release 5"
+	//minecraft "com.mojang:minecraft:19w14b"
+	//mappings "net.fabricmc:yarn:19w14b.4"
+	mappings "net.fabricmc:yarn:1.14 Pre-Release 5+build.4"
+	//modCompile "net.fabricmc:fabric-loader:0.4.0+build.115"
+	modCompile "net.fabricmc:fabric-loader:0.4.2+build.131"
+	//modCompile "net.fabricmc:fabric:0.2.6.121"
+	modCompile "net.fabricmc:fabric:0.2.7+build.126"
+	
+	
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 	modCompile "io.github.prospector.silk:SilkAPI:1.2.3-38"
 	
 	//the main cotton api.
-	modCompile "io.github.cottonmc:cotton:0.5.0+19w14b-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton:0.6.0+1.14-SNAPSHOT"
 	//modCompile "io.github.cottonmc:cotton-resources:0.0.1+19w03a-SNAPSHOT"
 	modCompile "io.github.cottonmc:cotton-energy:1.1.2+19w14b-SNAPSHOT"
 	//modCompile "io.github.cottonmc:cotton-ecs:1.0.0+19w14b-SNAPSHOT"
 	modCompile "alexiil.mc.lib:libblockattributes:0.3.4"
+	
+	
+	runtime group: 'org.lwjgl', name: 'lwjgl-jemalloc', version: '3.2.1' //Fixes Pre-5 sigsegv in linux
 	
 	//if we need it
 	//implementation "blue.endless:jankson:1.1.0"

@@ -1,0 +1,21 @@
+{
+	"textures": {
+		"material": "united-manufacturing:block/conveyor",
+		"particle": "united-manufacturing:block/conveyor"
+	},
+	"elements": [
+		{
+			"name": "Conveyor",
+			"from": [0, 0, 8],
+			"to":   [16, 8, 16],
+			"faces": {
+				"north": {"texture": "#material"},
+				"east":  {"texture": "#material"},
+				"south": {"texture": "#material"},
+				"west":  {"texture": "#material"},
+				"up":    {"texture": "#material"},
+				"down":  {"texture": "#material"}
+			}
+		}
+	]
+}
