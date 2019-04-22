@@ -45,7 +45,6 @@ public class WBar extends WWidget {
 	 * @return WBar with tooltip enabled and set.
 	 */
 	public WBar withTooltip(String label) {
-		this.setRenderTooltip(true);
 		this.tooltipLabel = label;
 		return this;
 	}
@@ -129,11 +128,20 @@ public class WBar extends WWidget {
 		if (tooltipLabel!=null) {
 			int value = (field>=0) ? properties.get(field) : 0;
 			int valMax = (max>=0) ? properties.get(max) : maxValue;
-			String formatted = new TranslatableTextComponent(tooltipLabel, Integer.valueOf(value), Integer.valueOf(valMax)).getFormattedText();
+			String formatted = tooltipLabel;
+			try {
+				formatted = new TranslatableTextComponent(tooltipLabel, Integer.valueOf(value), Integer.valueOf(valMax)).getFormattedText();
+			} catch (Throwable t) {
+				formatted = t.getLocalizedMessage();
+			} //Fallback to raw tooltipLabel
 			information.add(formatted);
 		}
 		if (tooltipTextComponent!=null) {
-			information.add(tooltipTextComponent.getFormattedText());
+			try {
+				information.add(tooltipTextComponent.getFormattedText());
+			} catch (Throwable t) {
+				information.add(t.getLocalizedMessage());
+			}
 		}
 	}
 	

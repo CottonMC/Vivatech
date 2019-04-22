@@ -1,20 +1,82 @@
 {
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
 	"textures": {
-		"material": "united-manufacturing:block/conveyor",
-		"particle": "united-manufacturing:block/conveyor"
+		"frame_bottom": "united-manufacturing:block/conveyor/conveyor_frame_bottom",
+		"frame_top": "united-manufacturing:block/conveyor/conveyor_frame_top",
+		"frame_back_front": "united-manufacturing:block/conveyor/conveyor_frame_back_front",
+		"frame_left": "united-manufacturing:block/conveyor/conveyor_frame_left",
+		"particle": "united-manufacturing:block/conveyor/conveyor_frame_left",
+		"roller_bottom_top": "united-manufacturing:block/conveyor/conveyor_roller_bottom_top",
+		"roller_back_front": "united-manufacturing:block/conveyor/conveyor_roller_back_front",
+		"belt_bottom_top": "united-manufacturing:block/conveyor/conveyor_belt",
+		"belt_left_right": "united-manufacturing:block/conveyor/conveyor_belt_left_right"
 	},
 	"elements": [
 		{
-			"name": "Conveyor",
-			"from": [0, 0, 4],
-			"to":   [16, 8, 8],
+			"name": "frame_bottom",
+			"from": [0, 0, 2],
+			"to": [16, 2, 8],
 			"faces": {
-				"north": {"texture": "#material"},
-				"east":  {"texture": "#material"},
-				"south": {"texture": "#material"},
-				"west":  {"texture": "#material"},
-				"up":    {"texture": "#material"},
-				"down":  {"texture": "#material"}
+				"north": {"uv": [0, 14, 16, 16], "texture": "#frame_back_front"},
+				"east": {"uv": [8, 14, 2, 16], "texture": "#frame_left", "cullface": "east"},
+				"west": {"uv": [2, 14, 8, 16], "texture": "#frame_left", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 8], "texture": "#frame_top"},
+				"down": {"uv": [0, 8, 16, 2], "texture": "#frame_bottom", "cullface": "down"}
+			}
+		},
+		{
+			"name": "frame_left",
+			"from": [0, 2, 4],
+			"to": [2, 8, 8],
+			"faces": {
+				"north": {"uv": [14, 8, 16, 14], "texture": "#frame_back_front"},
+				"east": {"uv": [8, 8, 12, 14], "texture": "#frame_left"},
+				"west": {"uv": [4, 8, 8, 14], "texture": "#frame_left", "cullface": "west"},
+				"up": {"uv": [0, 0, 2, 8], "texture": "#frame_top"}
+			}
+		},
+		{
+			"name": "frame_right",
+			"from": [14, 2, 4],
+			"to": [16, 8, 8],
+			"faces": {
+				"north": {"uv": [0, 8, 2, 14], "texture": "#frame_back_front"},
+				"east": {"uv": [8, 8, 12, 14], "texture": "#frame_left", "cullface": "east"},
+				"west": {"uv": [12, 8, 8, 14], "texture": "#frame_left"},
+				"up": {"uv": [14, 0, 16, 8], "texture": "#frame_top"}
+			}
+		},
+		{
+			"name": "roller_mid_left",
+			"from": [2, 3, 6],
+			"to": [3, 7, 8],
+			"faces": {
+				"north": {"uv": [13, 9, 14, 13], "texture": "#roller_back_front"},
+				"up": {"uv": [2, 6, 3, 8], "texture": "#roller_bottom_top"},
+				"down": {"uv": [2, 8, 3, 10], "texture": "#roller_bottom_top"}
+			}
+		},
+		{
+			"name": "roller_mid_right",
+			"from": [13, 3, 6],
+			"to": [14, 7, 8],
+			"faces": {
+				"north": {"uv": [2, 9, 3, 13], "texture": "#roller_back_front"},
+				"up": {"uv": [13, 6, 14, 8], "texture": "#roller_bottom_top"},
+				"down": {"uv": [13, 8, 14, 10], "texture": "#roller_bottom_top"}
+			}
+		},
+		{
+			"name": "belt",
+			"from": [3, 2.5, 4],
+			"to": [13, 7.5, 8],
+			"faces": {
+				"north": {"uv": [3, 15, 13, 10], "texture": "#belt_bottom_top"},
+				"east": {"uv": [0, 9, 15, 14], "texture": "#belt_left_right"},
+				"west": {"uv": [0, 9, 15, 14], "texture": "#belt_left_right"},
+				"up": {"uv": [3, 0, 13, 4], "texture": "#belt_bottom_top"},
+				"down": {"uv": [3, 11, 13, 15], "texture": "#belt_bottom_top"}
 			}
 		}
 	]

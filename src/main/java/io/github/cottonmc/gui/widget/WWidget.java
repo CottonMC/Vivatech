@@ -8,6 +8,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.container.Container;
 
 public class WWidget {
 	protected WPanel parent;
@@ -15,7 +17,7 @@ public class WWidget {
 	private int y = 0;
 	private int width = 18;
 	private int height = 18;
-	private boolean renderTooltip;
+	//private boolean renderTooltip;
 	
 	public void setLocation(int x, int y) {
 		this.x = x;
@@ -67,13 +69,13 @@ public class WWidget {
 	//	this.parent = parent;
 	//}
 
-	public boolean getRenderTooltip() {
-		return renderTooltip;
-	}
+	//public boolean getRenderTooltip() {
+	//	return renderTooltip;
+	//}
 
-	public void setRenderTooltip(boolean renderTooltip) {
-		this.renderTooltip = renderTooltip;
-	}
+	//public void setRenderTooltip(boolean renderTooltip) {
+	//	this.renderTooltip = renderTooltip;
+	//}
 	
 	/**
 	 * Draw this Widget at the specified coordinates. The coordinates provided are the top-level device coordinates of
@@ -138,7 +140,7 @@ public class WWidget {
 
 	@Environment(EnvType.CLIENT)
 	public void paintForeground(int x, int y, int mouseX, int mouseY) {
-		if (renderTooltip && mouseX >= x && mouseX < x+getWidth() && mouseY >= y && mouseY < y+getHeight()) {
+		if (mouseX >= x && mouseX < x+getWidth() && mouseY >= y && mouseY < y+getHeight()) {
 			renderTooltip(mouseX-x+getX(),mouseY-y+getY() );
 		}
 	}
@@ -157,7 +159,10 @@ public class WWidget {
 
 		if (info.size() == 0)
 			return;
-
+		
+		Screen screen = MinecraftClient.getInstance().currentScreen;
+		screen.renderTooltip(info, tX, tY);
+		/*
 		MinecraftClient mc = MinecraftClient.getInstance();
 		int width = mc.window.getScaledWidth();
 		int height = mc.window.getScaledHeight();
@@ -174,7 +179,7 @@ public class WWidget {
 		for(int i=0; i<info.size(); i++) {
 			//renderer.draw(info, tX, tY, renderer.getStringWidth(str))
 			//GuiUtils.drawHoveringText(info, tX, tY, width, height, -1, mc.fontRenderer);
-		}
+		}*/
 	}
 	
 	//public boolean isValid() {
