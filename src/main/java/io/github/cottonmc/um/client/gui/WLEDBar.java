@@ -1,7 +1,7 @@
 package io.github.cottonmc.um.client.gui;
 
-import io.github.cottonmc.gui.client.ScreenDrawing;
-import io.github.cottonmc.gui.widget.WBar;
+import io.github.cottonmc.cotton.gui.client.ScreenDrawing;
+import io.github.cottonmc.cotton.gui.widget.WBar;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;

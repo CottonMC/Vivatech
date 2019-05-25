@@ -1,22 +1,28 @@
-# Compiled nonsense that does not belong in *source* control
-/build
-/bin
-/.gradle
-/minecraft
-/out
-/run
-/classes
+# gradle
 
-# IDE nonsense that could go in source control but really shouldn't
-.classpath
-.project
-.metadata
-.settings
-*.launch
+.gradle/
+build/
+out/
+classes/
+
+# idea
+
+.idea/
 *.iml
-.idea
 *.ipr
 *.iws
+
+# vscode
+
+.settings/
+.vscode/
+bin/
+.classpath
+.project
+
+# fabric
+
+run/
 
 # Sekrit files
 private.properties
@@ -25,3 +31,4 @@ private.properties
 Thumbs.db
 .DS_Store
 local.properties
+.directory

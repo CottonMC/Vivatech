@@ -1,11 +1,11 @@
 package io.github.cottonmc.um.block;
 
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.StringIdentifiable;
 
 /**
  * States for machines to display to the client, and save to the map.
  */
-public enum MachineStatus implements StringRepresentable {
+public enum MachineStatus implements StringIdentifiable {
 	/** The machine is not running. It is reccommended that when displaying this state, no ticks are scheduled. */
 	INACTIVE("inactive"),
 	/** The machine is waiting for an operation to finish. It is reccommended to check or set this state just before scheduling a tick. */

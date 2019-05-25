@@ -4,7 +4,7 @@ import io.github.cottonmc.um.block.entity.ConveyorEntity;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.VerticalEntityPosition;
+import net.minecraft.entity.EntityContext;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateFactory;
@@ -81,16 +81,16 @@ public class ConveyorBlock extends Block implements BlockEntityProvider, Invento
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.with(FACING, FRONT, REAR);
+		builder.add(FACING, FRONT, REAR);
 	}
 	
 	@Override
 	public boolean hasDynamicBounds() {
 		return true;
 	}
-	
+
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, VerticalEntityPosition entityPos) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, EntityContext context) {
 		Direction dir = state.get(FACING);
 		BoundingBox front = state.get(FRONT) ? FRONT_BOUNDS : NO_FRONT_BOUNDS;
 		BoundingBox rear = state.get(REAR) ? REAR_BOUNDS : NO_REAR_BOUNDS;

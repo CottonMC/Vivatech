@@ -9,14 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.text.TextComponent;
-import net.minecraft.text.TranslatableTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Nameable;
 import io.github.prospector.silk.util.ActionType;
 
 public class SimpleItemComponent implements ItemComponent, Inventory, Nameable {
-	protected TextComponent name = new TranslatableTextComponent("container.inventory"); //en_us: "Inventory"
+	protected TranslatableComponent name = new TranslatableComponent("container.inventory"); //en_us: "Inventory"
 	protected final DefaultedList<ItemStack> storage;// = DefaultedList.create(ItemStack.EMPTY);
 	protected final ArrayList<Runnable> observers = new ArrayList<>();
 	protected int maxStackSize = 64;
@@ -25,7 +24,7 @@ public class SimpleItemComponent implements ItemComponent, Inventory, Nameable {
 		storage = DefaultedList.create(size, ItemStack.EMPTY);
 	}
 	
-	public SimpleItemComponent setName(TextComponent name) {
+	public SimpleItemComponent setName(TranslatableComponent name) {
 		this.name = name;
 		return this;
 	}
@@ -59,7 +58,7 @@ public class SimpleItemComponent implements ItemComponent, Inventory, Nameable {
 					CompoundTag itemTag = new CompoundTag();
 					itemTag.putByte("Slot", (byte)i);
 					itemStack.toTag(itemTag);
-					tag.add((Tag)itemTag);
+					tag.add(itemTag);
 				}
 			}
 			
@@ -73,7 +72,7 @@ public class SimpleItemComponent implements ItemComponent, Inventory, Nameable {
 				for(int i = 0; i < list.size(); ++i) {
 					CompoundTag itemTag = list.getCompoundTag(i);
 					int slot = itemTag.getByte("Slot") & 255;
-					if (slot >= 0 && slot < storage.size()) {
+					if (slot < storage.size()) {
 						storage.set(slot, ItemStack.fromTag(itemTag));
 					}
 				}
@@ -189,7 +188,7 @@ public class SimpleItemComponent implements ItemComponent, Inventory, Nameable {
 	
 	//implements Nameable {
 		@Override
-		public TextComponent getName() {
+		public TranslatableComponent getName() {
 			return name;
 		}
 	//}

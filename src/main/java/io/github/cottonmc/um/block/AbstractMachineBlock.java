@@ -31,7 +31,7 @@ public class AbstractMachineBlock extends Block {
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.with(FACING, STATUS);
+		builder.add(FACING, STATUS);
 	}
 	
 	@Override

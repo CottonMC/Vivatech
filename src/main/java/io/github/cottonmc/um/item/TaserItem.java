@@ -1,9 +1,9 @@
 package io.github.cottonmc.um.item;
 
+import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import io.github.cottonmc.um.UnitedManufacturing;
-import io.github.prospector.silk.util.ActionType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -12,10 +12,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.StringTextComponent;
 import net.minecraft.util.Hand;
 
 public class TaserItem extends Item {
@@ -37,7 +37,7 @@ public class TaserItem extends Item {
 			//TODO: change once we have a charger
 			if (player.world.isClient) player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
 			else {
-				player.addChatMessage(new StringTextComponent("Battery inserted!"), true);
+				player.addChatMessage(new TextComponent("Battery inserted!"), true);
 				player.setStackInHand(hand, setEnergyComponent(stack, new SimpleEnergyAttribute(MAX_ENERGY).setCurrentEnergy(MAX_ENERGY)));
 			}
 			return true;
@@ -46,7 +46,7 @@ public class TaserItem extends Item {
 			player.playSound(SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
 			return true;
 		}
-		energy.extractEnergy(DefaultEnergyTypes.LOW_VOLTAGE, ENERGY_PER_USE, ActionType.PERFORM);
+		energy.extractEnergy(DefaultEnergyTypes.LOW_VOLTAGE, ENERGY_PER_USE, Simulation.ACTION);
 		player.setStackInHand(hand, setEnergyComponent(stack, energy));
 		System.out.println("after: "+energy.getCurrentEnergy());
 		LightningEntity lightning = new LightningEntity(target.world, target.getPos().getX(), target.getPos().getY(), target.getPos().getZ(), true);

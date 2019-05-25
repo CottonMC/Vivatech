@@ -1,17 +1,16 @@
 package io.github.cottonmc.um.block.entity;
 
 import alexiil.mc.lib.attributes.AttributeList;
-import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 
-import io.github.cottonmc.gui.PropertyDelegateHolder;
+import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.um.block.UMBlocks;
 import io.github.cottonmc.um.block.container.CoalGeneratorController;
 import io.github.cottonmc.um.component.SimpleItemComponent;
 import io.github.cottonmc.um.component.wrapper.EnergyView;
 import io.github.cottonmc.um.component.wrapper.SidedItemView;
-import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
@@ -25,7 +24,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.text.TextComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.IWorld;
@@ -99,7 +98,7 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 				if (energy.getCurrentEnergy()<MAX_WU && remainingTicks>=FUEL_PER_WU) {
 					remainingTicks -= FUEL_PER_WU;
 					energy.setCurrentEnergy(energy.getCurrentEnergy()+1); //IF THIS WORKS SIMPLENERGYCOMPONENT IS BROKEN'D
-					//energy.insertEnergy(DefaultEnergyTypes.LOW_VOLTAGE, 1, ActionType.PERFORM);
+					//energy.insertEnergy(DefaultEnergyTypes.LOW_VOLTAGE, 1, Simulation.ACTION);
 					markDirty();
 				} else break burn;
 			}
@@ -148,13 +147,13 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 				//One end or the other seems to think that the energy is compatible.
 				int transferSize = Math.min(energy.getPreferredType().getMaximumTransferSize(), energy.getCurrentEnergy());
 				
-				transferSize = transferSize - attribute.insertEnergy(energy.getPreferredType(), transferSize, ActionType.SIMULATE);
-				transferSize = energy.extractEnergy(energy.getPreferredType(), transferSize, ActionType.PERFORM); //Transfer actually starts here
-				int notTransferred = attribute.insertEnergy(energy.getPreferredType(), transferSize, ActionType.PERFORM);
+				transferSize = transferSize - attribute.insertEnergy(energy.getPreferredType(), transferSize, Simulation.SIMULATE);
+				transferSize = energy.extractEnergy(energy.getPreferredType(), transferSize, Simulation.ACTION); //Transfer actually starts here
+				int notTransferred = attribute.insertEnergy(energy.getPreferredType(), transferSize, Simulation.ACTION);
 				if (notTransferred>0) {
 					//Complain loudly but keep working
 					new RuntimeException("Misbehaving EnergyAttribute "+attribute.getClass().getCanonicalName()+" accepted energy in SIMULATE then didn't accept the same or less energy in PERFORM").printStackTrace();
-					energy.insertEnergy(energy.getPreferredType(), notTransferred, ActionType.PERFORM);
+					energy.insertEnergy(energy.getPreferredType(), notTransferred, Simulation.ACTION);
 				}
 				return transferSize - notTransferred;
 			}
@@ -194,7 +193,7 @@ public class CoalGeneratorEntity extends BlockEntity implements InventoryProvide
 
 	@Override
 	public TextComponent getDisplayName() {
-		return items.getDisplayName();
+		return new TextComponent(items.getDisplayName().getString());
 	}
 
 	@Override

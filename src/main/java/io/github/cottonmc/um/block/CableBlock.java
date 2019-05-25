@@ -13,7 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.VerticalEntityPosition;
+import net.minecraft.entity.EntityContext;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
@@ -62,7 +62,7 @@ public class CableBlock extends Block implements AttributeProvider, Waterloggabl
 	
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
-		builder.with(NORTH, EAST, SOUTH, WEST, UP, WATERLOGGED);
+		builder.add(NORTH, EAST, SOUTH, WEST, UP, WATERLOGGED);
 	}
 	
 	
@@ -80,7 +80,7 @@ public class CableBlock extends Block implements AttributeProvider, Waterloggabl
 	}
 	
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, VerticalEntityPosition entityPosition) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, EntityContext context) {
 		return getRayTraceShape(state, view, pos);
 	}
 	

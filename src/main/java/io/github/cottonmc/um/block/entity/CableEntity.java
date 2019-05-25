@@ -1,13 +1,11 @@
 package io.github.cottonmc.um.block.entity;
 
 import alexiil.mc.lib.attributes.AttributeList;
-import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyType;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import io.github.cottonmc.um.block.UMBlocks;
-import io.github.prospector.silk.util.ActionType;
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -48,7 +46,8 @@ public class CableEntity extends BlockEntity implements Tickable {
 		if (energy.getCurrentEnergy()<=0) {
 			decayInduction();
 		} else {
-			Direction flow = Direction.fromVector(new BlockPos(induction));
+			BlockPos pos = new BlockPos(induction);
+			Direction flow = Direction.fromVector(pos.getX(), pos.getY(), pos.getZ());
 			
 			pushEnergyTo(flow);
 			
@@ -93,13 +92,13 @@ public class CableEntity extends BlockEntity implements Tickable {
 				//One end or the other seems to think that the energy is compatible.
 				int transferSize = Math.min(energy.getPreferredType().getMaximumTransferSize(), energy.getCurrentEnergy());
 				
-				transferSize = transferSize - attribute.insertEnergy(energy.getPreferredType(), transferSize, ActionType.SIMULATE);
-				transferSize = energy.extractEnergy(energy.getPreferredType(), transferSize, ActionType.PERFORM); //Transfer actually starts here
-				int notTransferred = attribute.insertEnergy(energy.getPreferredType(), transferSize, ActionType.PERFORM);
+				transferSize = transferSize - attribute.insertEnergy(energy.getPreferredType(), transferSize, Simulation.SIMULATE);
+				transferSize = energy.extractEnergy(energy.getPreferredType(), transferSize, Simulation.ACTION); //Transfer actually starts here
+				int notTransferred = attribute.insertEnergy(energy.getPreferredType(), transferSize, Simulation.ACTION);
 				if (notTransferred>0) {
 					//Complain loudly but keep working
 					new RuntimeException("Misbehaving EnergyAttribute "+attribute.getClass().getCanonicalName()+" accepted energy in SIMULATE then didn't accept the same or less energy in PERFORM").printStackTrace();
-					energy.insertEnergy(energy.getPreferredType(), notTransferred, ActionType.PERFORM);
+					energy.insertEnergy(energy.getPreferredType(), notTransferred, Simulation.ACTION);
 					
 					induction = induction.add(new Vec3d(facing.getOffsetX(), facing.getOffsetY(), facing.getOffsetZ()));
 					if (induction.length() > MAX_INDUCTION) {
@@ -132,15 +131,15 @@ public class CableEntity extends BlockEntity implements Tickable {
 		}
 		
 		@Override
-		public int insertEnergy(EnergyType type, int amount, ActionType actionType) {
-			if (actionType==ActionType.PERFORM) {
+		public int insertEnergy(EnergyType type, int amount, Simulation simulation) {
+			if (simulation == Simulation.ACTION) {
 				induction = induction.add(new Vec3d(incomingFlow.getOffsetX(), incomingFlow.getOffsetY(), incomingFlow.getOffsetZ()));
 				if (induction.length() > MAX_INDUCTION) {
 					induction = induction.normalize().multiply(MAX_INDUCTION);
 				}
 				
 			}
-			return CableEntity.this.energy.insertEnergy(type, amount, actionType);
+			return CableEntity.this.energy.insertEnergy(type, amount, simulation);
 		}
 		
 		@Override
@@ -149,8 +148,8 @@ public class CableEntity extends BlockEntity implements Tickable {
 		}
 		
 		@Override
-		public int extractEnergy(EnergyType type, int amount, ActionType actionType) {
-			if (actionType==ActionType.PERFORM) {
+		public int extractEnergy(EnergyType type, int amount, Simulation simulation) {
+			if (simulation == Simulation.ACTION) {
 				Direction outgoingFlow = incomingFlow.getOpposite();
 				induction = induction.add(new Vec3d(outgoingFlow.getOffsetX(), outgoingFlow.getOffsetY(), outgoingFlow.getOffsetZ()));
 				if (induction.length() > MAX_INDUCTION) {
@@ -158,7 +157,7 @@ public class CableEntity extends BlockEntity implements Tickable {
 				}
 				
 			}
-			return CableEntity.this.energy.extractEnergy(type, amount, actionType);
+			return CableEntity.this.energy.extractEnergy(type, amount, simulation);
 		}
 		
 		@Override

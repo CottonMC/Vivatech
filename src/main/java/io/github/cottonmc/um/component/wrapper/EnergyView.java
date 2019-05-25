@@ -1,8 +1,8 @@
 package io.github.cottonmc.um.component.wrapper;
 
+import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyType;
-import io.github.prospector.silk.util.ActionType;
 
 public class EnergyView implements EnergyAttribute {
 	private final EnergyAttribute proxy;
@@ -31,8 +31,8 @@ public class EnergyView implements EnergyAttribute {
 	}
 
 	@Override
-	public int insertEnergy(EnergyType type, int amount, ActionType actionType) {
-		if (insert) return proxy.insertEnergy(type, amount, actionType);
+	public int insertEnergy(EnergyType type, int amount, Simulation simulation) {
+		if (insert) return proxy.insertEnergy(type, amount, simulation);
 		return amount;
 	}
 
@@ -42,8 +42,8 @@ public class EnergyView implements EnergyAttribute {
 	}
 
 	@Override
-	public int extractEnergy(EnergyType type, int amount, ActionType actionType) {
-		if (extract) return proxy.extractEnergy(type, amount, actionType);
+	public int extractEnergy(EnergyType type, int amount, Simulation simulation) {
+		if (extract) return proxy.extractEnergy(type, amount, simulation);
 		return 0;
 	}
 

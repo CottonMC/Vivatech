@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 public class UnitedManufacturing implements ModInitializer {
-	public static ItemGroup ITEMGROUP_MACHINES = FabricItemGroupBuilder.build(new Identifier("united-manufacturing","machines"), ()->new ItemStack(UMBlocks.COAL_GENERATOR.getItem()));
+	public static ItemGroup ITEMGROUP_MACHINES = FabricItemGroupBuilder.build(new Identifier("united-manufacturing","machines"), ()->new ItemStack(UMBlocks.COAL_GENERATOR.asItem()));
 	public static ItemGroup ITEMGROUP_TOOLS = FabricItemGroupBuilder.build(new Identifier("united-manufacturing","tools"), ()->new ItemStack(UMItems.TASER));
 	public static Identifier CONTAINER_COAL_GENERATOR = new Identifier("united-manufacturing", "coal-generator");
 	

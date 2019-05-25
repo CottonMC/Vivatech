@@ -2,8 +2,6 @@ package io.github.cottonmc.um.recipe;
 
 import java.util.Collection;
 
-import javax.annotation.Nonnull;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -19,6 +17,8 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
+
+import javax.annotation.Nonnull;
 
 public class UMRecipes {
 	public static RecipeType<HammerMillRecipe> HAMMER_MILL;

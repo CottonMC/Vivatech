@@ -30,7 +30,7 @@ public class HammerMillBlock extends AbstractMachineBlock implements BlockEntity
 	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (!world.isClient) {
 			BlockEntity entity = world.getBlockEntity(pos);
-			if (entity!=null && entity instanceof HammerMillEntity) {
+			if (entity instanceof HammerMillEntity) {
 				((HammerMillEntity)entity).pulse();
 			} else {
 				setStatus(world, pos, MachineStatus.ERROR);
@@ -41,7 +41,7 @@ public class HammerMillBlock extends AbstractMachineBlock implements BlockEntity
 	@Override
 	public SidedInventory getInventory(BlockState state, IWorld world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be!=null && be instanceof HammerMillEntity) {
+		if (be instanceof HammerMillEntity) {
 			return ((HammerMillEntity)be).getInventory();
 		} else {
 			return null;
@@ -51,7 +51,7 @@ public class HammerMillBlock extends AbstractMachineBlock implements BlockEntity
 	@Override
 	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be!=null && be instanceof HammerMillEntity) {
+		if (be instanceof HammerMillEntity) {
 			to.offer(((HammerMillEntity)be).getEnergy());
 		}
 	}

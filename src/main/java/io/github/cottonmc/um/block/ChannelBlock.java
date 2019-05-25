@@ -42,6 +42,6 @@ public class ChannelBlock extends Block implements BlockEntityProvider, FluidCon
 
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
-		builder.with(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+		builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
 	}
 }

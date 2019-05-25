@@ -1,17 +1,45 @@
 {
+  "schemaVersion": 1,
   "id": "united-manufacturing",
+  "version": "${version}",
+
   "name": "United Manufacturing",
-  "version": "0.0.1+18w50a",
-  "side": "universal",
-  "requires": {
-    "fabric": "*"
+  "description": "Electric marvels: cooler, healthier, brighter, and cheaper than gas",
+  "authors": ["The Cotton Team"],
+  "contact": {
+    "homepage": "https://github.com/CottonMC/UnitedManufacturing",
+    "issues": "https://github.com/CottonMC/UnitedManufacturing/issues"
   },
-  "initializers": [
-    "io.github.cottonmc.um.UnitedManufacturing",
-    "io.github.cottonmc.um.client.UMClient"
+  "license": "MIT",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.cottonmc.um.UnitedManufacturing"
+    ],
+    "client": [
+      "io.github.cottonmc.um.client.UMClient"
+    ]
+  },
+  "mixins": [
+    {
+      "config": "united-manufacturing.client.json",
+      "environment": "client"
+    },
+    {
+      "config": "united-manufacturing.common.json",
+      "environment": "*"
+    }
   ],
-  "mixins": {
-    "client": "united-manufacturing.client.json",
-    "common": "united-manufacturing.common.json"
+
+  "requires": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*",
+    "libblockattributes": "*",
+    "silk": "*",
+    "cotton": "*",
+    "cotton-energy": "*",
+    "cotton-resources": "*"
   }
 }
+

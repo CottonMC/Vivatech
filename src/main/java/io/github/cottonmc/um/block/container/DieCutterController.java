@@ -1,6 +1,6 @@
 package io.github.cottonmc.um.block.container;
 
-import io.github.cottonmc.gui.CottonScreenController;
+import io.github.cottonmc.cotton.gui.CottonScreenController;
 import io.github.cottonmc.um.recipe.UMRecipes;
 import net.minecraft.entity.player.PlayerInventory;
 

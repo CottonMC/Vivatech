@@ -1,18 +1,18 @@
 package io.github.cottonmc.um.block.container;
 
-import io.github.cottonmc.gui.CottonScreenController;
-import io.github.cottonmc.gui.client.BackgroundPainter;
-import io.github.cottonmc.gui.widget.WBar;
-import io.github.cottonmc.gui.widget.WGridPanel;
-import io.github.cottonmc.gui.widget.WItemSlot;
-import io.github.cottonmc.gui.widget.WLabel;
-import io.github.cottonmc.gui.widget.WPanel;
+import io.github.cottonmc.cotton.gui.CottonScreenController;
+import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
+import io.github.cottonmc.cotton.gui.widget.WBar;
+import io.github.cottonmc.cotton.gui.widget.WGridPanel;
+import io.github.cottonmc.cotton.gui.widget.WItemSlot;
+import io.github.cottonmc.cotton.gui.widget.WLabel;
+import io.github.cottonmc.cotton.gui.widget.WPanel;
 import io.github.cottonmc.um.client.gui.WFireGratingBar;
 import io.github.cottonmc.um.client.gui.WLEDBar;
 import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.text.TranslatableTextComponent;
 
 public class CoalGeneratorController extends CottonScreenController {
 	WGridPanel machinePanel;
@@ -25,7 +25,7 @@ public class CoalGeneratorController extends CottonScreenController {
 		machinePanel = new WGridPanel();
 		rootPanel.add(machinePanel, 0, 0);
 		
-		machinePanel.add(new WLabel(new TranslatableTextComponent("block.united-manufacturing.coal_generator"), 0xFF69c9b4), 0, 0);
+		machinePanel.add(new WLabel(new TranslatableComponent("block.united-manufacturing.coal_generator"), 0xFF69c9b4), 0, 0);
 		
 		WBar grating = new WFireGratingBar(0, 1);
 		machinePanel.add(grating, 1, 1, 7, 4);

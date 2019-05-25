@@ -1,9 +1,9 @@
 package io.github.cottonmc.um.component;
 
-import javax.annotation.Nonnull;
-
 import io.github.prospector.silk.fluid.FluidInstance;
 import io.github.prospector.silk.util.ActionType;
+
+import javax.annotation.Nonnull;
 
 /**
  * A component describing one or more tanks of fluid. Most components will contain only one "slot", storing some
@@ -23,7 +23,7 @@ public interface FluidComponent {
 	 * If a "typed empty" is returned, that is, an empty stack that has a Fluid set, callers should assume the slot can
 	 * only accept that kind of fluid.
 	 */
-	@Nonnull
+	// @Nonnull
 	public FluidInstance get(int slotIndex);
 	
 	/**
