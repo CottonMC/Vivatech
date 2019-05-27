@@ -4,8 +4,8 @@
   "version": "${version}",
 
   "name": "Vivatech",
-  "description": "Electric marvels: cooler, healthier, brighter, and cheaper than gas",
-  "authors": ["The Cotton Team"],
+  "description": "Classic technologies rethought",
+  "authors": ["The Cotton Project"],
   "contact": {
     "homepage": "https://github.com/CottonMC/Vivatech",
     "issues": "https://github.com/CottonMC/Vivatech/issues"

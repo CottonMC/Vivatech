@@ -1,6 +1,8 @@
 package vivatech.entity;
 
+import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.container.PropertyDelegate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
@@ -9,33 +11,71 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.math.Direction;
+import vivatech.energy.IEnergyHolder;
+import vivatech.energy.IEnergyStorage;
+import vivatech.energy.SimpleEnergyConsumer;
 import vivatech.init.VivatechEntities;
 
 import javax.annotation.Nullable;
 
-public class ElectricFurnaceEntity extends BlockEntity implements SidedInventory {
+public class ElectricFurnaceEntity extends BlockEntity implements SidedInventory, IEnergyHolder, PropertyDelegateHolder {
 
     private final int invSize = 2;
     private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
+    private IEnergyStorage energyStorage = new SimpleEnergyConsumer(100);
+    private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
+        @Override
+        public int get(int propertyId) {
+            switch (propertyId) {
+                case 0: // Current Energy
+                    return energyStorage.getCurrentEnergy();
+                case 1: // Max Energy
+                    return energyStorage.getMaxEnergy();
+                default:
+                    return 0;
+            }
+        }
+
+        @Override
+        public void set(int propertyId, int value) {
+            switch (propertyId) {
+                case 0: // Current Energy (NOT SETTABLE)
+                case 1: // Max Energy (NOT SETTABLE)
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public int size() {
+            return 2;
+        }
+    };
 
     public ElectricFurnaceEntity() {
         super(VivatechEntities.ELECTRIC_FURNACE);
     }
 
+    // BlockEntity
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
+        energyStorage.readEnergyFromTag(tag);
         inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
         Inventories.fromTag(tag, inventory);
+        System.out.println("THE TAG READ " + tag);
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
+        energyStorage.writeEnergyToTag(tag);
         Inventories.toTag(tag, inventory);
+        System.out.println("THE TAG WRITE " + tag);
         return tag;
     }
 
+    // SidedInventory
     @Override
     public int[] getInvAvailableSlots(Direction direction) {
         return new int[] {0, 1};
@@ -101,5 +141,17 @@ public class ElectricFurnaceEntity extends BlockEntity implements SidedInventory
     @Override
     public void clear() {
         inventory.clear();
+    }
+
+    // IEnergyStorage
+    @Override
+    public IEnergyStorage getEnergyStorage() {
+        return energyStorage;
+    }
+
+    // PropertyDelegateHolder
+    @Override
+    public PropertyDelegate getPropertyDelegate() {
+        return propertyDelegate;
     }
 }

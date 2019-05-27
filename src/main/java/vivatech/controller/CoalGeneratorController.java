@@ -19,6 +19,9 @@ public class CoalGeneratorController extends CottonScreenController {
         rootPanel.add(new WLabel(StringUtil.getTranslatableComponent("block", CoalGeneratorBlock.ID),
                 WLabel.DEFAULT_TEXT_COLOR), 0, 0);
 
+        rootPanel.add(new WLabel(String.format("%s/%s", propertyDelegate.get(0), propertyDelegate.get(1)),
+                WLabel.DEFAULT_TEXT_COLOR), 0, 1);
+
         WItemSlot inputSlot = WItemSlot.of(blockInventory, 0);
         rootPanel.add(inputSlot, 2, 2);
 
