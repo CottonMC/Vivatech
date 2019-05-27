@@ -8,8 +8,10 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.DefaultedList;
+import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
 import vivatech.energy.IEnergyHolder;
 import vivatech.energy.IEnergyStorage;
@@ -18,8 +20,10 @@ import vivatech.init.VivatechEntities;
 
 import javax.annotation.Nullable;
 
-public class ElectricFurnaceEntity extends BlockEntity implements SidedInventory, IEnergyHolder, PropertyDelegateHolder {
+public class ElectricFurnaceEntity extends BlockEntity implements Tickable, SidedInventory, IEnergyHolder, PropertyDelegateHolder {
 
+    private final int consumePerTick = 2;
+    private int smeltTime;
     private final int invSize = 2;
     private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
     private IEnergyStorage energyStorage = new SimpleEnergyConsumer(100);
@@ -39,8 +43,12 @@ public class ElectricFurnaceEntity extends BlockEntity implements SidedInventory
         @Override
         public void set(int propertyId, int value) {
             switch (propertyId) {
-                case 0: // Current Energy (NOT SETTABLE)
-                case 1: // Max Energy (NOT SETTABLE)
+                case 0: // Current Energy
+                    energyStorage.setCurrentEnergy(value);
+                    break;
+                case 1: // Max Energy
+                    energyStorage.setMaxEnergy(value);
+                    break;
                 default:
                     break;
             }
@@ -63,7 +71,6 @@ public class ElectricFurnaceEntity extends BlockEntity implements SidedInventory
         energyStorage.readEnergyFromTag(tag);
         inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
         Inventories.fromTag(tag, inventory);
-        System.out.println("THE TAG READ " + tag);
     }
 
     @Override
@@ -71,19 +78,73 @@ public class ElectricFurnaceEntity extends BlockEntity implements SidedInventory
         super.toTag(tag);
         energyStorage.writeEnergyToTag(tag);
         Inventories.toTag(tag, inventory);
-        System.out.println("THE TAG WRITE " + tag);
         return tag;
+    }
+
+    // Tickable
+    @Override
+    public void tick() {
+        if (canRun()) {
+            smeltTime++;
+            if (smeltTime >= 120) {
+                smeltTime = 0;
+                smeltItem();
+                world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+            }
+        } else if (!canRun() && smeltTime > 0) {
+            smeltTime = 0;
+        }
+    }
+
+    public ItemStack getOutputStack() {
+        if (!inventory.get(0).isEmpty()) {
+            Recipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).orElse(null);
+            return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    public boolean canRun() {
+        ItemStack output = getOutputStack();
+        if (inventory.get(0).isEmpty() || output.isEmpty() || inventory.get(1).getAmount() > 64
+                || energyStorage.getCurrentEnergy() < consumePerTick) {
+            return false;
+        } else if (!inventory.get(1).isEmpty()) {
+            if (output.getItem() != inventory.get(1).getItem()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void smeltItem() {
+        ItemStack output = getOutputStack();
+        if (!output.isEmpty()) {
+            if (!world.isClient) {
+                if (inventory.get(1).isEmpty()) {
+                    inventory.set(1, output);
+                } else {
+                    inventory.get(1).addAmount(1);
+                }
+
+                inventory.get(0).subtractAmount(1);
+            }
+
+            energyStorage.takeEnergy(consumePerTick);
+        }
     }
 
     // SidedInventory
     @Override
     public int[] getInvAvailableSlots(Direction direction) {
-        return new int[] {0, 1};
+        return new int[]{0, 1};
     }
 
     @Override
     public boolean canInsertInvStack(int slot, ItemStack itemStack, @Nullable Direction direction) {
-        return slot == 0 && world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).isPresent();
+        return slot == 0;
     }
 
     @Override

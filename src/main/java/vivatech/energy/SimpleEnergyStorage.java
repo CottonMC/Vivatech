@@ -1,6 +1,9 @@
 package vivatech.energy;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.IWorld;
 
 public class SimpleEnergyStorage implements IEnergyStorage {
     protected int maxEnergy;
@@ -21,37 +24,58 @@ public class SimpleEnergyStorage implements IEnergyStorage {
     }
 
     @Override
+    public void setMaxEnergy(int amount) {
+        maxEnergy = amount;
+    }
+
+    @Override
     public int getCurrentEnergy() {
         return currentEnergy;
     }
 
     @Override
-    public int insertEnergy(int amount) {
-        if (canInsertEnergy()) {
-            if (currentEnergy + amount <= maxEnergy) {
-                currentEnergy += amount;
-                amount = 0;
-            } else {
-                amount -= maxEnergy - currentEnergy;
-                currentEnergy = maxEnergy;
-            }
+    public void setCurrentEnergy(int amount) {
+        currentEnergy = amount;
+    }
+
+    @Override
+    public int giveEnergy(int amount) {
+        if (currentEnergy + amount <= maxEnergy) {
+            currentEnergy += amount;
+            amount = 0;
+        } else {
+            amount -= maxEnergy - currentEnergy;
+            currentEnergy = maxEnergy;
         }
         return amount;
     }
 
     @Override
-    public int extractEnergy(int amount) {
-        if (canExtractEnergy()) {
-            if (amount <= currentEnergy) {
-                currentEnergy -= amount;
-            } else {
-                amount = currentEnergy;
-                currentEnergy = 0;
-            }
+    public int takeEnergy(int amount) {
+        if (amount <= currentEnergy) {
+            currentEnergy -= amount;
         } else {
-            amount = 0;
+            amount = currentEnergy;
+            currentEnergy = 0;
         }
         return amount;
+    }
+
+    @Override
+    public void emitEnergy(IWorld world, BlockPos pos) {
+        if (canGiveEnergy() && !world.isClient()) {
+            for (Direction direction : Direction.values()) {
+                BlockPos offsetPos = pos.offset(direction);
+                if (world.getBlockEntity(offsetPos) instanceof IEnergyHolder) {
+                    IEnergyStorage storage = ((IEnergyHolder) world.getBlockEntity(offsetPos)).getEnergyStorage();
+                    if (storage.canTakeEnergy()) {
+                        int energySent = storage.giveEnergy(getCurrentEnergy());
+                        currentEnergy -= energySent;
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
@@ -63,7 +87,6 @@ public class SimpleEnergyStorage implements IEnergyStorage {
 
     @Override
     public void readEnergyFromTag(CompoundTag tag) {
-        System.out.println("THE ENERGY TAG " + tag);
         currentEnergy = tag.getInt("currentEnergy");
         maxEnergy = tag.getInt("maxEnergy");
     }

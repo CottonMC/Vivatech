@@ -6,20 +6,20 @@ import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SidedInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DefaultedList;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.Tickable;
 import vivatech.energy.IEnergyHolder;
 import vivatech.energy.IEnergyStorage;
 import vivatech.energy.SimpleEnergyGenerator;
 import vivatech.init.VivatechEntities;
 
-import javax.annotation.Nullable;
+public class CoalGeneratorEntity extends BlockEntity implements Tickable, Inventory, IEnergyHolder, PropertyDelegateHolder {
 
-public class CoalGeneratorEntity extends BlockEntity implements SidedInventory, IEnergyHolder, PropertyDelegateHolder {
-
+    private final int generatePerTick = 1;
+    private int burnTime;
     private final int invSize = 1;
     private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
     private IEnergyStorage energyStorage = new SimpleEnergyGenerator(100);
@@ -27,9 +27,9 @@ public class CoalGeneratorEntity extends BlockEntity implements SidedInventory, 
         @Override
         public int get(int propertyId) {
             switch (propertyId) {
-                case 0:
+                case 0: // Current Energy
                     return energyStorage.getCurrentEnergy();
-                case 1:
+                case 1: // Max Energy
                     return energyStorage.getMaxEnergy();
                 default:
                     return 0;
@@ -39,8 +39,12 @@ public class CoalGeneratorEntity extends BlockEntity implements SidedInventory, 
         @Override
         public void set(int propertyId, int value) {
             switch (propertyId) {
-                case 0:
-                case 1:
+                case 0: // Current Energy
+                    energyStorage.setCurrentEnergy(value);
+                    break;
+                case 1: // Max Energy
+                    energyStorage.setMaxEnergy(value);
+                    break;
                 default:
                     break;
             }
@@ -74,22 +78,23 @@ public class CoalGeneratorEntity extends BlockEntity implements SidedInventory, 
         return tag;
     }
 
-    // SidedInventory
+    // Tickable
     @Override
-    public int[] getInvAvailableSlots(Direction direction) {
-        return new int[] {0};
+    public void tick() {
+        if (energyStorage.getCurrentEnergy() < energyStorage.getMaxEnergy()) {
+            if (burnTime > 0) {
+                burnTime -= 1;
+                energyStorage.giveEnergy(generatePerTick);
+            } else if (FurnaceBlockEntity.canUseAsFuel(inventory.get(0))) {
+                burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 10;
+                inventory.get(0).subtractAmount(1);
+            }
+        }
+        energyStorage.emitEnergy(world, pos);
+        markDirty();
     }
 
-    @Override
-    public boolean canInsertInvStack(int slot, ItemStack itemStack, @Nullable Direction direction) {
-        return slot == 0 && FurnaceBlockEntity.canUseAsFuel(itemStack);
-    }
-
-    @Override
-    public boolean canExtractInvStack(int slot, ItemStack itemStack, Direction direction) {
-        return true;
-    }
-
+    // Inventory
     @Override
     public int getInvSize() {
         return invSize;
