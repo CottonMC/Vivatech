@@ -1,4 +1,4 @@
-package vivatech.init;
+package vivatech;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
@@ -10,7 +10,7 @@ import vivatech.controller.ElectricFurnaceController;
 import vivatech.screen.CoalGeneratorScreen;
 import vivatech.screen.ElectricFurnaceScreen;
 
-public class VivatechModClient implements ClientModInitializer {
+public class VivatechClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ScreenProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, identifier, player, buf) ->

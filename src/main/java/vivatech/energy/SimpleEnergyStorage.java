@@ -1,5 +1,6 @@
 package vivatech.energy;
 
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -65,12 +66,12 @@ public class SimpleEnergyStorage implements IEnergyStorage {
     public void emitEnergy(IWorld world, BlockPos pos) {
         if (canGiveEnergy() && !world.isClient()) {
             for (Direction direction : Direction.values()) {
-                BlockPos offsetPos = pos.offset(direction);
-                if (world.getBlockEntity(offsetPos) instanceof IEnergyHolder) {
-                    IEnergyStorage storage = ((IEnergyHolder) world.getBlockEntity(offsetPos)).getEnergyStorage();
+                BlockEntity blockEntity = world.getBlockEntity(pos.offset(direction));
+                if (blockEntity instanceof IEnergyHolder) {
+                    IEnergyStorage storage = ((IEnergyHolder) blockEntity).getEnergyStorage();
                     if (storage.canTakeEnergy()) {
-                        int energySent = storage.giveEnergy(getCurrentEnergy());
-                        currentEnergy -= energySent;
+                        takeEnergy(storage.giveEnergy(getCurrentEnergy()));
+                        return;
                     }
                 }
             }

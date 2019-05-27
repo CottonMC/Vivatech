@@ -2,7 +2,7 @@
 
 Classic technologies rethought
 
-Vivatech is a technology mod for Fabric for Minecraft 1.14.1 and beyond. It would help you
+Vivatech is a technology mod for Fabric for Minecraft 1.14.2 and beyond. It would help you
 to automate your routine tasks, it would multiply your resources and it would give you a lot of new
 cool abilities in making armor, tools and in farming.
 

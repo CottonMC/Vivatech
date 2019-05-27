@@ -12,14 +12,14 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import vivatech.util.Meta;
+import vivatech.Vivatech;
 import vivatech.entity.CoalGeneratorEntity;
 
 public class CoalGeneratorBlock extends Block implements BlockEntityProvider {
-    public static final Identifier ID = new Identifier(Meta.MODID, "coal_generator");
+    public static final Identifier ID = new Identifier(Vivatech.MODID, "coal_generator");
 
     public CoalGeneratorBlock() {
-        super(Meta.MACHINE_BLOCK_SETTINGS);
+        super(Vivatech.MACHINE_BLOCK_SETTINGS);
     }
 
     @Override

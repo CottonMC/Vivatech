@@ -1,6 +1,8 @@
 package vivatech.entity;
 
+import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
+import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
@@ -11,26 +13,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
-import vivatech.energy.IEnergyHolder;
-import vivatech.energy.IEnergyStorage;
-import vivatech.energy.SimpleEnergyGenerator;
+import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
 
-public class CoalGeneratorEntity extends BlockEntity implements Tickable, Inventory, IEnergyHolder, PropertyDelegateHolder {
+public class CoalGeneratorEntity extends BlockEntity implements Tickable, Inventory, PropertyDelegateHolder {
 
     private final int generatePerTick = 1;
     private int burnTime;
     private final int invSize = 1;
     private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
-    private IEnergyStorage energyStorage = new SimpleEnergyGenerator(100);
+    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100);
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
             switch (propertyId) {
                 case 0: // Current Energy
-                    return energyStorage.getCurrentEnergy();
+                    return energy.getCurrentEnergy();
                 case 1: // Max Energy
-                    return energyStorage.getMaxEnergy();
+                    return energy.getMaxEnergy();
                 default:
                     return 0;
             }
@@ -40,10 +40,10 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
         public void set(int propertyId, int value) {
             switch (propertyId) {
                 case 0: // Current Energy
-                    energyStorage.setCurrentEnergy(value);
+                    energy.setCurrentEnergy(value);
                     break;
                 case 1: // Max Energy
-                    energyStorage.setMaxEnergy(value);
+                    energy.setMaxEnergy(value);
                     break;
                 default:
                     break;
@@ -65,32 +65,32 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
+        energy.fromTag(tag);
         inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
         Inventories.fromTag(tag, inventory);
-        energyStorage.readEnergyFromTag(tag);
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
+        tag = (CompoundTag) energy.toTag();
         Inventories.toTag(tag, inventory);
-        energyStorage.writeEnergyToTag(tag);
         return tag;
     }
 
     // Tickable
     @Override
     public void tick() {
-        if (energyStorage.getCurrentEnergy() < energyStorage.getMaxEnergy()) {
+        if (energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             if (burnTime > 0) {
                 burnTime -= 1;
-                energyStorage.giveEnergy(generatePerTick);
+                energy.insertEnergy(Vivatech.ENERGY, generatePerTick, Simulation.ACTION);
             } else if (FurnaceBlockEntity.canUseAsFuel(inventory.get(0))) {
                 burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 10;
                 inventory.get(0).subtractAmount(1);
             }
         }
-        energyStorage.emitEnergy(world, pos);
+//        energy.emitEnergy(world, pos);
         markDirty();
     }
 
@@ -145,13 +145,6 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
     @Override
     public void clear() {
         inventory.clear();
-    }
-
-
-    // IEnergyHolder
-    @Override
-    public IEnergyStorage getEnergyStorage() {
-        return energyStorage;
     }
 
     // PropertyDelegateHolder

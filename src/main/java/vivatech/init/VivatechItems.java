@@ -3,8 +3,8 @@ package vivatech.init;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
+import vivatech.Vivatech;
 import vivatech.block.CoalGeneratorBlock;
-import vivatech.util.Meta;
 import vivatech.block.ElectricFurnaceBlock;
 
 public class VivatechItems implements Initializable {
@@ -12,8 +12,8 @@ public class VivatechItems implements Initializable {
     public static final Item ELECTRIC_FURNACE;
 
     static {
-        COAL_GENERATOR = new BlockItem(VivatechBlocks.COAL_GENERATOR, Meta.ITEM_SETTINGS);
-        ELECTRIC_FURNACE = new BlockItem(VivatechBlocks.ELECTRIC_FURNACE, Meta.ITEM_SETTINGS);
+        COAL_GENERATOR = new BlockItem(VivatechBlocks.COAL_GENERATOR, Vivatech.ITEM_SETTINGS);
+        ELECTRIC_FURNACE = new BlockItem(VivatechBlocks.ELECTRIC_FURNACE, Vivatech.ITEM_SETTINGS);
     }
 
     @Override

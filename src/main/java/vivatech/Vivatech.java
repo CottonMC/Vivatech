@@ -1,14 +1,29 @@
-package vivatech.init;
+package vivatech;
 
+import io.github.cottonmc.energy.CottonEnergy;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.container.BlockContext;
+import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import vivatech.block.CoalGeneratorBlock;
 import vivatech.block.ElectricFurnaceBlock;
 import vivatech.controller.CoalGeneratorController;
 import vivatech.controller.ElectricFurnaceController;
+import vivatech.energy.InfiniteEnergyType;
+import vivatech.init.VivatechBlocks;
+import vivatech.init.VivatechEntities;
+import vivatech.init.VivatechItems;
 
-public class VivatechModCommon implements ModInitializer {
+public class Vivatech implements ModInitializer {
+    public static final String MODID = "vivatech";
+    public static final Item.Settings ITEM_SETTINGS = new Item.Settings();
+    public static final Block.Settings MACHINE_BLOCK_SETTINGS = FabricBlockSettings.copy(Blocks.IRON_BLOCK).build();
+    public static final InfiniteEnergyType ENERGY = new InfiniteEnergyType();
 
     @Override
     public void onInitialize() {
@@ -20,5 +35,7 @@ public class VivatechModCommon implements ModInitializer {
                 new CoalGeneratorController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(ElectricFurnaceBlock.ID, (syncId, id, player, buf) ->
                 new ElectricFurnaceController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
+
+        Registry.register(CottonEnergy.ENERGY_REGISTRY, new Identifier(MODID, "infinite_energy_type"), ENERGY);
     }
 }

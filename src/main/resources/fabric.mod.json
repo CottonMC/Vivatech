@@ -15,10 +15,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "vivatech.init.VivatechModCommon"
+      "vivatech.Vivatech"
     ],
     "client": [
-      "vivatech.init.VivatechModClient"
+      "vivatech.VivatechClient"
     ]
   },
 
