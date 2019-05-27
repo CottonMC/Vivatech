@@ -1,8 +1,8 @@
-## United Manufacturing
+## Vivatech
 
 Electric marvels: cooler, healthier, brighter, and cheaper than gas.
 
-United Manufacturing is a technology mod for Fabric for Minecraft 1.14 and beyond. It would help you
+Vivatech is a technology mod for Fabric for Minecraft 1.14 and beyond. It would help you
 to automate your routine tasks, it would multiply your resources and it would give you a lot of new
 cool abilities in making armor, tools and in farming.
 
@@ -11,7 +11,6 @@ cool abilities in making armor, tools and in farming.
 * [Cotton](https://github.com/CottonMC/cotton)
 * [Cotton Energy](https://github.com/CottonMC/cotton-energy)
 * [Cotton Resources](https://github.com/CottonMC/cotton-resources)
-* [SilkAPI](https://github.com/Prospector/Silk)
 * [LibBlockAttributes](https://github.com/AlexIIL/LibBlockAttributes)
 
 ### Installation

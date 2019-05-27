@@ -1,45 +1,33 @@
 {
   "schemaVersion": 1,
-  "id": "united-manufacturing",
+  "id": "vivatech",
   "version": "${version}",
 
-  "name": "United Manufacturing",
+  "name": "Vivatech",
   "description": "Electric marvels: cooler, healthier, brighter, and cheaper than gas",
   "authors": ["The Cotton Team"],
   "contact": {
-    "homepage": "https://github.com/CottonMC/UnitedManufacturing",
-    "issues": "https://github.com/CottonMC/UnitedManufacturing/issues"
+    "homepage": "https://github.com/CottonMC/Vivatech",
+    "issues": "https://github.com/CottonMC/Vivatech/issues"
   },
   "license": "MIT",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.cottonmc.um.UnitedManufacturing"
+      "vivatech.init.VivatechModCommon"
     ],
     "client": [
-      "io.github.cottonmc.um.client.UMClient"
+      "vivatech.init.VivatechModClient"
     ]
   },
-  "mixins": [
-    {
-      "config": "united-manufacturing.client.json",
-      "environment": "client"
-    },
-    {
-      "config": "united-manufacturing.common.json",
-      "environment": "*"
-    }
-  ],
 
   "requires": {
     "fabricloader": ">=0.4.0",
     "fabric": "*",
-    "libblockattributes": "*",
-    "silk": "*",
     "cotton": "*",
-    "cotton-energy": "*",
-    "cotton-resources": "*"
+    "cotton-resources": "*",
+    "libblockattributes": "*"
   }
 }
 

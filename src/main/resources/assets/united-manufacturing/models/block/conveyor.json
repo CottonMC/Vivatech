@@ -1,8 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "top":   "united-manufacturing:block/struct/conveyor",
-    "bottom": "united-manufacturing:block/struct/structure_block",
-    "side":  "united-manufacturing:block/struct/structure_block"
-  }
-}
