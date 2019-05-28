@@ -4,6 +4,7 @@ import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
@@ -12,28 +13,24 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
+import vivatech.block.AbstractMachineBlock;
 import vivatech.energy.EnergyAttributeProvider;
 import vivatech.init.VivatechEntities;
 import vivatech.util.EnergyHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public class CoalGeneratorEntity extends BlockEntity implements Tickable, Inventory, PropertyDelegateHolder, EnergyAttributeProvider {
+public class CoalGeneratorEntity extends AbstractMachineEntity {
 
     private final int generatePerTick = 1;
     private int burnTime = 0;
     private int burnTimeTotal = 0;
-    private final int invSize = 1;
-    private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
-    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100, Vivatech.ENERGY) {
-        @Override
-        public boolean canInsertEnergy() {
-            return false;
-        }
-    };
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -82,24 +79,35 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
         super(VivatechEntities.COAL_GENERATOR);
     }
 
+    // AbstractMachineEntity
+    @Override
+    protected int getMaxEnergy() {
+        return 100;
+    }
+
+    @Override
+    protected boolean canInsertEnergy() {
+        return false;
+    }
+
+    @Override
+    protected boolean canExtractEnergy() {
+        return true;
+    }
+
     // BlockEntity
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        energy.fromTag(tag.getTag("Energy"));
         burnTime = tag.getInt("BurnTime");
         burnTimeTotal = tag.getInt("BurnTimeTotal");
-        inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
-        Inventories.fromTag(tag, inventory);
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag.put("Energy", energy.toTag());
         tag.putInt("BurnTime", burnTime);
         tag.putInt("BurnTimeTotal", burnTimeTotal);
-        Inventories.toTag(tag, inventory);
         return tag;
     }
 
@@ -109,69 +117,47 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
         if (energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             if (burnTime > 0) {
                 burnTime -= 1;
-                if (burnTime == 0) burnTimeTotal = 0;
                 energy.insertEnergy(Vivatech.ENERGY, generatePerTick, Simulation.ACTION);
-            } else if (FurnaceBlockEntity.canUseAsFuel(inventory.get(0))) {
-                burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 10;
+            } else if (inventory.get(0).getAmount() > 0) {
+                burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
                 burnTimeTotal = burnTime;
                 inventory.get(0).subtractAmount(1);
+                world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, true));
             }
+        }
+        if (burnTime == 0) {
+            burnTimeTotal = 0;
+            if (inventory.get(0).getAmount() == 0)
+                world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, false));
         }
         if (energy.getCurrentEnergy() != 0) EnergyHelper.emit(energy, world, pos);
         markDirty();
     }
 
-    // Inventory
+    // SidedInventory
+    @Override
+    public int[] getInvAvailableSlots(Direction direction) {
+        return new int[]{0};
+    }
+
+    @Override
+    public boolean canInsertInvStack(int slot, ItemStack itemStack, @Nullable Direction direction) {
+        return isValidInvStack(slot, itemStack);
+    }
+
+    @Override
+    public boolean canExtractInvStack(int slot, ItemStack itemStack, Direction direction) {
+        return false;
+    }
+
     @Override
     public int getInvSize() {
-        return invSize;
+        return 1;
     }
 
     @Override
-    public boolean isInvEmpty() {
-        for (ItemStack itemStack : inventory) if (!itemStack.isEmpty()) return false;
-        return true;
-    }
-
-    @Override
-    public ItemStack getInvStack(int slot) {
-        return inventory.get(slot);
-    }
-
-    @Override
-    public ItemStack takeInvStack(int slot, int parts) {
-        return Inventories.splitStack(inventory, slot, parts);
-    }
-
-    @Override
-    public ItemStack removeInvStack(int slot) {
-        return Inventories.removeStack(inventory, slot);
-    }
-
-    @Override
-    public void setInvStack(int slot, ItemStack itemStack) {
-        inventory.set(slot, itemStack);
-        if (itemStack.getAmount() > getInvMaxStackAmount()) {
-            itemStack.setAmount(getInvMaxStackAmount());
-        }
-        markDirty();
-    }
-
-    @Override
-    public boolean canPlayerUseInv(PlayerEntity player) {
-        if (world.getBlockEntity(pos) != this) {
-            return false;
-        } else {
-            return player.squaredDistanceTo(
-                    (double) pos.getX() + 0.5D,
-                    (double) pos.getY() + 0.5D,
-                    (double) pos.getZ() + 0.5D) <= 64.0D;
-        }
-    }
-
-    @Override
-    public void clear() {
-        inventory.clear();
+    public boolean isValidInvStack(int slot, ItemStack itemStack) {
+        return AbstractFurnaceBlockEntity.canUseAsFuel(itemStack);
     }
 
     // PropertyDelegateHolder

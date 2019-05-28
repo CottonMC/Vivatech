@@ -6,7 +6,11 @@ import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.container.BlockContext;
+import net.minecraft.container.SlotActionType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
@@ -14,7 +18,6 @@ import vivatech.block.ElectricFurnaceBlock;
 import vivatech.util.StringHelper;
 
 public class ElectricFurnaceController extends CottonScreenController {
-
     public ElectricFurnaceController(int syncId, PlayerInventory playerInventory, BlockContext context) {
         super(RecipeType.SMELTING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 

@@ -26,6 +26,7 @@
     "fabricloader": ">=0.4.0",
     "fabric": "*",
     "cotton": "*",
+    "cotton-energy": "*",
     "cotton-resources": "*",
     "libblockattributes": "*"
   }
