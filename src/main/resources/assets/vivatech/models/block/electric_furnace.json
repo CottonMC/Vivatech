@@ -1,0 +1,6 @@
+{
+  "parent": "vivatech:block/machine",
+  "textures": {
+    "front": "vivatech:block/electric_furnace_front"
+  }
+}

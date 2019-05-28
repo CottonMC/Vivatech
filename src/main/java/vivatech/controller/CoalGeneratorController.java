@@ -8,7 +8,7 @@ import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.recipe.RecipeType;
 import vivatech.block.CoalGeneratorBlock;
-import vivatech.util.StringUtil;
+import vivatech.util.StringHelper;
 
 public class CoalGeneratorController extends CottonScreenController {
 
@@ -16,7 +16,7 @@ public class CoalGeneratorController extends CottonScreenController {
         super(RecipeType.SMELTING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 
         WGridPanel rootPanel = (WGridPanel) getRootPanel();
-        rootPanel.add(new WLabel(StringUtil.getTranslatableComponent("block", CoalGeneratorBlock.ID),
+        rootPanel.add(new WLabel(StringHelper.getTranslatableComponent("block", CoalGeneratorBlock.ID),
                 WLabel.DEFAULT_TEXT_COLOR), 0, 0);
 
         rootPanel.add(new WLabel(String.format("%s/%s", propertyDelegate.get(0), propertyDelegate.get(1)),

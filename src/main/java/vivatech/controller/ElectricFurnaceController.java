@@ -11,7 +11,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
 import vivatech.block.ElectricFurnaceBlock;
-import vivatech.util.StringUtil;
+import vivatech.util.StringHelper;
 
 public class ElectricFurnaceController extends CottonScreenController {
 
@@ -19,17 +19,20 @@ public class ElectricFurnaceController extends CottonScreenController {
         super(RecipeType.SMELTING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 
         WGridPanel rootPanel = (WGridPanel) getRootPanel();
-        rootPanel.add(new WLabel(StringUtil.getTranslatableComponent("block", ElectricFurnaceBlock.ID),
+        rootPanel.add(new WLabel(StringHelper.getTranslatableComponent("block", ElectricFurnaceBlock.ID),
                 WLabel.DEFAULT_TEXT_COLOR), 0, 0);
 
         rootPanel.add(new WLabel(String.format("%s/%s", propertyDelegate.get(0), propertyDelegate.get(1)),
                 WLabel.DEFAULT_TEXT_COLOR), 0, 1);
 
-//        WBar bar = new WBar(new Identifier(Vivatech.MODID, "background"), new Identifier(Vivatech.MODID, "bar"), 2, 3);
-//        rootPanel.add(bar, 3, 2);
+//        rootPanel.add(new WBar(new Identifier(Vivatech.MODID, "energy_bar_bg"), new Identifier(Vivatech.MODID, "energy_bar"),
+//                propertyDelegate.get(0), propertyDelegate.get(1)), 1, 1);
 
         WItemSlot inputSlot = WItemSlot.of(blockInventory, 0);
         rootPanel.add(inputSlot, 2, 2);
+
+//        rootPanel.add(new WBar(new Identifier(Vivatech.MODID, "progress_bar_bg"), new Identifier(Vivatech.MODID, "progress_bar"),
+//                propertyDelegate.get(2), propertyDelegate.get(3)), 3, 2);
 
         WItemSlot outputSlot = WItemSlot.of(blockInventory, 1);
         rootPanel.add(outputSlot, 6, 2);

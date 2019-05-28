@@ -9,6 +9,7 @@ cool abilities in making armor, tools and in farming.
 ### Requirements
 
 * [Cotton](https://github.com/CottonMC/cotton)
+* [Cotton Energy](https://github.com/CottonMC/cotton-energy)
 * [Cotton Resources](https://github.com/CottonMC/cotton-resources)
 * [LibBlockAttributes](https://github.com/AlexIIL/LibBlockAttributes)
 

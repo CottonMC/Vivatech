@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,active=false":  { "model": "vivatech:block/electric_furnace" },
+    "facing=east,active=false":   { "model": "vivatech:block/electric_furnace", "y": 90 },
+    "facing=south,active=false":  { "model": "vivatech:block/electric_furnace", "y": 180 },
+    "facing=west,active=false":   { "model": "vivatech:block/electric_furnace", "y": 270 },
+    "facing=north,active=true":   { "model": "vivatech:block/electric_furnace_active" },
+    "facing=east,active=true":    { "model": "vivatech:block/electric_furnace_active", "y": 90 },
+    "facing=south,active=true":   { "model": "vivatech:block/electric_furnace_active", "y": 180 },
+    "facing=west,active=true":    { "model": "vivatech:block/electric_furnace_active", "y": 270 }
+  }
+}

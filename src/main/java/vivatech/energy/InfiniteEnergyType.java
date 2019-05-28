@@ -4,7 +4,7 @@ import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
-import vivatech.util.StringUtil;
+import vivatech.util.StringHelper;
 
 public class InfiniteEnergyType implements EnergyType {
     private static final Identifier i18nId = new Identifier(Vivatech.MODID, "energy_units");
@@ -16,7 +16,7 @@ public class InfiniteEnergyType implements EnergyType {
 
     @Override
     public TranslatableComponent getDisplayAmount(int i) {
-        return StringUtil.getTranslatableComponent("info", i18nId);
+        return StringHelper.getTranslatableComponent("info", i18nId);
     }
 
     @Override

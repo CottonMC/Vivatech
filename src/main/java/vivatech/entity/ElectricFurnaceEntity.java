@@ -1,6 +1,9 @@
 package vivatech.entity;
 
+import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
+import io.github.cottonmc.energy.api.EnergyAttribute;
+import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,28 +16,32 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
-import vivatech.energy.IEnergyHolder;
-import vivatech.energy.IEnergyStorage;
-import vivatech.energy.SimpleEnergyConsumer;
+import vivatech.Vivatech;
+import vivatech.energy.EnergyAttributeProvider;
 import vivatech.init.VivatechEntities;
 
 import javax.annotation.Nullable;
 
-public class ElectricFurnaceEntity extends BlockEntity implements Tickable, SidedInventory, IEnergyHolder, PropertyDelegateHolder {
+public class ElectricFurnaceEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder, EnergyAttributeProvider {
 
     private final int consumePerTick = 2;
-    private int smeltTime;
+    private int smeltTime = 0;
+    private int smeltTimeTotal = 0;
     private final int invSize = 2;
     private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
-    private IEnergyStorage energyStorage = new SimpleEnergyConsumer(100);
+    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100, Vivatech.ENERGY);
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
             switch (propertyId) {
                 case 0: // Current Energy
-                    return energyStorage.getCurrentEnergy();
+                    return energy.getCurrentEnergy();
                 case 1: // Max Energy
-                    return energyStorage.getMaxEnergy();
+                    return energy.getMaxEnergy();
+                case 2: // Smelt Time
+                    return smeltTime;
+                case 3: // Smelt Time Total
+                    return smeltTimeTotal;
                 default:
                     return 0;
             }
@@ -44,10 +51,16 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
         public void set(int propertyId, int value) {
             switch (propertyId) {
                 case 0: // Current Energy
-                    energyStorage.setCurrentEnergy(value);
+                    energy.setCurrentEnergy(value);
                     break;
                 case 1: // Max Energy
-                    energyStorage.setMaxEnergy(value);
+                    energy.setMaxEnergy(value);
+                    break;
+                case 2: // Smelt Time
+                    smeltTime = value;
+                    break;
+                case 3: // Smelt Time Total
+                    smeltTimeTotal = value;
                     break;
                 default:
                     break;
@@ -56,7 +69,7 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
 
         @Override
         public int size() {
-            return 2;
+            return 4;
         }
     };
 
@@ -68,7 +81,9 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        energyStorage.readEnergyFromTag(tag);
+        energy.fromTag(tag.getCompound("Energy"));
+        smeltTime = tag.getInt("SmeltTime");
+        smeltTimeTotal = tag.getInt("SmeltTimeTotal");
         inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
         Inventories.fromTag(tag, inventory);
     }
@@ -76,7 +91,9 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        energyStorage.writeEnergyToTag(tag);
+        tag = (CompoundTag) tag.put("Energy", energy.toTag());
+        tag.putInt("SmeltTime", smeltTime);
+        tag.putInt("SmeltTimeTotal", smeltTimeTotal);
         Inventories.toTag(tag, inventory);
         return tag;
     }
@@ -108,12 +125,10 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
     public boolean canRun() {
         ItemStack output = getOutputStack();
         if (inventory.get(0).isEmpty() || output.isEmpty() || inventory.get(1).getAmount() > 64
-                || energyStorage.getCurrentEnergy() < consumePerTick) {
+                || energy.getCurrentEnergy() < consumePerTick) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
-            if (output.getItem() != inventory.get(1).getItem()) {
-                return false;
-            }
+            return output.getItem() == inventory.get(1).getItem();
         }
 
         return true;
@@ -132,7 +147,7 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
                 inventory.get(0).subtractAmount(1);
             }
 
-            energyStorage.takeEnergy(consumePerTick);
+            energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
         }
     }
 
@@ -144,12 +159,12 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
 
     @Override
     public boolean canInsertInvStack(int slot, ItemStack itemStack, @Nullable Direction direction) {
-        return slot == 0;
+        return slot != 1;
     }
 
     @Override
     public boolean canExtractInvStack(int slot, ItemStack itemStack, Direction direction) {
-        return slot == 1;
+        return slot != 0;
     }
 
     @Override
@@ -204,15 +219,15 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
         inventory.clear();
     }
 
-    // IEnergyStorage
-    @Override
-    public IEnergyStorage getEnergyStorage() {
-        return energyStorage;
-    }
-
     // PropertyDelegateHolder
     @Override
     public PropertyDelegate getPropertyDelegate() {
         return propertyDelegate;
+    }
+
+    // EnergyAttributeProvider
+    @Override
+    public EnergyAttribute getEnergy() {
+        return energy;
     }
 }

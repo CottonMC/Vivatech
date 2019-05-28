@@ -2,6 +2,7 @@ package vivatech.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
+import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
@@ -14,15 +15,20 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import vivatech.Vivatech;
+import vivatech.energy.EnergyAttributeProvider;
 import vivatech.init.VivatechEntities;
+import vivatech.util.EnergyHelper;
 
-public class CoalGeneratorEntity extends BlockEntity implements Tickable, Inventory, PropertyDelegateHolder {
+import javax.annotation.Nonnull;
+
+public class CoalGeneratorEntity extends BlockEntity implements Tickable, Inventory, PropertyDelegateHolder, EnergyAttributeProvider {
 
     private final int generatePerTick = 1;
-    private int burnTime;
+    private int burnTime = 0;
+    private int burnTimeTotal = 0;
     private final int invSize = 1;
     private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
-    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100);
+    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100, Vivatech.ENERGY);
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -31,6 +37,10 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
                     return energy.getCurrentEnergy();
                 case 1: // Max Energy
                     return energy.getMaxEnergy();
+                case 2: // Burn Time
+                    return burnTime;
+                case 3: // Burn Time Total
+                    return burnTimeTotal;
                 default:
                     return 0;
             }
@@ -45,6 +55,12 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
                 case 1: // Max Energy
                     energy.setMaxEnergy(value);
                     break;
+                case 2: // Burn Time
+                    burnTime = value;
+                    break;
+                case 3: // Burn Time Total
+                    burnTimeTotal = value;
+                    break;
                 default:
                     break;
             }
@@ -52,7 +68,7 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
 
         @Override
         public int size() {
-            return 2;
+            return 4;
         }
     };
 
@@ -65,7 +81,9 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        energy.fromTag(tag);
+        if (tag.containsKey("Energy")) energy.fromTag(tag.getCompound("Energy"));
+        burnTime = tag.getInt("BurnTime");
+        burnTimeTotal = tag.getInt("BurnTimeTotal");
         inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
         Inventories.fromTag(tag, inventory);
     }
@@ -73,7 +91,9 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag = (CompoundTag) energy.toTag();
+        tag.put("Energy", energy.toTag());
+        tag.putInt("BurnTime", burnTime);
+        tag.putInt("BurnTimeTotal", burnTimeTotal);
         Inventories.toTag(tag, inventory);
         return tag;
     }
@@ -84,13 +104,19 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
         if (energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             if (burnTime > 0) {
                 burnTime -= 1;
+                if (burnTime == 0) {
+                    burnTimeTotal = 0;
+                }
                 energy.insertEnergy(Vivatech.ENERGY, generatePerTick, Simulation.ACTION);
+                markDirty();
             } else if (FurnaceBlockEntity.canUseAsFuel(inventory.get(0))) {
                 burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 10;
+                burnTimeTotal = burnTime;
                 inventory.get(0).subtractAmount(1);
+                markDirty();
             }
         }
-//        energy.emitEnergy(world, pos);
+        EnergyHelper.emit(energy, world, pos);
         markDirty();
     }
 
@@ -151,5 +177,11 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
     @Override
     public PropertyDelegate getPropertyDelegate() {
         return propertyDelegate;
+    }
+
+    // EnergyAttributeProvider
+    @Override
+    public EnergyAttribute getEnergy() {
+        return energy;
     }
 }

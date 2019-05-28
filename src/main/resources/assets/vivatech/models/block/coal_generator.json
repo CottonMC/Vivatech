@@ -1,0 +1,6 @@
+{
+  "parent": "vivatech:block/machine",
+  "textures": {
+    "front": "vivatech:block/coal_generator_front"
+  }
+}

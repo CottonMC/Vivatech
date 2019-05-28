@@ -1,5 +1,6 @@
 {
   "itemGroup.vivatech.item_group": "Vivatech",
+  "info.vivatech.energy_units": "%s Дж",
   "block.vivatech.coal_generator": "Угольный Генератор",
   "block.vivatech.electric_furnace": "Электрическая Печь"
 }

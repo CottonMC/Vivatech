@@ -1,8 +1,7 @@
 package vivatech.block;
 
+import alexiil.mc.lib.attributes.AttributeList;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,18 +14,14 @@ import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.CoalGeneratorEntity;
 
-public class CoalGeneratorBlock extends Block implements BlockEntityProvider {
+public class CoalGeneratorBlock extends AbstractMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "coal_generator");
 
     public CoalGeneratorBlock() {
         super(Vivatech.MACHINE_BLOCK_SETTINGS);
     }
 
-    @Override
-    public BlockEntity createBlockEntity(BlockView var1) {
-        return new CoalGeneratorEntity();
-    }
-
+    // Block
     @Override
     public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hitResult) {
         if (!world.isClient) {
@@ -34,5 +29,20 @@ public class CoalGeneratorBlock extends Block implements BlockEntityProvider {
         }
 
         return true;
+    }
+
+    // BlockEntityProvider
+    @Override
+    public BlockEntity createBlockEntity(BlockView blockView) {
+        return new CoalGeneratorEntity();
+    }
+
+    // AttributeProvider
+    @Override
+    public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
+        BlockEntity be = world.getBlockEntity(pos);
+        if (be instanceof CoalGeneratorEntity) {
+            to.offer(((CoalGeneratorEntity) be).getEnergy());
+        }
     }
 }
