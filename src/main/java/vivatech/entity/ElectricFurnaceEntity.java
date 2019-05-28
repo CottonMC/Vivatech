@@ -29,7 +29,10 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
     private int smeltTimeTotal = 0;
     private final int invSize = 2;
     private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
-    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100, Vivatech.ENERGY);
+    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100, Vivatech.ENERGY) {
+        @Override
+        public boolean canExtractEnergy() { return false; }
+    };
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -81,7 +84,7 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        energy.fromTag(tag.getCompound("Energy"));
+        energy.fromTag(tag.getTag("Energy"));
         smeltTime = tag.getInt("SmeltTime");
         smeltTimeTotal = tag.getInt("SmeltTimeTotal");
         inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
@@ -91,7 +94,7 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag = (CompoundTag) tag.put("Energy", energy.toTag());
+        tag.put("Energy", energy.toTag());
         tag.putInt("SmeltTime", smeltTime);
         tag.putInt("SmeltTimeTotal", smeltTimeTotal);
         Inventories.toTag(tag, inventory);
@@ -103,6 +106,7 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
     public void tick() {
         if (canRun()) {
             smeltTime++;
+            energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
             if (smeltTime >= 120) {
                 smeltTime = 0;
                 smeltItem();
@@ -146,8 +150,6 @@ public class ElectricFurnaceEntity extends BlockEntity implements Tickable, Side
 
                 inventory.get(0).subtractAmount(1);
             }
-
-            energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
         }
     }
 

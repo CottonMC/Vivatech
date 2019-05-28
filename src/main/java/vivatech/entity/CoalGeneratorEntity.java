@@ -28,7 +28,12 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
     private int burnTimeTotal = 0;
     private final int invSize = 1;
     private DefaultedList<ItemStack> inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
-    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100, Vivatech.ENERGY);
+    private SimpleEnergyAttribute energy = new SimpleEnergyAttribute(100, Vivatech.ENERGY) {
+        @Override
+        public boolean canInsertEnergy() {
+            return false;
+        }
+    };
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -81,7 +86,7 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        if (tag.containsKey("Energy")) energy.fromTag(tag.getCompound("Energy"));
+        energy.fromTag(tag.getTag("Energy"));
         burnTime = tag.getInt("BurnTime");
         burnTimeTotal = tag.getInt("BurnTimeTotal");
         inventory = DefaultedList.create(invSize, ItemStack.EMPTY);
@@ -104,19 +109,15 @@ public class CoalGeneratorEntity extends BlockEntity implements Tickable, Invent
         if (energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             if (burnTime > 0) {
                 burnTime -= 1;
-                if (burnTime == 0) {
-                    burnTimeTotal = 0;
-                }
+                if (burnTime == 0) burnTimeTotal = 0;
                 energy.insertEnergy(Vivatech.ENERGY, generatePerTick, Simulation.ACTION);
-                markDirty();
             } else if (FurnaceBlockEntity.canUseAsFuel(inventory.get(0))) {
                 burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 10;
                 burnTimeTotal = burnTime;
                 inventory.get(0).subtractAmount(1);
-                markDirty();
             }
         }
-        EnergyHelper.emit(energy, world, pos);
+        if (energy.getCurrentEnergy() != 0) EnergyHelper.emit(energy, world, pos);
         markDirty();
     }
 
