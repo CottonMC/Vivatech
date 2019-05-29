@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vivatech",
+  "pattern": ["   ", "ABA", "CDC"],
+  "key": {
+    "A": {
+      "item": "minecraft:furnace"
+    },
+    "B": {
+      "item": "vivatech:machine_chassis"
+    },
+    "C": {
+      "item": "minecraft:redstone"
+    },
+    "D": {
+      "item": "minecraft:gold_nugget"
+    }
+  },
+  "result": {
+    "item": "vivatech:coal_generator"
+  }
+}

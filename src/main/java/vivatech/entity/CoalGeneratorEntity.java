@@ -150,10 +150,4 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     public PropertyDelegate getPropertyDelegate() {
         return propertyDelegate;
     }
-
-    // EnergyAttributeProvider
-    @Override
-    public EnergyAttribute getEnergy() {
-        return energy;
-    }
 }

@@ -2,9 +2,11 @@ package vivatech.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.energy.api.EnergyAttribute;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.AbstractCookingRecipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.math.Direction;
@@ -82,8 +84,8 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         if (canRun()) {
             cookTime++;
             if (cookTimeTotal == 0) {
-                cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).get()
-                        .getCookTime() / (2 * speedMultiplier));
+                cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
+                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * speedMultiplier));
             }
             energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
             setBlockActive(true);
@@ -186,11 +188,5 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     @Override
     public PropertyDelegate getPropertyDelegate() {
         return propertyDelegate;
-    }
-
-    // EnergyAttributeProvider
-    @Override
-    public EnergyAttribute getEnergy() {
-        return energy;
     }
 }

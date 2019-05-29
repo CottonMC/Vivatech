@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vivatech",
+  "pattern": ["AAA", "BCD", "EFE"],
+  "key": {
+    "A": {
+      "tag": "c:copper_ingot"
+    },
+    "B": {
+      "item": "minecraft:smoker"
+    },
+    "C": {
+      "item": "vivatech:machine_chassis"
+    },
+    "D": {
+      "item": "minecraft:blast_furnace"
+    },
+    "E": {
+      "item": "minecraft:redstone"
+    },
+    "F": {
+      "tag": "c:cobalt_nugget"
+    }
+  },
+  "result": {
+    "item": "vivatech:coal_generator"
+  }
+}

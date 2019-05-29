@@ -1,6 +1,7 @@
 package vivatech.entity;
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
+import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
@@ -128,6 +129,12 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
     @Override
     public void clear() {
         inventory.clear();
+    }
+
+    // EnergyAttributeProvider
+    @Override
+    public EnergyAttribute getEnergy() {
+        return energy;
     }
 
     //BlockEntityClientSerializable

@@ -15,7 +15,7 @@ public class VivatechBlocks implements Initializable {
     public static final ElectricFurnaceBlock ELECTRIC_FURNACE;
 
     static {
-        MACHINE_CHASSIS = new Block(Vivatech.MACHINE_BLOCK_SETTINGS);
+        MACHINE_CHASSIS = new Block(Vivatech.METALLIC_BLOCK_SETTINGS);
         COAL_GENERATOR = new CoalGeneratorBlock();
         ELECTRIC_FURNACE = new ElectricFurnaceBlock();
     }
