@@ -9,7 +9,6 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
-import vivatech.block.AbstractMachineBlock;
 import vivatech.init.VivatechEntities;
 
 import javax.annotation.Nullable;
@@ -17,6 +16,7 @@ import javax.annotation.Nullable;
 public class ElectricFurnaceEntity extends AbstractMachineEntity {
 
     private final int consumePerTick = 2;
+    private final float speedMultiplier = 1.5F;
     private int cookTime = 0;
     private int cookTimeTotal = 100;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -81,15 +81,20 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (canRun()) {
             cookTime++;
+            if (cookTimeTotal == 0) {
+                cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).get()
+                        .getCookTime() / (2 * speedMultiplier));
+            }
             energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
             setBlockActive(true);
             if (cookTime >= cookTimeTotal) {
                 cookTime = 0;
+                cookTimeTotal = 0;
                 smeltItem();
                 if (inventory.get(0).getAmount() == 0) {
                     setBlockActive(false);
                 }
-                updateListeners();
+                updateEntity();
             }
         } else if (!canRun() && cookTime > 0) {
             cookTime = 0;

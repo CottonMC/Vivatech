@@ -1,10 +1,7 @@
 package vivatech.controller;
 
 import io.github.cottonmc.cotton.gui.CottonScreenController;
-import io.github.cottonmc.cotton.gui.widget.WBar;
-import io.github.cottonmc.cotton.gui.widget.WGridPanel;
-import io.github.cottonmc.cotton.gui.widget.WItemSlot;
-import io.github.cottonmc.cotton.gui.widget.WLabel;
+import io.github.cottonmc.cotton.gui.widget.*;
 import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.recipe.RecipeType;
@@ -18,25 +15,22 @@ public class CoalGeneratorController extends CottonScreenController {
     public CoalGeneratorController(int syncId, PlayerInventory playerInventory, BlockContext context) {
         super(RecipeType.SMELTING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 
-        WGridPanel rootPanel = (WGridPanel) getRootPanel();
-
-        // Decorations
-        rootPanel.add(new WLabel(StringHelper.getTranslatableComponent("block", CoalGeneratorBlock.ID),
-                WLabel.DEFAULT_TEXT_COLOR), 1, 0);
+        WPlainPanel root = new WPlainPanel();
+        ((WGridPanel) getRootPanel()).add(root, 0, 0);
 
         // Bars
         WBar energyBar = new WBar(VivatechClient.ENERGY_BAR_BG, VivatechClient.ENERGY_BAR, 0, 1);
         energyBar.withTooltip(StringHelper.getTranslationKey("info", InfiniteEnergyType.energyWithMaxI18nId));
-        rootPanel.add(energyBar, 0, 0, 1, 5);
+        root.add(energyBar, 1, 0, 14, 86);
 
         WBar fireBar = new WBar(VivatechClient.FIRE_BAR_BG, VivatechClient.FIRE_BAR,2, 3);
-        rootPanel.add(fireBar, 4, 2);
+        root.add(fireBar, 89, 36, 14, 14);
 
         // Slots
-        rootPanel.add(WItemSlot.of(blockInventory, 0), 3, 2);
-        rootPanel.add(createPlayerInventoryPanel(), 0, 5);
+        root.add(new WItemSlot(blockInventory, 0, 1, 1, true, true), 63, 36);
+        root.add(createPlayerInventoryPanel(), 0, 90);
 
-        rootPanel.validate(this);
+        root.validate(this);
     }
 
     @Override

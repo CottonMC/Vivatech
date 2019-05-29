@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
-import vivatech.block.AbstractMachineBlock;
 import vivatech.init.VivatechEntities;
 import vivatech.util.EnergyHelper;
 
@@ -70,7 +69,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 10_0;
+        return 10_000;
     }
 
     @Override
@@ -88,7 +87,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
             burnTimeTotal = burnTime;
             inventory.get(0).subtractAmount(1);
             setBlockActive(true);
-            updateListeners();
+            updateEntity();
         }
 
         if (burnTime == 0) {
@@ -96,7 +95,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
             if (inventory.get(0).getAmount() == 0) {
                 setBlockActive(false);
             }
-            updateListeners();
+            updateEntity();
         }
 
         if (energy.getCurrentEnergy() != 0) {

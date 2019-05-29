@@ -1,5 +1,5 @@
 {
-  "parent": "vivatech:block/machine",
+  "parent": "vivatech:block/machine_chassis",
   "textures": {
     "front": "vivatech:block/coal_generator_front"
   }

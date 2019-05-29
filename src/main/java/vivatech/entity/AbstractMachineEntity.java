@@ -50,7 +50,8 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
         world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, active), 3);
     }
 
-    protected void updateListeners() {
+    protected void updateEntity() {
+        markDirty();
         world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
     }
 
