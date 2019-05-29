@@ -7,7 +7,8 @@ import vivatech.Vivatech;
 import vivatech.util.StringHelper;
 
 public class InfiniteEnergyType implements EnergyType {
-    private static final Identifier i18nId = new Identifier(Vivatech.MODID, "energy_units");
+    public static final Identifier energyI18nId = new Identifier(Vivatech.MODID, "energy");
+    public static final Identifier energyWithMaxI18nId = new Identifier(Vivatech.MODID, "energy_with_max");
 
     @Override
     public int getMaximumTransferSize() {
@@ -16,7 +17,7 @@ public class InfiniteEnergyType implements EnergyType {
 
     @Override
     public TranslatableComponent getDisplayAmount(int i) {
-        return StringHelper.getTranslatableComponent("info", i18nId);
+        return StringHelper.getTranslatableComponent("info", energyI18nId, i);
     }
 
     @Override

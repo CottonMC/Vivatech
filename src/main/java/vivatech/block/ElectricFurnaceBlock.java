@@ -1,6 +1,5 @@
 package vivatech.block;
 
-import alexiil.mc.lib.attributes.AttributeList;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -35,14 +34,5 @@ public class ElectricFurnaceBlock extends AbstractMachineBlock {
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
         return new ElectricFurnaceEntity();
-    }
-
-    // AttributeProvider
-    @Override
-    public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
-        BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof ElectricFurnaceEntity) {
-            to.offer(((ElectricFurnaceEntity) be).getEnergy());
-        }
     }
 }

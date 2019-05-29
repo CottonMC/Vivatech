@@ -11,6 +11,7 @@ import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.block.AbstractMachineBlock;
 import vivatech.init.VivatechEntities;
+import vivatech.util.Flag;
 
 import javax.annotation.Nullable;
 
@@ -69,7 +70,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 100;
+        return 10_000;
     }
 
     @Override
@@ -104,17 +105,16 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         if (canRun()) {
             cookTime++;
             energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
-            world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, true));
             if (cookTime >= cookTimeTotal) {
                 cookTime = 0;
                 smeltItem();
-                world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), Flag.NOTIFY_CLIENT_AND_NEIGHBOURS);
             }
         } else if (!canRun() && cookTime > 0) {
             cookTime = 0;
         }
-        if (cookTime == 0 || inventory.get(0).getAmount() == 0)
-            world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, false));
+        world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, cookTime > 0),
+                Flag.NOTIFY_CLIENT_AND_NEIGHBOURS);
     }
 
     public ItemStack getOutputStack() {

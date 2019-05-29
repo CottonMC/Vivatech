@@ -1,6 +1,7 @@
 {
   "itemGroup.vivatech.item_group": "Vivatech",
-  "info.vivatech.energy_units": "%s J",
+  "info.vivatech.energy": "%d J",
+  "info.vivatech.energy_with_max": "%d/%d J",
   "block.vivatech.coal_generator": "Coal Generator",
   "block.vivatech.electric_furnace": "Electric Furnace"
 }

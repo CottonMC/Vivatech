@@ -1,29 +1,19 @@
 package vivatech.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
-import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.api.EnergyAttribute;
-import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.DefaultedList;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.block.AbstractMachineBlock;
-import vivatech.energy.EnergyAttributeProvider;
 import vivatech.init.VivatechEntities;
+import vivatech.util.Flag;
 import vivatech.util.EnergyHelper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class CoalGeneratorEntity extends AbstractMachineEntity {
@@ -82,7 +72,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 100;
+        return 10_000;
     }
 
     @Override
@@ -117,21 +107,18 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
         if (energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             if (burnTime > 0) {
                 burnTime -= 1;
+                if (burnTime == 0) burnTimeTotal = 0;
                 energy.insertEnergy(Vivatech.ENERGY, generatePerTick, Simulation.ACTION);
             } else if (inventory.get(0).getAmount() > 0) {
                 burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
                 burnTimeTotal = burnTime;
                 inventory.get(0).subtractAmount(1);
-                world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, true));
+                world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), Flag.NOTIFY_CLIENT_AND_NEIGHBOURS);
             }
         }
-        if (burnTime == 0) {
-            burnTimeTotal = 0;
-            if (inventory.get(0).getAmount() == 0)
-                world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, false));
-        }
+        world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, burnTime != 0),
+                Flag.NOTIFY_CLIENT_AND_NEIGHBOURS);
         if (energy.getCurrentEnergy() != 0) EnergyHelper.emit(energy, world, pos);
-        markDirty();
     }
 
     // SidedInventory
