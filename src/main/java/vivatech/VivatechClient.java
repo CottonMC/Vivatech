@@ -16,6 +16,8 @@ public class VivatechClient implements ClientModInitializer {
     public static final Identifier ENERGY_BAR = new Identifier(Vivatech.MODID, "textures/gui/energy_bar.png");
     public static final Identifier PROGRESS_BAR_BG = new Identifier(Vivatech.MODID, "textures/gui/progress_bar_bg.png");
     public static final Identifier PROGRESS_BAR = new Identifier(Vivatech.MODID, "textures/gui/progress_bar.png");
+    public static final Identifier FIRE_BAR_BG = new Identifier(Vivatech.MODID, "textures/gui/fire_bar_bg.png");
+    public static final Identifier FIRE_BAR = new Identifier(Vivatech.MODID, "textures/gui/fire_bar.png");
     @Override
     public void onInitializeClient() {
         ScreenProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, identifier, player, buf) ->

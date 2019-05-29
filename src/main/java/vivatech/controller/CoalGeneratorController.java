@@ -29,8 +29,11 @@ public class CoalGeneratorController extends CottonScreenController {
         energyBar.withTooltip(StringHelper.getTranslationKey("info", InfiniteEnergyType.energyWithMaxI18nId));
         rootPanel.add(energyBar, 0, 0, 1, 5);
 
+        WBar progressBar = new WBar(VivatechClient.FIRE_BAR_BG, VivatechClient.FIRE_BAR,2, 3);
+        rootPanel.add(progressBar, 4, 2);
+
         // Slots
-        rootPanel.add(WItemSlot.of(blockInventory, 0), 2, 2);
+        rootPanel.add(WItemSlot.of(blockInventory, 0), 3, 2);
         rootPanel.add(createPlayerInventoryPanel(), 0, 5);
 
         rootPanel.validate(this);

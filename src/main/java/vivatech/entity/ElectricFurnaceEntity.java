@@ -19,7 +19,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
 
     private final int consumePerTick = 2;
     private int cookTime = 0;
-    private int cookTimeTotal = 120;
+    private int cookTimeTotal = 100;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
