@@ -5,6 +5,7 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateFactory;
@@ -29,7 +30,6 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
     // Block
     @Override
     protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder);
         builder.add(FACING, ACTIVE);
     }
 

@@ -11,13 +11,11 @@ import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.block.AbstractMachineBlock;
 import vivatech.init.VivatechEntities;
-import vivatech.util.Flag;
 import vivatech.util.EnergyHelper;
 
 import javax.annotation.Nullable;
 
 public class CoalGeneratorEntity extends AbstractMachineEntity {
-
     private final int generatePerTick = 1;
     private int burnTime = 0;
     private int burnTimeTotal = 0;
@@ -72,7 +70,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 10_000;
+        return 10_0;
     }
 
     @Override
@@ -81,8 +79,29 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     }
 
     @Override
-    protected boolean canExtractEnergy() {
-        return true;
+    protected void serverTick() {
+        if (burnTime > 0) {
+            burnTime--;
+            energy.insertEnergy(Vivatech.ENERGY, generatePerTick, Simulation.ACTION);
+        } else if (inventory.get(0).getAmount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
+            burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
+            burnTimeTotal = burnTime;
+            inventory.get(0).subtractAmount(1);
+            setBlockActive(true);
+            updateListeners();
+        }
+
+        if (burnTime == 0) {
+            burnTimeTotal = 0;
+            if (inventory.get(0).getAmount() == 0) {
+                setBlockActive(false);
+            }
+            updateListeners();
+        }
+
+        if (energy.getCurrentEnergy() != 0) {
+            EnergyHelper.emit(energy, world, pos);
+        }
     }
 
     // BlockEntity
@@ -99,26 +118,6 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
         tag.putInt("BurnTime", burnTime);
         tag.putInt("BurnTimeTotal", burnTimeTotal);
         return tag;
-    }
-
-    // Tickable
-    @Override
-    public void tick() {
-        if (energy.getCurrentEnergy() < energy.getMaxEnergy()) {
-            if (burnTime > 0) {
-                burnTime -= 1;
-                if (burnTime == 0) burnTimeTotal = 0;
-                energy.insertEnergy(Vivatech.ENERGY, generatePerTick, Simulation.ACTION);
-            } else if (inventory.get(0).getAmount() > 0) {
-                burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
-                burnTimeTotal = burnTime;
-                inventory.get(0).subtractAmount(1);
-                world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), Flag.NOTIFY_CLIENT_AND_NEIGHBOURS);
-            }
-        }
-        world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, burnTime != 0),
-                Flag.NOTIFY_CLIENT_AND_NEIGHBOURS);
-        if (energy.getCurrentEnergy() != 0) EnergyHelper.emit(energy, world, pos);
     }
 
     // SidedInventory

@@ -11,7 +11,6 @@ import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.block.AbstractMachineBlock;
 import vivatech.init.VivatechEntities;
-import vivatech.util.Flag;
 
 import javax.annotation.Nullable;
 
@@ -74,47 +73,28 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     }
 
     @Override
-    protected boolean canInsertEnergy() {
-        return true;
-    }
-
-    @Override
     protected boolean canExtractEnergy() {
         return false;
     }
 
-    // BlockEntity
     @Override
-    public void fromTag(CompoundTag tag) {
-        super.fromTag(tag);
-        cookTime = tag.getInt("CookTime");
-        cookTimeTotal = tag.getInt("CookTimeTotal");
-    }
-
-    @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
-        tag.putInt("CookTime", cookTime);
-        tag.putInt("CookTimeTotal", cookTimeTotal);
-        return tag;
-    }
-
-    // Tickable
-    @Override
-    public void tick() {
+    protected void serverTick() {
         if (canRun()) {
             cookTime++;
             energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
+            setBlockActive(true);
             if (cookTime >= cookTimeTotal) {
                 cookTime = 0;
                 smeltItem();
-                world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), Flag.NOTIFY_CLIENT_AND_NEIGHBOURS);
+                if (inventory.get(0).getAmount() == 0) {
+                    setBlockActive(false);
+                }
+                updateListeners();
             }
         } else if (!canRun() && cookTime > 0) {
             cookTime = 0;
+            setBlockActive(false);
         }
-        world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, cookTime > 0),
-                Flag.NOTIFY_CLIENT_AND_NEIGHBOURS);
     }
 
     public ItemStack getOutputStack() {
@@ -128,7 +108,9 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
 
     public boolean canRun() {
         ItemStack output = getOutputStack();
-        if (inventory.get(0).isEmpty() || output.isEmpty() || inventory.get(1).getAmount() > 64
+        if (inventory.get(0).isEmpty()
+                || output.isEmpty()
+                || inventory.get(1).getAmount() > 64
                 || energy.getCurrentEnergy() < consumePerTick) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
@@ -151,6 +133,22 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
                 inventory.get(0).subtractAmount(1);
             }
         }
+    }
+
+    // BlockEntity
+    @Override
+    public void fromTag(CompoundTag tag) {
+        super.fromTag(tag);
+        cookTime = tag.getInt("CookTime");
+        cookTimeTotal = tag.getInt("CookTimeTotal");
+    }
+
+    @Override
+    public CompoundTag toTag(CompoundTag tag) {
+        super.toTag(tag);
+        tag.putInt("CookTime", cookTime);
+        tag.putInt("CookTimeTotal", cookTimeTotal);
+        return tag;
     }
 
     // SidedInventory

@@ -2,6 +2,7 @@ package vivatech.entity;
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,9 +13,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import vivatech.Vivatech;
+import vivatech.block.AbstractMachineBlock;
 import vivatech.energy.EnergyAttributeProvider;
 
-public abstract class AbstractMachineEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder, EnergyAttributeProvider {
+public abstract class AbstractMachineEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
+        EnergyAttributeProvider, BlockEntityClientSerializable {
     protected DefaultedList<ItemStack> inventory = DefaultedList.create(getInvSize(), ItemStack.EMPTY);
     protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), Vivatech.ENERGY) {
         @Override
@@ -30,8 +33,26 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
     }
 
     protected abstract int getMaxEnergy();
-    protected abstract boolean canInsertEnergy();
-    protected abstract boolean canExtractEnergy();
+
+    protected boolean canInsertEnergy() {
+        return true;
+    }
+
+    protected boolean canExtractEnergy() {
+        return true;
+    }
+
+    protected void serverTick() {}
+
+    protected void clientTick() {}
+
+    protected void setBlockActive(boolean active) {
+        world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, active), 3);
+    }
+
+    protected void updateListeners() {
+        world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+    }
 
     // BlockEntity
     @Override
@@ -48,6 +69,16 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
         tag.put("Energy", energy.toTag());
         Inventories.toTag(tag, inventory);
         return tag;
+    }
+
+    // Tickable
+    @Override
+    public void tick() {
+        if (world.isClient()) {
+            clientTick();
+        } else {
+            serverTick();
+        }
     }
 
     // SidedInventory
@@ -96,5 +127,16 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
     @Override
     public void clear() {
         inventory.clear();
+    }
+
+    //BlockEntityClientSerializable
+    @Override
+    public void fromClientTag(CompoundTag tag) {
+        fromTag(tag);
+    }
+
+    @Override
+    public CompoundTag toClientTag(CompoundTag tag) {
+        return toTag(tag);
     }
 }
