@@ -6,7 +6,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "vivatech"
-version = "0.0.1-alpha.1"
+version = "1.0.0-alpha.1"
 
 repositories {
 	maven {

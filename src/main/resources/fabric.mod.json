@@ -11,6 +11,7 @@
     "issues": "https://github.com/CottonMC/Vivatech/issues"
   },
   "license": "MIT",
+  "icon": "icon.png",
 
   "environment": "*",
   "entrypoints": {
