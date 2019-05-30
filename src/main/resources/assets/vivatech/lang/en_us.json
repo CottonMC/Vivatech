@@ -5,5 +5,6 @@
   "block.vivatech.machine_chassis": "Machine Chassis",
   "block.vivatech.coal_generator": "Coal Generator",
   "block.vivatech.crusher": "Crusher",
-  "block.vivatech.electric_furnace": "Electric Furnace"
+  "block.vivatech.electric_furnace": "Electric Furnace",
+  "block.vivatech.press": "Press"
 }

@@ -1,0 +1,12 @@
+{
+  "type": "vivatech:pressing",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
+  "processingtime": "200",
+  "experience": 0.35,
+  "result": {
+    "item": "c:iron_plate",
+    "count": 1
+  }
+}

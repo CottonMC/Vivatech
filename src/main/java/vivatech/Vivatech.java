@@ -16,13 +16,16 @@ import net.minecraft.util.registry.Registry;
 import vivatech.block.CoalGeneratorBlock;
 import vivatech.block.CrusherBlock;
 import vivatech.block.ElectricFurnaceBlock;
+import vivatech.block.PressBlock;
 import vivatech.controller.CoalGeneratorController;
 import vivatech.controller.CrusherController;
 import vivatech.controller.ElectricFurnaceController;
+import vivatech.controller.PressController;
 import vivatech.energy.InfiniteEnergyType;
 import vivatech.init.VivatechBlocks;
 import vivatech.init.VivatechEntities;
 import vivatech.init.VivatechItems;
+import vivatech.init.VivatechRecipes;
 
 public class Vivatech implements ModInitializer {
     public static final String MODID = "vivatech";
@@ -35,6 +38,7 @@ public class Vivatech implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        new VivatechRecipes().initialize();
         new VivatechBlocks().initialize();
         new VivatechEntities().initialize();
         new VivatechItems().initialize();
@@ -45,6 +49,8 @@ public class Vivatech implements ModInitializer {
                 new CrusherController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(ElectricFurnaceBlock.ID, (syncId, id, player, buf) ->
                 new ElectricFurnaceController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
+        ContainerProviderRegistry.INSTANCE.registerFactory(PressBlock.ID, (syncId, id, player, buf) ->
+                new PressController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
 
         Registry.register(CottonEnergy.ENERGY_REGISTRY, new Identifier(MODID, "infinite_energy_type"), ENERGY);
     }

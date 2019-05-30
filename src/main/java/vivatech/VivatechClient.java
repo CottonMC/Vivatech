@@ -7,12 +7,15 @@ import net.minecraft.util.Identifier;
 import vivatech.block.CoalGeneratorBlock;
 import vivatech.block.CrusherBlock;
 import vivatech.block.ElectricFurnaceBlock;
+import vivatech.block.PressBlock;
 import vivatech.controller.CoalGeneratorController;
 import vivatech.controller.CrusherController;
 import vivatech.controller.ElectricFurnaceController;
+import vivatech.controller.PressController;
 import vivatech.screen.CoalGeneratorScreen;
 import vivatech.screen.CrusherScreen;
 import vivatech.screen.ElectricFurnaceScreen;
+import vivatech.screen.PressScreen;
 
 public class VivatechClient implements ClientModInitializer {
     public static final Identifier ENERGY_BAR_BG = new Identifier(Vivatech.MODID, "textures/gui/energy_bar_bg.png");
@@ -31,6 +34,9 @@ public class VivatechClient implements ClientModInitializer {
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
         ScreenProviderRegistry.INSTANCE.registerFactory(ElectricFurnaceBlock.ID, (syncId, identifier, player, buf) ->
                 new ElectricFurnaceScreen(new ElectricFurnaceController(
+                        syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
+        ScreenProviderRegistry.INSTANCE.registerFactory(PressBlock.ID, (syncId, identifier, player, buf) ->
+                new PressScreen(new PressController(
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
     }
 }
