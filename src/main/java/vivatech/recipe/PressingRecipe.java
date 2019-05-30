@@ -7,6 +7,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
+import vivatech.init.VivatechRecipes;
 
 public class PressingRecipe extends ProcessingRecipe {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "pressing");
@@ -17,11 +18,11 @@ public class PressingRecipe extends ProcessingRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return null;
+        return VivatechRecipes.PRESSING_SERIALIZER;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return null;
+        return VivatechRecipes.PRESSING;
     }
 }
