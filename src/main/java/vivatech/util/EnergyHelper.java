@@ -28,8 +28,7 @@ public class EnergyHelper {
 
             int transferSize = energy.getCurrentEnergy();
             int leftover = attribute.insertEnergy(energy.getPreferredType(), transferSize, Simulation.ACTION);
-//            energy.extractEnergy(energy.getPreferredType(), transferSize - leftover, Simulation.ACTION); // After update
-            energy.extractEnergy(energy.getPreferredType(), leftover, Simulation.ACTION);
+            energy.extractEnergy(energy.getPreferredType(), transferSize - leftover, Simulation.ACTION);
         }
     }
 }

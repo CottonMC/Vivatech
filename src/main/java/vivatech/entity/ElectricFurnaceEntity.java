@@ -83,11 +83,11 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (canRun()) {
             cookTime++;
+            energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
             if (cookTimeTotal == 0) {
                 cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
                         .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * speedMultiplier));
             }
-            energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
             setBlockActive(true);
             if (cookTime >= cookTimeTotal) {
                 cookTime = 0;
