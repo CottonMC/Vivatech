@@ -1,24 +1,23 @@
 package vivatech.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
+import io.github.cottonmc.cotton.datapack.recipe.CottonRecipes;
+import io.github.cottonmc.cotton.datapack.recipe.CrushingRecipe;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.AbstractCookingRecipe;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
 
 import javax.annotation.Nullable;
 
-public class ElectricFurnaceEntity extends AbstractMachineEntity {
+public class CrusherEntity extends AbstractMachineEntity {
 
-    private final int consumePerTick = 2;
-    private final float speedMultiplier = 1.5F;
-    private int cookTime = 0;
-    private int cookTimeTotal = 0;
+    private final int consumePerTick = 1;
+    private int crushTime = 0;
+    private int crushTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -27,10 +26,10 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
                     return energy.getCurrentEnergy();
                 case 1: // Max Energy
                     return energy.getMaxEnergy();
-                case 2: // Cook Time
-                    return cookTime;
-                case 3: // Cook Time Total
-                    return cookTimeTotal;
+                case 2: // Crush Time
+                    return crushTime;
+                case 3: // Crush Time Total
+                    return crushTimeTotal;
                 default:
                     return 0;
             }
@@ -45,11 +44,11 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
                 case 1: // Max Energy
                     energy.setMaxEnergy(value);
                     break;
-                case 2: // Cook Time
-                    cookTime = value;
+                case 2: // Crush Time
+                    crushTime = value;
                     break;
-                case 3: // Cook Time Total
-                    cookTimeTotal = value;
+                case 3: // Crush Time Total
+                    crushTimeTotal = value;
                     break;
                 default:
                     break;
@@ -62,8 +61,8 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         }
     };
 
-    public ElectricFurnaceEntity() {
-        super(VivatechEntities.ELECTRIC_FURNACE);
+    public CrusherEntity() {
+        super(VivatechEntities.CRUSHER);
     }
 
     // AbstractMachineEntity
@@ -77,34 +76,50 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         return false;
     }
 
+    // BlockEntity
+    @Override
+    public void fromTag(CompoundTag tag) {
+        super.fromTag(tag);
+        crushTime = tag.getInt("CrushTime");
+        crushTimeTotal = tag.getInt("CrushTimeTotal");
+    }
+
+    @Override
+    public CompoundTag toTag(CompoundTag tag) {
+        super.toTag(tag);
+        tag.putInt("CrushTime", crushTime);
+        tag.putInt("CrushTimeTotal", crushTimeTotal);
+        return tag;
+    }
+
     @Override
     protected void serverTick() {
         if (canRun()) {
-            cookTime++;
+            crushTime++;
             energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
-            if (cookTimeTotal == 0) {
-                cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
-                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * speedMultiplier));
+            if (crushTimeTotal == 0) {
+                crushTimeTotal = world.getRecipeManager().getFirstMatch(CottonRecipes.CRUSHING_RECIPE, this, world)
+                        .map(CrushingRecipe::getProcessTime).orElse(200);
             }
             setBlockActive(true);
-            if (cookTime >= cookTimeTotal) {
-                cookTime = 0;
-                cookTimeTotal = 0;
-                smeltItem();
+            if (crushTime >= crushTimeTotal) {
+                crushTime = 0;
+                crushTimeTotal = 0;
+                crushItem();
                 if (inventory.get(0).getAmount() == 0) {
                     setBlockActive(false);
                 }
                 updateEntity();
             }
-        } else if (!canRun() && cookTime > 0) {
-            cookTime = 0;
+        } else if (!canRun() && crushTime > 0) {
+            crushTime = 0;
             setBlockActive(false);
         }
     }
 
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
-            Recipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).orElse(null);
+            Recipe recipe = world.getRecipeManager().getFirstMatch(CottonRecipes.CRUSHING_RECIPE, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
 
@@ -125,7 +140,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         return true;
     }
 
-    public void smeltItem() {
+    public void crushItem() {
         ItemStack output = getOutputStack();
         if (!output.isEmpty()) {
             if (inventory.get(1).isEmpty()) {
@@ -138,26 +153,16 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         }
     }
 
-    // BlockEntity
+    // PropertyDelegateProvider
     @Override
-    public void fromTag(CompoundTag tag) {
-        super.fromTag(tag);
-        cookTime = tag.getInt("CookTime");
-        cookTimeTotal = tag.getInt("CookTimeTotal");
-    }
-
-    @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
-        tag.putInt("CookTime", cookTime);
-        tag.putInt("CookTimeTotal", cookTimeTotal);
-        return tag;
+    public PropertyDelegate getPropertyDelegate() {
+        return propertyDelegate;
     }
 
     // SidedInventory
     @Override
     public int[] getInvAvailableSlots(Direction direction) {
-        return new int[]{0, 1};
+        return new int[]{0,1};
     }
 
     @Override
@@ -178,11 +183,5 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     @Override
     public boolean isValidInvStack(int slot, ItemStack itemStack) {
         return slot == 0;
-    }
-
-    // PropertyDelegateHolder
-    @Override
-    public PropertyDelegate getPropertyDelegate() {
-        return propertyDelegate;
     }
 }

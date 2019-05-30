@@ -14,8 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import vivatech.block.CoalGeneratorBlock;
+import vivatech.block.CrusherBlock;
 import vivatech.block.ElectricFurnaceBlock;
 import vivatech.controller.CoalGeneratorController;
+import vivatech.controller.CrusherController;
 import vivatech.controller.ElectricFurnaceController;
 import vivatech.energy.InfiniteEnergyType;
 import vivatech.init.VivatechBlocks;
@@ -39,6 +41,8 @@ public class Vivatech implements ModInitializer {
 
         ContainerProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, id, player, buf) ->
                 new CoalGeneratorController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
+        ContainerProviderRegistry.INSTANCE.registerFactory(CrusherBlock.ID, (syncId, id, player, buf) ->
+                new CrusherController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(ElectricFurnaceBlock.ID, (syncId, id, player, buf) ->
                 new ElectricFurnaceController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
 

@@ -5,10 +5,13 @@ import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
 import net.minecraft.container.BlockContext;
 import net.minecraft.util.Identifier;
 import vivatech.block.CoalGeneratorBlock;
+import vivatech.block.CrusherBlock;
 import vivatech.block.ElectricFurnaceBlock;
 import vivatech.controller.CoalGeneratorController;
+import vivatech.controller.CrusherController;
 import vivatech.controller.ElectricFurnaceController;
 import vivatech.screen.CoalGeneratorScreen;
+import vivatech.screen.CrusherScreen;
 import vivatech.screen.ElectricFurnaceScreen;
 
 public class VivatechClient implements ClientModInitializer {
@@ -22,6 +25,9 @@ public class VivatechClient implements ClientModInitializer {
     public void onInitializeClient() {
         ScreenProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, identifier, player, buf) ->
                 new CoalGeneratorScreen(new CoalGeneratorController(
+                        syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
+        ScreenProviderRegistry.INSTANCE.registerFactory(CrusherBlock.ID, (syncId, identifier, player, buf) ->
+                new CrusherScreen(new CrusherController(
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
         ScreenProviderRegistry.INSTANCE.registerFactory(ElectricFurnaceBlock.ID, (syncId, identifier, player, buf) ->
                 new ElectricFurnaceScreen(new ElectricFurnaceController(

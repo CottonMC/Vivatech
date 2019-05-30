@@ -1,0 +1,6 @@
+{
+  "parent": "vivatech:block/machine_chassis",
+  "textures": {
+    "front": "vivatech:block/crusher_front"
+  }
+}

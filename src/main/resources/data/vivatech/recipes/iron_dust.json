@@ -1,0 +1,12 @@
+{
+  "type": "c:crushing",
+  "ingredient": {
+    "item": "minecraft:iron_ore"
+  },
+  "processtime": 200,
+  "experience": 0.35,
+  "result": {
+    "item": "c:iron_dust",
+    "count": 2
+  }
+}
