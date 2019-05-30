@@ -22,6 +22,7 @@ Drop all of the requirements into your `mods/` folder and launch the game!
 #### Machines
 
 * Electric Furnace
+* Crusher
 
 #### Generators
 
