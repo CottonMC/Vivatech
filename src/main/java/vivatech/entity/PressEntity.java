@@ -76,22 +76,6 @@ public class PressEntity extends AbstractMachineEntity {
         return false;
     }
 
-    // BlockEntity
-    @Override
-    public void fromTag(CompoundTag tag) {
-        super.fromTag(tag);
-        pressTime = tag.getInt("PressTime");
-        pressTimeTotal = tag.getInt("PressTimeTotal");
-    }
-
-    @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
-        tag.putInt("PressTime", pressTime);
-        tag.putInt("PressTimeTotal", pressTimeTotal);
-        return tag;
-    }
-
     @Override
     protected void serverTick() {
         if (canRun()) {
@@ -105,7 +89,7 @@ public class PressEntity extends AbstractMachineEntity {
             if (pressTime >= pressTimeTotal) {
                 pressTime = 0;
                 pressTimeTotal = 0;
-                crushItem();
+                pressItem();
                 if (inventory.get(0).getAmount() == 0) {
                     setBlockActive(false);
                 }
@@ -140,7 +124,7 @@ public class PressEntity extends AbstractMachineEntity {
         return true;
     }
 
-    public void crushItem() {
+    public void pressItem() {
         ItemStack output = getOutputStack();
         if (!output.isEmpty()) {
             if (inventory.get(1).isEmpty()) {
@@ -151,6 +135,22 @@ public class PressEntity extends AbstractMachineEntity {
 
             inventory.get(0).subtractAmount(1);
         }
+    }
+
+    // BlockEntity
+    @Override
+    public void fromTag(CompoundTag tag) {
+        super.fromTag(tag);
+        pressTime = tag.getInt("PressTime");
+        pressTimeTotal = tag.getInt("PressTimeTotal");
+    }
+
+    @Override
+    public CompoundTag toTag(CompoundTag tag) {
+        super.toTag(tag);
+        tag.putInt("PressTime", pressTime);
+        tag.putInt("PressTimeTotal", pressTimeTotal);
+        return tag;
     }
 
     // PropertyDelegateProvider

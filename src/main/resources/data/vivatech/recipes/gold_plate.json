@@ -1,10 +1,10 @@
 {
   "type": "vivatech:pressing",
   "ingredient": {
-    "item": "minecraft:iron_ingot"
+    "item": "minecraft:gold_ingot"
   },
   "experience": 0.35,
   "result": {
-    "item": "c:iron_plate"
+    "item": "c:gold_plate"
   }
 }

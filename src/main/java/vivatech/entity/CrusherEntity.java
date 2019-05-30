@@ -76,22 +76,6 @@ public class CrusherEntity extends AbstractMachineEntity {
         return false;
     }
 
-    // BlockEntity
-    @Override
-    public void fromTag(CompoundTag tag) {
-        super.fromTag(tag);
-        crushTime = tag.getInt("CrushTime");
-        crushTimeTotal = tag.getInt("CrushTimeTotal");
-    }
-
-    @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
-        tag.putInt("CrushTime", crushTime);
-        tag.putInt("CrushTimeTotal", crushTimeTotal);
-        return tag;
-    }
-
     @Override
     protected void serverTick() {
         if (canRun()) {
@@ -151,6 +135,22 @@ public class CrusherEntity extends AbstractMachineEntity {
 
             inventory.get(0).subtractAmount(1);
         }
+    }
+
+    // BlockEntity
+    @Override
+    public void fromTag(CompoundTag tag) {
+        super.fromTag(tag);
+        crushTime = tag.getInt("CrushTime");
+        crushTimeTotal = tag.getInt("CrushTimeTotal");
+    }
+
+    @Override
+    public CompoundTag toTag(CompoundTag tag) {
+        super.toTag(tag);
+        tag.putInt("CrushTime", crushTime);
+        tag.putInt("CrushTimeTotal", crushTimeTotal);
+        return tag;
     }
 
     // PropertyDelegateProvider

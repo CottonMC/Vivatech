@@ -1,10 +1,11 @@
 {
-  "type": "vivatech:pressing",
+  "type": "c:crushing",
   "ingredient": {
     "item": "minecraft:iron_ingot"
   },
+  "processtime": 120,
   "experience": 0.35,
   "result": {
-    "item": "c:iron_plate"
+    "item": "c:iron_dust"
   }
 }

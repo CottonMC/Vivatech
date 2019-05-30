@@ -1,0 +1,11 @@
+{
+  "type": "c:crushing",
+  "ingredient": {
+    "tag": "c:copper_ingot"
+  },
+  "processtime": 120,
+  "experience": 0.35,
+  "result": {
+    "item": "c:copper_dust"
+  }
+}

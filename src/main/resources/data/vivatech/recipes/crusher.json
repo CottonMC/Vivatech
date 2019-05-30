@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vivatech",
+  "pattern": ["AAA", "ABA", "CDC"],
+  "key": {
+    "A": {
+      "item": "minecraft:flint"
+    },
+    "B": {
+      "item": "vivatech:machine_chassis"
+    },
+    "C": {
+      "item": "minecraft:redstone"
+    },
+    "D": {
+      "tag": "c:cobalt_nugget"
+    }
+  },
+  "result": {
+    "item": "vivatech:crusher"
+  }
+}
