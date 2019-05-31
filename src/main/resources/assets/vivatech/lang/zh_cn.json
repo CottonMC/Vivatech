@@ -1,0 +1,10 @@
+{
+  "itemGroup.vivatech.item_group": "Viva科技",
+  "info.vivatech.energy": "%d J",
+  "info.vivatech.energy_with_max": "%d/%d J",
+  "block.vivatech.machine_chassis": "机器底座",
+  "block.vivatech.coal_generator": "煤炭发电机",
+  "block.vivatech.crusher": "破碎机",
+  "block.vivatech.electric_furnace": "电炉",
+  "block.vivatech.press": "压缩机"
+}
