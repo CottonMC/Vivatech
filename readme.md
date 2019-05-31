@@ -13,6 +13,11 @@ cool abilities in making armor, tools and in farming.
 * [Cotton Resources](https://github.com/CottonMC/cotton-resources)
 * [LibBlockAttributes](https://github.com/AlexIIL/LibBlockAttributes)
 
+### Downloads
+
+* [CurseForge](https://minecraft.curseforge.com/projects/vivatech/files)
+* [GitHub Releases](https://github.com/CottonMC/Vivatech/releases)
+
 ### Installation
 
 Drop all of the requirements into your `mods/` folder and launch the game!
