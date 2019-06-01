@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityContext;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.BooleanBiFunction;
@@ -22,12 +23,12 @@ import vivatech.Vivatech;
 public class EnergyConduitBlock extends Block {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_conduit");
 
-    public static final BooleanProperty CONNECTED_UP = BooleanProperty.create("connected_up");
-    public static final BooleanProperty CONNECTED_DOWN = BooleanProperty.create("connected_down");
+    public static final BooleanProperty CONNECTED_UP    = BooleanProperty.create("connected_up");
+    public static final BooleanProperty CONNECTED_DOWN  = BooleanProperty.create("connected_down");
     public static final BooleanProperty CONNECTED_NORTH = BooleanProperty.create("connected_north");
-    public static final BooleanProperty CONNECTED_EAST = BooleanProperty.create("connected_east");
+    public static final BooleanProperty CONNECTED_EAST  = BooleanProperty.create("connected_east");
     public static final BooleanProperty CONNECTED_SOUTH = BooleanProperty.create("connected_south");
-    public static final BooleanProperty CONNECTED_WEST = BooleanProperty.create("connected_west");
+    public static final BooleanProperty CONNECTED_WEST  = BooleanProperty.create("connected_west");
 
     public EnergyConduitBlock() {
         super(Vivatech.METALLIC_BLOCK_SETTINGS);
@@ -90,49 +91,71 @@ public class EnergyConduitBlock extends Block {
     }
 
     @Override
-    public void onBlockAdded(BlockState stateFrom, World world, BlockPos pos, BlockState stateTo, boolean b) {
-        updateConnectionProperty(stateFrom, pos, world);
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        StateManager sm = new StateManager(null, context.getBlockPos(), context.getWorld());
+        return getDefaultState()
+                .with(CONNECTED_EAST,   sm.canConnect(Direction.EAST))
+                .with(CONNECTED_WEST,   sm.canConnect(Direction.WEST))
+                .with(CONNECTED_UP,     sm.canConnect(Direction.UP))
+                .with(CONNECTED_DOWN,   sm.canConnect(Direction.DOWN))
+                .with(CONNECTED_SOUTH,  sm.canConnect(Direction.SOUTH))
+                .with(CONNECTED_NORTH,  sm.canConnect(Direction.NORTH));
     }
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean b) {
         super.neighborUpdate(state, world, pos, otherBlock, otherPos, b);
 
-        updateConnectionProperty(state, pos, world);
+        updateProperties(state, pos, world);
     }
 
-    private void updateConnectionProperty(BlockState state, BlockPos pos, World world) {
-        calcConnectionProperty(state, pos, Direction.UP, world, CONNECTED_UP);
-        calcConnectionProperty(state, pos, Direction.DOWN, world, CONNECTED_DOWN);
-        calcConnectionProperty(state, pos, Direction.NORTH, world, CONNECTED_NORTH);
-        calcConnectionProperty(state, pos, Direction.EAST, world, CONNECTED_EAST);
-        calcConnectionProperty(state, pos, Direction.SOUTH, world, CONNECTED_SOUTH);
-        calcConnectionProperty(state, pos, Direction.WEST, world, CONNECTED_WEST);
+    private void updateProperties(BlockState state, BlockPos pos, World world) {
+        StateManager sm = new StateManager(state, pos, world);
+        BlockState newState = sm
+                .calcProperty(Direction.EAST,   CONNECTED_EAST)
+                .calcProperty(Direction.WEST,   CONNECTED_WEST)
+                .calcProperty(Direction.UP,     CONNECTED_UP)
+                .calcProperty(Direction.DOWN,   CONNECTED_DOWN)
+                .calcProperty(Direction.SOUTH,  CONNECTED_SOUTH)
+                .calcProperty(Direction.NORTH,  CONNECTED_NORTH)
+                .state;
+        if (sm.dirty) {
+            world.setBlockState(pos, newState);
+            world.updateNeighbors(pos,this);
+        }
     }
 
-    private void calcConnectionProperty(BlockState state, BlockPos pos, Direction direction, World world, BooleanProperty property) {
-        boolean dirty = false;
+    private class StateManager {
+        public boolean dirty = false;
+        public BlockState state;
+        public BlockPos pos;
+        public World world;
 
-        boolean sideState = state.get(property);
-        BlockPos offsetPos = pos.offset(direction);
-        SearchOption option = SearchOptions.inDirection(direction);
-
-        if (EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, offsetPos, option) != null
-                || world.getBlockState(offsetPos).getBlock() instanceof EnergyConduitBlock) {
-            if (!sideState) {
-                dirty = true;
-            }
-            state = state.with(property, true);
-        } else {
-            if (sideState) {
-                dirty = true;
-            }
-            state = state.with(property, false);
+        public StateManager(BlockState state, BlockPos pos, World world) {
+            this.state = state;
+            this.pos = pos;
+            this.world = world;
         }
 
-        if (dirty) {
-            world.setBlockState(pos, state);
-            world.updateNeighbors(pos, this);
+        public StateManager calcProperty(Direction direction, BooleanProperty property) {
+            boolean sideState = state.get(property);
+
+            if (canConnect(direction)) {
+                if (!sideState) dirty = true;
+                state = state.with(property, true);
+            } else {
+                if (sideState) dirty = true;
+                state = state.with(property, false);
+            }
+
+            return this;
+        }
+
+        public boolean canConnect(Direction direction) {
+            BlockPos offsetPos = pos.offset(direction);
+            SearchOption option = SearchOptions.inDirection(direction);
+            return EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, offsetPos, option) != null
+                    || world.getBlockState(offsetPos).getBlock() instanceof EnergyConduitBlock;
         }
     }
 }
