@@ -40,6 +40,10 @@ Drop all of the requirements into your `mods/` folder and launch the game!
 * Energy Bank
 * Batteries
 
+#### Transportation
+
+* Energy Conduit
+
 ### License
 
 This project is licensed under MIT license. You should give a proper contact to the initial project.
