@@ -89,19 +89,19 @@ public class EnergyConduitBlock extends Block {
         return VoxelShapes.combineAndSimplify(shape, VoxelShapes.cuboid(minX, minY, minZ, maxX, maxY, maxZ), BooleanBiFunction.OR);
     }
 
-    // DIRTY TODO
     @Override
     public void onBlockAdded(BlockState stateFrom, World world, BlockPos pos, BlockState stateTo, boolean b) {
-        // DIRTY TODO
-        neighborUpdate(stateFrom, world, pos, null, null, b);
-        // DIRTY TODO
+        updateConnectionProperty(stateFrom, pos, world);
     }
-    // DIRTY TODO
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean b) {
         super.neighborUpdate(state, world, pos, otherBlock, otherPos, b);
 
+        updateConnectionProperty(state, pos, world);
+    }
+
+    private void updateConnectionProperty(BlockState state, BlockPos pos, World world) {
         calcConnectionProperty(state, pos, Direction.UP, world, CONNECTED_UP);
         calcConnectionProperty(state, pos, Direction.DOWN, world, CONNECTED_DOWN);
         calcConnectionProperty(state, pos, Direction.NORTH, world, CONNECTED_NORTH);
