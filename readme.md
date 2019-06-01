@@ -8,6 +8,7 @@ cool abilities in making armor, tools and in farming.
 
 ### Requirements
 
+* [Fabric API](https://github.com/FabricMC/fabric)
 * [Cotton](https://github.com/CottonMC/cotton)
 * [Cotton Energy](https://github.com/CottonMC/cotton-energy)
 * [Cotton Resources](https://github.com/CottonMC/cotton-resources)
