@@ -20,15 +20,15 @@ public class ElectricFurnaceController extends CottonScreenController {
         // Bars
         WBar energyBar = new WBar(VivatechClient.ENERGY_BAR_BG, VivatechClient.ENERGY_BAR, 0, 1);
         energyBar.withTooltip(StringHelper.getTranslationKey("info", InfiniteEnergyType.energyWithMaxI18nId));
-        root.add(energyBar, 1, 0, 14, 86);
+        root.add(energyBar, 1, 2, 14, 64);
 
         WBar progressBar = new WBar(VivatechClient.PROGRESS_BAR_BG, VivatechClient.PROGRESS_BAR,2, 3, WBar.Direction.RIGHT);
-        root.add(progressBar, 59, 36, 40, 18);
+        root.add(progressBar, 59, 27, 40, 18);
 
         // Slots
-        root.add(WItemSlot.of(blockInventory, 0), 36, 36);
-        root.add(WItemSlot.outputOf(blockInventory, 1), 108, 36);
-        root.add(createPlayerInventoryPanel(), 0, 90);
+        root.add(WItemSlot.of(blockInventory, 0), 36, 27);
+        root.add(WItemSlot.outputOf(blockInventory, 1), 108, 27);
+        root.add(createPlayerInventoryPanel(), 0, 72);
 
         root.validate(this);
     }

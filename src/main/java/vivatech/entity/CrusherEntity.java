@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 
 public class CrusherEntity extends AbstractMachineEntity {
 
-    private final int consumePerTick = 1;
+    private static final int CONSUME_PER_TICK = 1;
     private int crushTime = 0;
     private int crushTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -80,7 +80,7 @@ public class CrusherEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (canRun()) {
             crushTime++;
-            energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
+            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK, Simulation.ACTION);
             if (crushTimeTotal == 0) {
                 crushTimeTotal = world.getRecipeManager().getFirstMatch(CottonRecipes.CRUSHING_RECIPE, this, world)
                         .map(CrushingRecipe::getProcessTime).orElse(200);
@@ -115,7 +115,7 @@ public class CrusherEntity extends AbstractMachineEntity {
         if (inventory.get(0).isEmpty()
                 || output.isEmpty()
                 || inventory.get(1).getAmount() > 64
-                || energy.getCurrentEnergy() < consumePerTick) {
+                || energy.getCurrentEnergy() < CONSUME_PER_TICK) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
             return output.getItem() == inventory.get(1).getItem();

@@ -15,8 +15,8 @@ import javax.annotation.Nullable;
 
 public class ElectricFurnaceEntity extends AbstractMachineEntity {
 
-    private final int consumePerTick = 2;
-    private final float speedMultiplier = 1.5F;
+    private static final int CONSUME_PER_TICK = 2;
+    private static final float SPEED_MULTIPLIER = 1.5F;
     private int cookTime = 0;
     private int cookTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -81,10 +81,10 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (canRun()) {
             cookTime++;
-            energy.extractEnergy(Vivatech.ENERGY, consumePerTick, Simulation.ACTION);
+            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK, Simulation.ACTION);
             if (cookTimeTotal == 0) {
                 cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
-                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * speedMultiplier));
+                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * SPEED_MULTIPLIER));
             }
             setBlockActive(true);
             if (cookTime >= cookTimeTotal) {
@@ -116,7 +116,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         if (inventory.get(0).isEmpty()
                 || output.isEmpty()
                 || inventory.get(1).getAmount() > 64
-                || energy.getCurrentEnergy() < consumePerTick) {
+                || energy.getCurrentEnergy() < CONSUME_PER_TICK) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
             return output.getItem() == inventory.get(1).getItem();

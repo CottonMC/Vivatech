@@ -17,8 +17,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import vivatech.energy.EnergyAttributeProvider;
+import vivatech.entity.AbstractMachineEntity;
 
-public abstract class AbstractMachineBlock extends AbstractBlock implements BlockEntityProvider, AttributeProvider {
+public abstract class AbstractMachineBlock extends BaseBlock implements BlockEntityProvider, AttributeProvider {
     public static DirectionProperty FACING = Properties.FACING_HORIZONTAL;
     public static BooleanProperty ACTIVE = BooleanProperty.create("active");
 
@@ -55,8 +56,8 @@ public abstract class AbstractMachineBlock extends AbstractBlock implements Bloc
     @Override
     public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
         BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof EnergyAttributeProvider) {
-            to.offer(((EnergyAttributeProvider) be).getEnergy());
+        if (be instanceof AbstractMachineEntity) {
+            to.offer(((AbstractMachineEntity) be).getEnergy());
         }
     }
 }

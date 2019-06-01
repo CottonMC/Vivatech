@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "vivatech:block/energy_bank" },
+    "facing=east":  { "model": "vivatech:block/energy_bank", "y": 90 },
+    "facing=south": { "model": "vivatech:block/energy_bank", "y": 180 },
+    "facing=west":  { "model": "vivatech:block/energy_bank", "y": 270 }
+  }
+}

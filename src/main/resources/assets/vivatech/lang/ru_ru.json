@@ -5,6 +5,8 @@
   "block.vivatech.machine_chassis": "Рама Машины",
   "block.vivatech.coal_generator": "Угольный Генератор",
   "block.vivatech.crusher": "Дробитель",
-  "block.vivatech.electric_furnace": "Электрическая Печь",
-  "block.vivatech.press": "Пресс"
+  "block.vivatech.electric_furnace": "Электропечь",
+  "block.vivatech.energy_bank": "Энергохранилище",
+  "block.vivatech.press": "Пресс",
+  "item.vivatech.battery": "Аккумулятор"
 }

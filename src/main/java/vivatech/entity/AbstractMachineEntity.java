@@ -15,10 +15,9 @@ import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import vivatech.Vivatech;
 import vivatech.block.AbstractMachineBlock;
-import vivatech.energy.EnergyAttributeProvider;
 
 public abstract class AbstractMachineEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
-        EnergyAttributeProvider, BlockEntityClientSerializable {
+        BlockEntityClientSerializable {
     protected DefaultedList<ItemStack> inventory = DefaultedList.create(getInvSize(), ItemStack.EMPTY);
     protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), Vivatech.ENERGY) {
         @Override
@@ -27,7 +26,6 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
         @Override
         public boolean canExtractEnergy() { return AbstractMachineEntity.this.canExtractEnergy(); }
     };
-
 
     public AbstractMachineEntity(BlockEntityType<?> type) {
         super(type);
@@ -42,6 +40,8 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
     protected boolean canExtractEnergy() {
         return true;
     }
+
+    public EnergyAttribute getEnergy() { return energy; }
 
     protected void serverTick() {}
 
@@ -129,12 +129,6 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
     @Override
     public void clear() {
         inventory.clear();
-    }
-
-    // EnergyAttributeProvider
-    @Override
-    public EnergyAttribute getEnergy() {
-        return energy;
     }
 
     //BlockEntityClientSerializable

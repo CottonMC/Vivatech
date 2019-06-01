@@ -8,8 +8,8 @@ import net.minecraft.world.loot.context.LootContext;
 
 import java.util.List;
 
-public abstract class AbstractBlock extends Block {
-    public AbstractBlock(Settings settings) {
+public class BaseBlock extends Block {
+    public BaseBlock(Settings settings) {
         super(settings);
     }
 

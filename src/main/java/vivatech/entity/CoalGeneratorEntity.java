@@ -1,7 +1,6 @@
 package vivatech.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
-import io.github.cottonmc.energy.api.EnergyAttribute;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
@@ -15,7 +14,7 @@ import vivatech.util.EnergyHelper;
 import javax.annotation.Nullable;
 
 public class CoalGeneratorEntity extends AbstractMachineEntity {
-    private final int generatePerTick = 1;
+    private static final int GENERATE_PER_TICK = 1;
     private int burnTime = 0;
     private int burnTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -81,7 +80,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (burnTime > 0) {
             burnTime--;
-            energy.insertEnergy(Vivatech.ENERGY, generatePerTick, Simulation.ACTION);
+            energy.insertEnergy(Vivatech.ENERGY, GENERATE_PER_TICK, Simulation.ACTION);
         } else if (inventory.get(0).getAmount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
             burnTimeTotal = burnTime;

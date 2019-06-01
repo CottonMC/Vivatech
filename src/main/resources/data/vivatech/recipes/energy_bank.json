@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vivatech",
+  "pattern": ["ABA", "ACA", "ADA"],
+  "key": {
+    "A": {
+      "item": "vivatech:battery"
+    },
+    "B": {
+      "tag": "c:cobalt_plate"
+    },
+    "C": {
+      "item": "vivatech:machine_chassis"
+    },
+    "D": {
+      "tag": "c:gold_plate"
+    }
+  },
+  "result": {
+    "item": "vivatech:energy_bank"
+  }
+}
