@@ -67,7 +67,6 @@ public class EnergyBankEntity extends AbstractMachineEntity {
 
             int transferSize = Math.min(stackEnergy.getCurrentEnergy(), TRANSFER_PER_TICK);
             EnergyHelper.transfer(stackEnergy, energy, transferSize);
-            chargingItem.setEnergyAttribute(chargingStack, stackEnergy);
 
             updateNeeded = true;
         }
@@ -79,7 +78,6 @@ public class EnergyBankEntity extends AbstractMachineEntity {
 
             int transferSize = Math.min(energy.getCurrentEnergy(), TRANSFER_PER_TICK);
             EnergyHelper.transfer(energy, stackEnergy, transferSize);
-            dischargingItem.setEnergyAttribute(dischargingStack, stackEnergy);
 
             updateNeeded = true;
         }

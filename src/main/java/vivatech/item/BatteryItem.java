@@ -1,27 +1,22 @@
 package vivatech.item;
 
-import com.google.common.collect.Lists;
 import io.github.cottonmc.energy.api.EnergyAttribute;
-import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormat;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.energy.EnergyAttributeProviderItem;
 import vivatech.energy.InfiniteEnergyType;
+import vivatech.energy.VivatechEnergyAttribute;
 import vivatech.util.StringHelper;
 
 import javax.annotation.Nullable;
@@ -50,18 +45,16 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
     // EnergyAttributeProviderItem
     @Override
     public EnergyAttribute getEnergyAttribute(ItemStack stack) {
-        SimpleEnergyAttribute energy = new SimpleEnergyAttribute(MAX_ENERGY, Vivatech.ENERGY);
-        if (!stack.hasTag() || !stack.getTag().containsKey("Energy")) {
-            setEnergyAttribute(stack, energy);
-        } else {
-            energy.fromTag(stack.getTag().getTag("Energy"));
-        }
-        return energy;
-    }
+        VivatechEnergyAttribute energy = new VivatechEnergyAttribute(MAX_ENERGY);
+        Runnable listener = () -> {
+            stack.getOrCreateTag().put("Energy", energy.toTag());
+            stack.setDamage(getDurability() - energy.getCurrentEnergy());
+        };
 
-    public void setEnergyAttribute(ItemStack stack, EnergyAttribute energy) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.put("Energy", new IntTag(energy.getCurrentEnergy()));
-        stack.setDamage(getDurability() - energy.getCurrentEnergy());
+        if (!stack.hasTag() || !stack.getTag().containsKey("Energy")) listener.run();
+        energy.fromTag(stack.getTag().getTag("Energy"));
+
+        energy.listen(listener);
+        return energy;
     }
 }

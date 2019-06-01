@@ -5,5 +5,4 @@ import net.minecraft.item.ItemStack;
 
 public interface EnergyAttributeProviderItem {
     EnergyAttribute getEnergyAttribute(ItemStack itemStack);
-    void setEnergyAttribute(ItemStack itemStack, EnergyAttribute energy);
 }
