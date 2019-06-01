@@ -1,0 +1,65 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "vivatech:block/energy_conduit_center"
+      }
+    },
+    {
+      "when": {
+        "connected_east": true
+      },
+      "apply": {
+        "model": "vivatech:block/energy_conduit_side",
+        "x": 270,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "connected_south": true
+      },
+      "apply": {
+        "model": "vivatech:block/energy_conduit_side",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "connected_west": true
+      },
+      "apply": {
+        "model": "vivatech:block/energy_conduit_side",
+        "x": 90,
+        "y": 90
+
+      }
+    },
+    {
+      "when": {
+        "connected_north": true
+      },
+      "apply": {
+        "model": "vivatech:block/energy_conduit_side",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "connected_up": true
+      },
+      "apply": {
+        "model": "vivatech:block/energy_conduit_side",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "connected_down": true
+      },
+      "apply": {
+        "model": "vivatech:block/energy_conduit_side"
+      }
+    }
+  ]
+}

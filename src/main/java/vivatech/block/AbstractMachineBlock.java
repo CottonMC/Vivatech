@@ -20,8 +20,8 @@ import vivatech.energy.EnergyAttributeProvider;
 import vivatech.entity.AbstractMachineEntity;
 
 public abstract class AbstractMachineBlock extends BaseBlock implements BlockEntityProvider, AttributeProvider {
-    public static DirectionProperty FACING = Properties.FACING_HORIZONTAL;
-    public static BooleanProperty ACTIVE = BooleanProperty.create("active");
+    public static final DirectionProperty FACING = Properties.FACING_HORIZONTAL;
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public AbstractMachineBlock(Settings settings) {
         super(settings);
