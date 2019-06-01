@@ -34,6 +34,11 @@ Drop all of the requirements into your `mods/` folder and launch the game!
 
 * Coal Generator
 
+#### Energy Management
+
+* Energy Bank
+* Batteries
+
 ### License
 
 This project is licensed under MIT license. You should give a proper contact to the initial project.
