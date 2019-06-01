@@ -99,6 +99,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
 
         if (energy.getCurrentEnergy() != 0) {
             EnergyHelper.emit(energy, world, pos);
+            updateEntity();
         }
     }
 

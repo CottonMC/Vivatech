@@ -12,18 +12,26 @@ import javax.annotation.Nullable;
 
 public class EnergyHelper {
     public static void emit(EnergyAttribute energy, World world, BlockPos pos) {
+        emit(energy, world, pos, null);
+    }
+
+    public static void emit(EnergyAttribute energy, World world, BlockPos pos, Integer transferSize) {
         for (Direction direction : Direction.values()) {
-            emit(direction, energy, world, pos);
+            emit(direction, energy, world, pos, transferSize);
         }
     }
 
     public static void emit(Direction direction, EnergyAttribute energy, World world, BlockPos pos) {
+        emit(direction, energy, world, pos, null);
+    }
+
+    public static void emit(Direction direction, EnergyAttribute energy, World world, BlockPos pos, Integer transferSize) {
         if (energy.getCurrentEnergy() == 0) return;
 
         AttributeList<EnergyAttribute> attributes = EnergyAttribute.ENERGY_ATTRIBUTE.getAll(world, pos.offset(direction));
         for (int i = 0; i < attributes.getCount(); i++) {
             EnergyAttribute attribute = attributes.get(i);
-            transfer(energy, attribute, null);
+            transfer(energy, attribute, transferSize);
         }
     }
 

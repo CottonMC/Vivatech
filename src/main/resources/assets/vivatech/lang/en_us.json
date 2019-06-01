@@ -3,6 +3,7 @@
   "info.vivatech.energy": "%d J",
   "info.vivatech.energy_with_max": "%d/%d J",
   "block.vivatech.machine_chassis": "Machine Chassis",
+  "block.vivatech.energy_conduit": "Energy Conduit",
   "block.vivatech.coal_generator": "Coal Generator",
   "block.vivatech.crusher": "Crusher",
   "block.vivatech.electric_furnace": "Electric Furnace",

@@ -2,7 +2,6 @@ package vivatech.entity;
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.api.EnergyAttribute;
-import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -13,13 +12,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
-import vivatech.Vivatech;
 import vivatech.block.AbstractMachineBlock;
+import vivatech.energy.VivatechEnergyAttribute;
 
 public abstract class AbstractMachineEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
         BlockEntityClientSerializable {
     protected DefaultedList<ItemStack> inventory = DefaultedList.create(getInvSize(), ItemStack.EMPTY);
-    protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), Vivatech.ENERGY) {
+    protected VivatechEnergyAttribute energy = new VivatechEnergyAttribute(getMaxEnergy()) {
         @Override
         public boolean canInsertEnergy() { return AbstractMachineEntity.this.canInsertEnergy(); }
 
@@ -41,7 +40,9 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
         return true;
     }
 
-    public EnergyAttribute getEnergy() { return energy; }
+    public EnergyAttribute getEnergy() {
+        return energy;
+    }
 
     protected void serverTick() {}
 
@@ -131,7 +132,7 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
         inventory.clear();
     }
 
-    //BlockEntityClientSerializable
+    // BlockEntityClientSerializable
     @Override
     public void fromClientTag(CompoundTag tag) {
         fromTag(tag);

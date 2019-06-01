@@ -1,11 +1,15 @@
 package vivatech.block;
 
+import alexiil.mc.lib.attributes.AttributeList;
+import alexiil.mc.lib.attributes.AttributeProvider;
 import alexiil.mc.lib.attributes.SearchOption;
 import alexiil.mc.lib.attributes.SearchOptions;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateFactory;
@@ -19,8 +23,11 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
+import vivatech.entity.EnergyConduitEntity;
 
-public class EnergyConduitBlock extends Block {
+import javax.annotation.Nullable;
+
+public class EnergyConduitBlock extends Block implements BlockEntityProvider, AttributeProvider {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_conduit");
 
     public static final BooleanProperty CONNECTED_UP    = BooleanProperty.create("connected_up");
@@ -156,6 +163,22 @@ public class EnergyConduitBlock extends Block {
             SearchOption option = SearchOptions.inDirection(direction);
             return EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, offsetPos, option) != null
                     || world.getBlockState(offsetPos).getBlock() instanceof EnergyConduitBlock;
+        }
+    }
+
+    // BlockEntityProvider
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockView var1) {
+        return new EnergyConduitEntity();
+    }
+
+    // AttributeProvider
+    @Override
+    public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
+        BlockEntity be = world.getBlockEntity(pos);
+        if (be instanceof EnergyConduitEntity) {
+            to.offer(((EnergyConduitEntity) be).getEnergy());
         }
     }
 }
