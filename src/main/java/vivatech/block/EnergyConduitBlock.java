@@ -59,43 +59,44 @@ public class EnergyConduitBlock extends Block {
 
         VoxelShape shape = VoxelShapes.cuboid(startOffset, startOffset, startOffset, endOffset, endOffset, endOffset);
 
-        if (state.get(CONNECTED_UP)) {
-            VoxelShape modifier = VoxelShapes.cuboid(startOffset, startOffset, startOffset, endOffset, 1, endOffset);
-            shape = VoxelShapes.combineAndSimplify(shape, modifier, BooleanBiFunction.OR);
-        }
-
-        if (state.get(CONNECTED_DOWN)) {
-            VoxelShape modifier = VoxelShapes.cuboid(startOffset, 0, startOffset, endOffset, endOffset, endOffset);
-            shape = VoxelShapes.combineAndSimplify(shape, modifier, BooleanBiFunction.OR);
-        }
-
-        if (state.get(CONNECTED_NORTH)) {
-            VoxelShape modifier = VoxelShapes.cuboid(startOffset, startOffset, 0, endOffset, endOffset, endOffset);
-            shape = VoxelShapes.combineAndSimplify(shape, modifier, BooleanBiFunction.OR);
-        }
-
-        if (state.get(CONNECTED_EAST)) {
-            VoxelShape modifier = VoxelShapes.cuboid(startOffset, startOffset, startOffset, 1, endOffset, endOffset);
-            shape = VoxelShapes.combineAndSimplify(shape, modifier, BooleanBiFunction.OR);
-        }
-
-        if (state.get(CONNECTED_SOUTH)) {
-            VoxelShape modifier = VoxelShapes.cuboid(startOffset, startOffset, startOffset, endOffset, endOffset, 1);
-            shape = VoxelShapes.combineAndSimplify(shape, modifier, BooleanBiFunction.OR);
-        }
-
-        if (state.get(CONNECTED_WEST)) {
-            VoxelShape modifier = VoxelShapes.cuboid(0, startOffset, startOffset, endOffset, endOffset, endOffset);
-            shape = VoxelShapes.combineAndSimplify(shape, modifier, BooleanBiFunction.OR);
-        }
+        if (state.get(CONNECTED_EAST))  shape = modifyShape(shape, Direction.EAST,  startOffset, endOffset);
+        if (state.get(CONNECTED_WEST))  shape = modifyShape(shape, Direction.WEST,  startOffset, endOffset);
+        if (state.get(CONNECTED_UP))    shape = modifyShape(shape, Direction.UP,    startOffset, endOffset);
+        if (state.get(CONNECTED_DOWN))  shape = modifyShape(shape, Direction.DOWN,  startOffset, endOffset);
+        if (state.get(CONNECTED_SOUTH)) shape = modifyShape(shape, Direction.SOUTH, startOffset, endOffset);
+        if (state.get(CONNECTED_NORTH)) shape = modifyShape(shape, Direction.NORTH, startOffset, endOffset);
 
         return shape;
     }
 
+    private VoxelShape modifyShape(VoxelShape shape, Direction direction, double startOffset, double endOffset) {
+        double minX = startOffset;
+        double minY = startOffset;
+        double minZ = startOffset;
+        double maxX = endOffset;
+        double maxY = endOffset;
+        double maxZ = endOffset;
+
+        switch (direction) {
+            case EAST:  maxX = 1; break;
+            case WEST:  minX = 0; break;
+            case UP:    maxY = 1; break;
+            case DOWN:  minY = 0; break;
+            case SOUTH: maxZ = 1; break;
+            case NORTH: minZ = 0; break;
+        }
+
+        return VoxelShapes.combineAndSimplify(shape, VoxelShapes.cuboid(minX, minY, minZ, maxX, maxY, maxZ), BooleanBiFunction.OR);
+    }
+
+    // DIRTY TODO
     @Override
     public void onBlockAdded(BlockState stateFrom, World world, BlockPos pos, BlockState stateTo, boolean b) {
-        world.updateNeighbors(pos, this);
+        // DIRTY TODO
+        neighborUpdate(stateFrom, world, pos, null, null, b);
+        // DIRTY TODO
     }
+    // DIRTY TODO
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean b) {

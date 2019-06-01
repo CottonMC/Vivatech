@@ -48,6 +48,7 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
     }
 
     // EnergyAttributeProviderItem
+    @Override
     public EnergyAttribute getEnergyAttribute(ItemStack stack) {
         SimpleEnergyAttribute energy = new SimpleEnergyAttribute(MAX_ENERGY, Vivatech.ENERGY);
         if (!stack.hasTag() || !stack.getTag().containsKey("Energy")) {
@@ -62,6 +63,5 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
         CompoundTag tag = stack.getOrCreateTag();
         tag.put("Energy", new IntTag(energy.getCurrentEnergy()));
         stack.setDamage(getDurability() - energy.getCurrentEnergy());
-        stack.setTag(tag);
     }
 }
