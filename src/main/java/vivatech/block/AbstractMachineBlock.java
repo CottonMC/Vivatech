@@ -16,7 +16,6 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import vivatech.energy.EnergyAttributeProvider;
 import vivatech.entity.AbstractMachineEntity;
 
 public abstract class AbstractMachineBlock extends BaseBlock implements BlockEntityProvider, AttributeProvider {

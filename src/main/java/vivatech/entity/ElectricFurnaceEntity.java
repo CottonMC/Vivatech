@@ -1,5 +1,7 @@
 package vivatech.entity;
 
+import javax.annotation.Nullable;
+
 import alexiil.mc.lib.attributes.Simulation;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
@@ -10,10 +12,9 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
+import vivatech.util.MachineTeirs;
 
-import javax.annotation.Nullable;
-
-public class ElectricFurnaceEntity extends AbstractMachineEntity {
+public class ElectricFurnaceEntity extends AbstractTeiredMachineEntity {
 
     private static final int CONSUME_PER_TICK = 2;
     private static final float SPEED_MULTIPLIER = 1.5F;
@@ -62,8 +63,12 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         }
     };
 
+    public ElectricFurnaceEntity(MachineTeirs teir) {
+        super(VivatechEntities.ELECTRIC_FURNACE, teir);
+    }
+    
     public ElectricFurnaceEntity() {
-        super(VivatechEntities.ELECTRIC_FURNACE);
+    	super(VivatechEntities.ELECTRIC_FURNACE);
     }
 
     // AbstractMachineEntity
@@ -80,8 +85,8 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     @Override
     protected void serverTick() {
         if (canRun()) {
-            cookTime++;
-            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK, Simulation.ACTION);
+            cookTime += TIER.getSpeedMultiplier();
+            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK * TIER.getSpeedMultiplier(), Simulation.ACTION);
             if (cookTimeTotal == 0) {
                 cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
                         .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * SPEED_MULTIPLIER));
@@ -116,7 +121,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         if (inventory.get(0).isEmpty()
                 || output.isEmpty()
                 || inventory.get(1).getAmount() > 64
-                || energy.getCurrentEnergy() < CONSUME_PER_TICK) {
+                || energy.getCurrentEnergy() < CONSUME_PER_TICK * TIER.getSpeedMultiplier()) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
             return output.getItem() == inventory.get(1).getItem();
@@ -144,6 +149,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         super.fromTag(tag);
         cookTime = tag.getInt("CookTime");
         cookTimeTotal = tag.getInt("CookTimeTotal");
+        TIER = MachineTeirs.values()[tag.getInt("Teir")];
     }
 
     @Override
@@ -151,6 +157,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         super.toTag(tag);
         tag.putInt("CookTime", cookTime);
         tag.putInt("CookTimeTotal", cookTimeTotal);
+        tag.putInt("Teir", TIER.ordinal());
         return tag;
     }
 

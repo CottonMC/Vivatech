@@ -12,12 +12,13 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.ElectricFurnaceEntity;
+import vivatech.util.MachineTeirs;
 
-public class ElectricFurnaceBlock extends AbstractMachineBlock {
+public class ElectricFurnaceBlock extends AbstractTeiredMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "electric_furnace");
 
-    public ElectricFurnaceBlock() {
-        super(Vivatech.MACHINE_BLOCK_SETTINGS);
+    public ElectricFurnaceBlock(MachineTeirs teir) {
+        super(Vivatech.MACHINE_BLOCK_SETTINGS, teir);
     }
 
     // Block
@@ -33,6 +34,6 @@ public class ElectricFurnaceBlock extends AbstractMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new ElectricFurnaceEntity();
+        return new ElectricFurnaceEntity(TEIR);
     }
 }
