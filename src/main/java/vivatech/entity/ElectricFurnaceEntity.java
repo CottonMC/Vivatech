@@ -63,8 +63,8 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         }
     };
 
-    public ElectricFurnaceEntity(MachineTiers teir) {
-        super(VivatechEntities.ELECTRIC_FURNACE, teir);
+    public ElectricFurnaceEntity(MachineTiers tier) {
+        super(VivatechEntities.ELECTRIC_FURNACE, tier);
     }
     
     public ElectricFurnaceEntity() {
@@ -149,7 +149,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         super.fromTag(tag);
         cookTime = tag.getInt("CookTime");
         cookTimeTotal = tag.getInt("CookTimeTotal");
-        TIER = MachineTiers.values()[tag.getInt("Teir")];
+        TIER = MachineTiers.values()[tag.getInt("Tier")];
     }
 
     @Override
@@ -157,7 +157,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         super.toTag(tag);
         tag.putInt("CookTime", cookTime);
         tag.putInt("CookTimeTotal", cookTimeTotal);
-        tag.putInt("Teir", TIER.ordinal());
+        tag.putInt("Tier", TIER.ordinal());
         return tag;
     }
 

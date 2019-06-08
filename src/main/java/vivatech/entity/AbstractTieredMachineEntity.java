@@ -7,9 +7,9 @@ public abstract class AbstractTieredMachineEntity extends AbstractMachineEntity 
 
 	public MachineTiers TIER;
 	
-	public AbstractTieredMachineEntity(BlockEntityType<?> type, MachineTiers teir) {
+	public AbstractTieredMachineEntity(BlockEntityType<?> type, MachineTiers tier) {
 		super(type);
-		TIER = teir;
+		TIER = tier;
 	}
 	
 	public AbstractTieredMachineEntity(BlockEntityType<?> type) {

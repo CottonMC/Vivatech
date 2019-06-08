@@ -2,7 +2,7 @@ package vivatech.util;
 
 public enum MachineTiers {
 	
-	MINIMAL(1, 0, "_minimal"), NORMAL(2, 3, "_normal"), ADVANCED(3, 5, "_advanced");
+	MINIMAL(1, 0, "minimal"), NORMAL(2, 3, "normal"), ADVANCED(3, 5, "advanced");
 	
 	private final int speedMultiplier;
 	private final int upgradeSlots;

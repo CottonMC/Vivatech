@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.ElectricFurnaceEntity;
 import vivatech.util.MachineTiers;
+import vivatech.util.TierHelper;
 
 public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "electric_furnace");
@@ -20,7 +21,7 @@ public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
 
     public ElectricFurnaceBlock(MachineTiers tier) {
         super(Vivatech.MACHINE_BLOCK_SETTINGS, tier);
-        TIERED_ID = new Identifier(ID.getNamespace(), ID.getPath() + TIER.getAffix());
+        TIERED_ID = TierHelper.getTieredID(ID, tier);
     }
 
     // Block
