@@ -12,9 +12,9 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
-import vivatech.util.MachineTeirs;
+import vivatech.util.MachineTiers;
 
-public class ElectricFurnaceEntity extends AbstractTeiredMachineEntity {
+public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
 
     private static final int CONSUME_PER_TICK = 2;
     private static final float SPEED_MULTIPLIER = 1.5F;
@@ -63,7 +63,7 @@ public class ElectricFurnaceEntity extends AbstractTeiredMachineEntity {
         }
     };
 
-    public ElectricFurnaceEntity(MachineTeirs teir) {
+    public ElectricFurnaceEntity(MachineTiers teir) {
         super(VivatechEntities.ELECTRIC_FURNACE, teir);
     }
     
@@ -149,7 +149,7 @@ public class ElectricFurnaceEntity extends AbstractTeiredMachineEntity {
         super.fromTag(tag);
         cookTime = tag.getInt("CookTime");
         cookTimeTotal = tag.getInt("CookTimeTotal");
-        TIER = MachineTeirs.values()[tag.getInt("Teir")];
+        TIER = MachineTiers.values()[tag.getInt("Teir")];
     }
 
     @Override

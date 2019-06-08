@@ -10,7 +10,7 @@ import vivatech.block.EnergyBankBlock;
 import vivatech.block.EnergyConduitBlock;
 import vivatech.block.PressBlock;
 import vivatech.item.BatteryItem;
-import vivatech.util.MachineTeirs;
+import vivatech.util.MachineTiers;
 
 public class VivatechItems implements Initializable {
     public static final Item MACHINE_CHASSIS;
@@ -31,7 +31,7 @@ public class VivatechItems implements Initializable {
         PRESS = new BlockItem(VivatechBlocks.PRESS, Vivatech.ITEM_SETTINGS);
         BATTERY = new BatteryItem();
         
-        ELECTRIC_FURNACE = new Item[MachineTeirs.values().length];
+        ELECTRIC_FURNACE = new Item[MachineTiers.values().length];
         ELECTRIC_FURNACE[0] = new BlockItem(VivatechBlocks.ELECTRIC_FURNACE[0], Vivatech.ITEM_SETTINGS);
         ELECTRIC_FURNACE[1] = new BlockItem(VivatechBlocks.ELECTRIC_FURNACE[1], Vivatech.ITEM_SETTINGS);
         ELECTRIC_FURNACE[2] = new BlockItem(VivatechBlocks.ELECTRIC_FURNACE[2], Vivatech.ITEM_SETTINGS);

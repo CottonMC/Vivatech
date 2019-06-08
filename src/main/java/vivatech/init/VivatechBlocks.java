@@ -10,7 +10,7 @@ import vivatech.block.ElectricFurnaceBlock;
 import vivatech.block.EnergyBankBlock;
 import vivatech.block.EnergyConduitBlock;
 import vivatech.block.PressBlock;
-import vivatech.util.MachineTeirs;
+import vivatech.util.MachineTiers;
 
 public class VivatechBlocks implements Initializable {
     public static final Identifier MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "machine_chassis");
@@ -31,10 +31,10 @@ public class VivatechBlocks implements Initializable {
         ENERGY_BANK = new EnergyBankBlock();
         PRESS = new PressBlock();
         
-        ELECTRIC_FURNACE = new ElectricFurnaceBlock[MachineTeirs.values().length];
-		ELECTRIC_FURNACE[0] = new ElectricFurnaceBlock(MachineTeirs.MINIMAL);
-		ELECTRIC_FURNACE[1] = new ElectricFurnaceBlock(MachineTeirs.NORMAL);
-		ELECTRIC_FURNACE[2] = new ElectricFurnaceBlock(MachineTeirs.ADVANCED);
+        ELECTRIC_FURNACE = new ElectricFurnaceBlock[MachineTiers.values().length];
+		ELECTRIC_FURNACE[0] = new ElectricFurnaceBlock(MachineTiers.MINIMAL);
+		ELECTRIC_FURNACE[1] = new ElectricFurnaceBlock(MachineTiers.NORMAL);
+		ELECTRIC_FURNACE[2] = new ElectricFurnaceBlock(MachineTiers.ADVANCED);
     }
 
     @Override
@@ -43,9 +43,9 @@ public class VivatechBlocks implements Initializable {
         Registry.register(Registry.BLOCK, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.BLOCK, CoalGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.BLOCK, CrusherBlock.ID, CRUSHER);
-        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTeirs.values()[0].getAppend()), ELECTRIC_FURNACE[0]);
-        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTeirs.values()[1].getAppend()), ELECTRIC_FURNACE[1]);
-        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTeirs.values()[2].getAppend()), ELECTRIC_FURNACE[2]);
+        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTiers.values()[0].getAffix()), ELECTRIC_FURNACE[0]);
+        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTiers.values()[1].getAffix()), ELECTRIC_FURNACE[1]);
+        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTiers.values()[2].getAffix()), ELECTRIC_FURNACE[2]);
         Registry.register(Registry.BLOCK, CrusherBlock.ID, CRUSHER);
         Registry.register(Registry.BLOCK, EnergyBankBlock.ID, ENERGY_BANK);
         Registry.register(Registry.BLOCK, PressBlock.ID, PRESS);
