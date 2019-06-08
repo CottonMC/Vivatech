@@ -16,9 +16,11 @@ import vivatech.util.MachineTiers;
 
 public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "electric_furnace");
+    final Identifier TIERED_ID;
 
-    public ElectricFurnaceBlock(MachineTiers teir) {
-        super(Vivatech.MACHINE_BLOCK_SETTINGS, teir);
+    public ElectricFurnaceBlock(MachineTiers tier) {
+        super(Vivatech.MACHINE_BLOCK_SETTINGS, tier);
+        TIERED_ID = new Identifier(ID.getNamespace(), ID.getPath() + TIER.getAffix());
     }
 
     // Block
@@ -36,4 +38,9 @@ public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
     public BlockEntity createBlockEntity(BlockView blockView) {
         return new ElectricFurnaceEntity(TIER);
     }
+
+	@Override
+	public Identifier getTieredID() {
+		return TIERED_ID;
+	}
 }

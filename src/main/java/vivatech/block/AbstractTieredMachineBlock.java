@@ -1,5 +1,6 @@
 package vivatech.block;
 
+import net.minecraft.util.Identifier;
 import vivatech.util.MachineTiers;
 
 public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock {
@@ -10,5 +11,7 @@ public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock {
 		super(settings);
 		TIER = tier;
 	}
+	
+	public abstract Identifier getTieredID();
 
 }

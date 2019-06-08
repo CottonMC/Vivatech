@@ -47,8 +47,8 @@ public class VivatechItems implements Initializable {
         Registry.register(Registry.ITEM, PressBlock.ID, PRESS);
         Registry.register(Registry.ITEM, BatteryItem.ID, BATTERY);
         
-        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[0].ID, ELECTRIC_FURNACE[0]);
-        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[1].ID, ELECTRIC_FURNACE[1]);
-        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[2].ID, ELECTRIC_FURNACE[2]);
+        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[0].getTieredID(), ELECTRIC_FURNACE[0]);
+        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[1].getTieredID(), ELECTRIC_FURNACE[1]);
+        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[2].getTieredID(), ELECTRIC_FURNACE[2]);
     }
 }

@@ -43,9 +43,9 @@ public class VivatechBlocks implements Initializable {
         Registry.register(Registry.BLOCK, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.BLOCK, CoalGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.BLOCK, CrusherBlock.ID, CRUSHER);
-        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTiers.values()[0].getAffix()), ELECTRIC_FURNACE[0]);
-        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTiers.values()[1].getAffix()), ELECTRIC_FURNACE[1]);
-        Registry.register(Registry.BLOCK, new Identifier(ElectricFurnaceBlock.ID.getNamespace(), ElectricFurnaceBlock.ID.getPath() + MachineTiers.values()[2].getAffix()), ELECTRIC_FURNACE[2]);
+        Registry.register(Registry.BLOCK, ELECTRIC_FURNACE[0].getTieredID(), ELECTRIC_FURNACE[0]);
+        Registry.register(Registry.BLOCK, ELECTRIC_FURNACE[1].getTieredID(), ELECTRIC_FURNACE[1]);
+        Registry.register(Registry.BLOCK, ELECTRIC_FURNACE[2].getTieredID(), ELECTRIC_FURNACE[2]);
         Registry.register(Registry.BLOCK, CrusherBlock.ID, CRUSHER);
         Registry.register(Registry.BLOCK, EnergyBankBlock.ID, ENERGY_BANK);
         Registry.register(Registry.BLOCK, PressBlock.ID, PRESS);
