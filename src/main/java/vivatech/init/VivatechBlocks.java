@@ -1,8 +1,5 @@
 package vivatech.init;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import vivatech.Vivatech;
@@ -23,7 +20,7 @@ public class VivatechBlocks implements Initializable {
     public static final EnergyConduitBlock ENERGY_CONDUIT;
     public static final CoalGeneratorBlock COAL_GENERATOR;
     public static final CrusherBlock CRUSHER;
-    public static final Map<MachineTiers, ElectricFurnaceBlock> ELECTRIC_FURNACE;
+    public static final ElectricFurnaceBlock[] ELECTRIC_FURNACE;
     public static final EnergyBankBlock ENERGY_BANK;
     public static final PressBlock PRESS;
 
@@ -35,10 +32,10 @@ public class VivatechBlocks implements Initializable {
         ENERGY_BANK = new EnergyBankBlock();
         PRESS = new PressBlock();
         
-        ELECTRIC_FURNACE = new LinkedHashMap<MachineTiers, ElectricFurnaceBlock>();
-        ELECTRIC_FURNACE.put(MachineTiers.MINIMAL, new ElectricFurnaceBlock(MachineTiers.MINIMAL));
-        ELECTRIC_FURNACE.put(MachineTiers.NORMAL, new ElectricFurnaceBlock(MachineTiers.NORMAL));
-        ELECTRIC_FURNACE.put(MachineTiers.ADVANCED, new ElectricFurnaceBlock(MachineTiers.ADVANCED));
+        ELECTRIC_FURNACE = new ElectricFurnaceBlock[MachineTiers.values().length];
+        ELECTRIC_FURNACE[MachineTiers.MINIMAL.ordinal()] = new ElectricFurnaceBlock(MachineTiers.MINIMAL);
+        ELECTRIC_FURNACE[MachineTiers.NORMAL.ordinal()] = new ElectricFurnaceBlock(MachineTiers.NORMAL);
+        ELECTRIC_FURNACE[MachineTiers.ADVANCED.ordinal()] = new ElectricFurnaceBlock(MachineTiers.ADVANCED);
     }
 
     @Override
@@ -47,7 +44,7 @@ public class VivatechBlocks implements Initializable {
         Registry.register(Registry.BLOCK, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.BLOCK, CoalGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.BLOCK, CrusherBlock.ID, CRUSHER);
-        TierHelper.registerTieredBlockMap(ELECTRIC_FURNACE);
+        TierHelper.registerTieredBlocks(ELECTRIC_FURNACE);
         Registry.register(Registry.BLOCK, CrusherBlock.ID, CRUSHER);
         Registry.register(Registry.BLOCK, EnergyBankBlock.ID, ENERGY_BANK);
         Registry.register(Registry.BLOCK, PressBlock.ID, PRESS);

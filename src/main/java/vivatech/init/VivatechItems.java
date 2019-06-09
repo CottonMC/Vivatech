@@ -1,27 +1,23 @@
 package vivatech.init;
 
-import java.util.Map;
-
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
 import vivatech.Vivatech;
 import vivatech.block.CoalGeneratorBlock;
 import vivatech.block.CrusherBlock;
-import vivatech.block.ElectricFurnaceBlock;
 import vivatech.block.EnergyBankBlock;
 import vivatech.block.EnergyConduitBlock;
 import vivatech.block.PressBlock;
 import vivatech.item.BatteryItem;
 import vivatech.util.MachineTiers;
-import vivatech.util.TierHelper;
 
 public class VivatechItems implements Initializable {
     public static final Item MACHINE_CHASSIS;
     public static final Item ENERGY_CONDUIT;
     public static final Item COAL_GENERATOR;
     public static final Item CRUSHER;
-    public static final Map<MachineTiers, Item> ELECTRIC_FURNACE;
+    public static final Item[] ELECTRIC_FURNACE;
     public static final Item ENERGY_BANK;
     public static final Item PRESS;
     public static final Item BATTERY;
@@ -35,7 +31,10 @@ public class VivatechItems implements Initializable {
         PRESS = new BlockItem(VivatechBlocks.PRESS, Vivatech.ITEM_SETTINGS);
         BATTERY = new BatteryItem();
         
-        ELECTRIC_FURNACE = TierHelper.fillTieredBlockItemMap(VivatechBlocks.ELECTRIC_FURNACE);
+        ELECTRIC_FURNACE = new Item[MachineTiers.values().length];
+        ELECTRIC_FURNACE[MachineTiers.MINIMAL.ordinal()] = new BlockItem(VivatechBlocks.ELECTRIC_FURNACE[MachineTiers.MINIMAL.ordinal()], Vivatech.ITEM_SETTINGS);
+        ELECTRIC_FURNACE[MachineTiers.NORMAL.ordinal()] = new BlockItem(VivatechBlocks.ELECTRIC_FURNACE[MachineTiers.NORMAL.ordinal()], Vivatech.ITEM_SETTINGS);
+        ELECTRIC_FURNACE[MachineTiers.ADVANCED.ordinal()] = new BlockItem(VivatechBlocks.ELECTRIC_FURNACE[MachineTiers.ADVANCED.ordinal()], Vivatech.ITEM_SETTINGS);
     }
 
     @Override
@@ -48,6 +47,9 @@ public class VivatechItems implements Initializable {
         Registry.register(Registry.ITEM, PressBlock.ID, PRESS);
         Registry.register(Registry.ITEM, BatteryItem.ID, BATTERY);
         
-        TierHelper.registerTieredItems(ELECTRIC_FURNACE, ElectricFurnaceBlock.ID);
+        
+        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[MachineTiers.MINIMAL.ordinal()].getTieredID(), ELECTRIC_FURNACE[MachineTiers.MINIMAL.ordinal()]);
+        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[MachineTiers.NORMAL.ordinal()].getTieredID(), ELECTRIC_FURNACE[MachineTiers.NORMAL.ordinal()]);
+        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[MachineTiers.ADVANCED.ordinal()].getTieredID(), ELECTRIC_FURNACE[MachineTiers.ADVANCED.ordinal()]);
     }
 }
