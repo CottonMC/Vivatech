@@ -1,13 +1,13 @@
 package vivatech.entity;
 
 import net.minecraft.block.entity.BlockEntityType;
-import vivatech.util.MachineTiers;
+import vivatech.util.MachineTier;
 
 public abstract class AbstractTieredMachineEntity extends AbstractMachineEntity {
 
-	public MachineTiers TIER;
+	public MachineTier TIER;
 	
-	public AbstractTieredMachineEntity(BlockEntityType<?> type, MachineTiers tier) {
+	public AbstractTieredMachineEntity(BlockEntityType<?> type, MachineTier tier) {
 		super(type);
 		TIER = tier;
 	}

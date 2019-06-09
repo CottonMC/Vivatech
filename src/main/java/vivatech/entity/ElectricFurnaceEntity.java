@@ -12,12 +12,11 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
-import vivatech.util.MachineTiers;
+import vivatech.util.MachineTier;
 
 public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
 
     private static final int CONSUME_PER_TICK = 2;
-    private static final float SPEED_MULTIPLIER = 1.5F;
     private int cookTime = 0;
     private int cookTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -63,7 +62,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         }
     };
 
-    public ElectricFurnaceEntity(MachineTiers tier) {
+    public ElectricFurnaceEntity(MachineTier tier) {
         super(VivatechEntities.ELECTRIC_FURNACE, tier);
     }
     
@@ -85,11 +84,11 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
     @Override
     protected void serverTick() {
         if (canRun()) {
-            cookTime += TIER.getSpeedMultiplier();
-            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK * TIER.getSpeedMultiplier(), Simulation.ACTION);
+            cookTime++;
+            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK * (int)TIER.getSpeedMultiplier(), Simulation.ACTION);
             if (cookTimeTotal == 0) {
                 cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
-                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * SPEED_MULTIPLIER));
+                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * TIER.getSpeedMultiplier()));
             }
             setBlockActive(true);
             if (cookTime >= cookTimeTotal) {
@@ -149,7 +148,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         super.fromTag(tag);
         cookTime = tag.getInt("CookTime");
         cookTimeTotal = tag.getInt("CookTimeTotal");
-        TIER = MachineTiers.values()[tag.getInt("Tier")];
+        TIER = MachineTier.values()[tag.getInt("Tier")];
     }
 
     @Override

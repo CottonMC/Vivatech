@@ -10,7 +10,7 @@ import vivatech.block.ElectricFurnaceBlock;
 import vivatech.block.EnergyBankBlock;
 import vivatech.block.EnergyConduitBlock;
 import vivatech.block.PressBlock;
-import vivatech.util.MachineTiers;
+import vivatech.util.MachineTier;
 import vivatech.util.TierHelper;
 
 public class VivatechBlocks implements Initializable {
@@ -32,10 +32,8 @@ public class VivatechBlocks implements Initializable {
         ENERGY_BANK = new EnergyBankBlock();
         PRESS = new PressBlock();
         
-        ELECTRIC_FURNACE = new ElectricFurnaceBlock[MachineTiers.values().length];
-        ELECTRIC_FURNACE[MachineTiers.MINIMAL.ordinal()] = new ElectricFurnaceBlock(MachineTiers.MINIMAL);
-        ELECTRIC_FURNACE[MachineTiers.NORMAL.ordinal()] = new ElectricFurnaceBlock(MachineTiers.NORMAL);
-        ELECTRIC_FURNACE[MachineTiers.ADVANCED.ordinal()] = new ElectricFurnaceBlock(MachineTiers.ADVANCED);
+        ELECTRIC_FURNACE = new ElectricFurnaceBlock[MachineTier.values().length];
+        TierHelper.fillTieredBlockArray(ElectricFurnaceBlock.class, ELECTRIC_FURNACE);
     }
 
     @Override
