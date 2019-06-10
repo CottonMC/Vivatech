@@ -10,7 +10,6 @@ import vivatech.block.EnergyBankBlock;
 import vivatech.block.EnergyConduitBlock;
 import vivatech.block.PressBlock;
 import vivatech.item.BatteryItem;
-import vivatech.util.MachineTier;
 import vivatech.util.TierHelper;
 
 public class VivatechItems implements Initializable {
@@ -46,8 +45,6 @@ public class VivatechItems implements Initializable {
         Registry.register(Registry.ITEM, BatteryItem.ID, BATTERY);
         
         
-        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[MachineTier.MINIMAL.ordinal()].getTieredID(), ELECTRIC_FURNACE[MachineTier.MINIMAL.ordinal()]);
-        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[MachineTier.NORMAL.ordinal()].getTieredID(), ELECTRIC_FURNACE[MachineTier.NORMAL.ordinal()]);
-        Registry.register(Registry.ITEM, VivatechBlocks.ELECTRIC_FURNACE[MachineTier.ADVANCED.ordinal()].getTieredID(), ELECTRIC_FURNACE[MachineTier.ADVANCED.ordinal()]);
+        TierHelper.registerTieredBlockItems(VivatechBlocks.ELECTRIC_FURNACE, ELECTRIC_FURNACE);
     }
 }
