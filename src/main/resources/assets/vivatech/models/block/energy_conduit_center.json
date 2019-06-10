@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
 	"textures": {
 		"0": "vivatech:block/energy_conduit",
 		"particle": "vivatech:block/energy_conduit"

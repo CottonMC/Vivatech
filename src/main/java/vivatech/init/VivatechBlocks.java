@@ -1,7 +1,8 @@
 package vivatech.init;
 
-import com.google.common.collect.ImmutableList;
 
+import com.google.common.collect.ImmutableList;
+import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import vivatech.Vivatech;
@@ -17,7 +18,7 @@ import vivatech.util.TierHelper;
 public class VivatechBlocks implements Initializable {
     public static final Identifier MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "machine_chassis");
 
-    public static final BaseBlock MACHINE_CHASSIS;
+    public static final Block MACHINE_CHASSIS;
     public static final EnergyConduitBlock ENERGY_CONDUIT;
     public static final CoalGeneratorBlock COAL_GENERATOR;
     public static final CrusherBlock CRUSHER;
@@ -26,7 +27,7 @@ public class VivatechBlocks implements Initializable {
     public static final PressBlock PRESS;
 
     static {
-        MACHINE_CHASSIS = new BaseBlock(Vivatech.METALLIC_BLOCK_SETTINGS);
+        MACHINE_CHASSIS = new Block(Vivatech.METALLIC_BLOCK_SETTINGS);
         ENERGY_CONDUIT = new EnergyConduitBlock();
         COAL_GENERATOR = new CoalGeneratorBlock();
         CRUSHER = new CrusherBlock();
