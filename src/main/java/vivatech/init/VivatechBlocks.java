@@ -33,7 +33,7 @@ public class VivatechBlocks implements Initializable {
         PRESS = new PressBlock();
         
         ELECTRIC_FURNACE = new ElectricFurnaceBlock[MachineTier.values().length];
-        TierHelper.fillTieredBlockArray(ElectricFurnaceBlock.class, ELECTRIC_FURNACE);
+        TierHelper.fillTieredBlockArray(ELECTRIC_FURNACE, ElectricFurnaceBlock::new);
     }
 
     @Override

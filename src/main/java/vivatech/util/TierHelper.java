@@ -1,6 +1,6 @@
 package vivatech.util;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.function.Function;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -15,17 +15,10 @@ public class TierHelper {
 		return new Identifier(id.getNamespace(), tier.getAffix() + "_" + id.getPath());
 	}
 	
-	public static AbstractTieredMachineBlock[] fillTieredBlockArray(Class<? extends AbstractTieredMachineBlock> clazz, AbstractTieredMachineBlock[] array) {
-		for(MachineTier tier : MachineTier.values()) {
-			try {
-				array[tier.ordinal()] = clazz.getConstructor(MachineTier.class).newInstance(tier);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-		}
-		return array;
+	public static void fillTieredBlockArray(AbstractTieredMachineBlock[] blocks, Function<MachineTier, ? extends AbstractTieredMachineBlock> function) {
+	    for(int i = 0; i < MachineTier.values().length; i++) {
+	    	blocks[i] = function.apply(MachineTier.values()[i]);
+	    }
 	}
 	
 	public static Item[] fillTieredBlockItemArray(AbstractTieredMachineBlock[] blockArray) {
