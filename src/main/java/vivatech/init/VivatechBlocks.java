@@ -3,6 +3,7 @@ package vivatech.init;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import vivatech.Vivatech;
+import vivatech.block.AbstractTieredMachineBlock;
 import vivatech.block.BaseBlock;
 import vivatech.block.CoalGeneratorBlock;
 import vivatech.block.CrusherBlock;
@@ -10,7 +11,6 @@ import vivatech.block.ElectricFurnaceBlock;
 import vivatech.block.EnergyBankBlock;
 import vivatech.block.EnergyConduitBlock;
 import vivatech.block.PressBlock;
-import vivatech.util.MachineTier;
 import vivatech.util.TierHelper;
 
 public class VivatechBlocks implements Initializable {
@@ -20,7 +20,7 @@ public class VivatechBlocks implements Initializable {
     public static final EnergyConduitBlock ENERGY_CONDUIT;
     public static final CoalGeneratorBlock COAL_GENERATOR;
     public static final CrusherBlock CRUSHER;
-    public static final ElectricFurnaceBlock[] ELECTRIC_FURNACE;
+    public static final AbstractTieredMachineBlock[] ELECTRIC_FURNACE;
     public static final EnergyBankBlock ENERGY_BANK;
     public static final PressBlock PRESS;
 
@@ -32,8 +32,7 @@ public class VivatechBlocks implements Initializable {
         ENERGY_BANK = new EnergyBankBlock();
         PRESS = new PressBlock();
         
-        ELECTRIC_FURNACE = new ElectricFurnaceBlock[MachineTier.values().length];
-        TierHelper.fillTieredBlockArray(ELECTRIC_FURNACE, ElectricFurnaceBlock::new);
+        ELECTRIC_FURNACE = TierHelper.fillTieredBlockArray(ElectricFurnaceBlock::new);
     }
 
     @Override

@@ -15,10 +15,12 @@ public class TierHelper {
 		return new Identifier(id.getNamespace(), tier.getAffix() + "_" + id.getPath());
 	}
 	
-	public static void fillTieredBlockArray(AbstractTieredMachineBlock[] blocks, Function<MachineTier, ? extends AbstractTieredMachineBlock> function) {
+	public static AbstractTieredMachineBlock[] fillTieredBlockArray(Function<MachineTier, ? extends AbstractTieredMachineBlock> function) {
+		AbstractTieredMachineBlock[] blocks = new AbstractTieredMachineBlock[MachineTier.values().length];
 	    for(int i = 0; i < MachineTier.values().length; i++) {
 	    	blocks[i] = function.apply(MachineTier.values()[i]);
 	    }
+	    return blocks;
 	}
 	
 	public static Item[] fillTieredBlockItemArray(AbstractTieredMachineBlock[] blockArray) {
@@ -30,6 +32,7 @@ public class TierHelper {
 	}
 
 	public static void registerTieredBlocks(AbstractTieredMachineBlock... blocks) {
+		
 		for(int i = 0; i < blocks.length; i++) {
 			AbstractTieredMachineBlock block = blocks[i];
 			Registry.register(Registry.BLOCK, block.getTieredID(), block);
