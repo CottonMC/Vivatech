@@ -15,7 +15,7 @@ import vivatech.init.VivatechEntities;
 import vivatech.util.MachineTier;
 
 public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
-
+    private static final int TICK_PER_CONSUME = 5;
     private static final int CONSUME_PER_TICK = 2;
     private int cookTime = 0;
     private int cookTimeTotal = 0;
@@ -73,7 +73,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 10_000;
+        return 1_000;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
     protected void serverTick() {
         if (canRun()) {
             cookTime++;
-            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK * (int)TIER.getSpeedMultiplier(), Simulation.ACTION);
+            if (cookTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)TIER.getSpeedMultiplier(), Simulation.ACTION);
             if (cookTimeTotal == 0) {
                 cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
                         .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * TIER.getSpeedMultiplier()));

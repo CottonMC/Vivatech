@@ -5,9 +5,9 @@ import io.github.cottonmc.cotton.gui.widget.*;
 import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import vivatech.Vivatech;
 import vivatech.VivatechClient;
-import vivatech.block.ElectricFurnaceBlock;
-import vivatech.energy.InfiniteEnergyType;
 import vivatech.util.StringHelper;
 
 public class ElectricFurnaceController extends CottonScreenController {
@@ -19,7 +19,7 @@ public class ElectricFurnaceController extends CottonScreenController {
 
         // Bars
         WBar energyBar = new WBar(VivatechClient.ENERGY_BAR_BG, VivatechClient.ENERGY_BAR, 0, 1);
-        energyBar.withTooltip(StringHelper.getTranslationKey("info", InfiniteEnergyType.energyWithMaxI18nId));
+        energyBar.withTooltip(StringHelper.getTranslationKey("info", new Identifier(Vivatech.MODID, "energy_with_max")));
         root.add(energyBar, 1, 2, 14, 64);
 
         WBar progressBar = new WBar(VivatechClient.PROGRESS_BAR_BG, VivatechClient.PROGRESS_BAR,2, 3, WBar.Direction.RIGHT);

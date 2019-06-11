@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class EnergyBankEntity extends AbstractMachineEntity {
 
-    private static final int TRANSFER_PER_TICK = 2;
+    private static final int TRANSFER_PER_TICK = 4;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -53,7 +53,7 @@ public class EnergyBankEntity extends AbstractMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 30_000;
+        return 3_000;
     }
 
     @Override

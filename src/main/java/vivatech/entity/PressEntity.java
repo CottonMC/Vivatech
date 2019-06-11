@@ -14,7 +14,7 @@ import vivatech.recipe.PressingRecipe;
 import javax.annotation.Nullable;
 
 public class PressEntity extends AbstractMachineEntity {
-
+    private static final int TICK_PER_CONSUME = 5;
     private static final int CONSUME_PER_TICK = 1;
     private int pressTime = 0;
     private int pressTimeTotal = 0;
@@ -68,7 +68,7 @@ public class PressEntity extends AbstractMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 10_000;
+        return 1_000;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class PressEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (canRun()) {
             pressTime++;
-            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK, Simulation.ACTION);
+            if (pressTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK, Simulation.ACTION);
             if (pressTimeTotal == 0) {
                 pressTimeTotal = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world)
                         .map(PressingRecipe::getProcessTime).orElse(200);

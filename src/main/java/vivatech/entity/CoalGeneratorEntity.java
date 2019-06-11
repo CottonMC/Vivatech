@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 public class CoalGeneratorEntity extends AbstractMachineEntity {
     private static final int GENERATE_PER_TICK = 1;
+    private static final int TICK_PER_GENERATE = 5;
     private int burnTime = 0;
     private int burnTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -68,7 +69,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 10_000;
+        return 1_000;
     }
 
     @Override
@@ -80,7 +81,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (burnTime > 0) {
             burnTime--;
-            energy.insertEnergy(Vivatech.ENERGY, GENERATE_PER_TICK, Simulation.ACTION);
+            if (burnTime % TICK_PER_GENERATE == 0) energy.insertEnergy(Vivatech.INFINITE_VOLTAGE, GENERATE_PER_TICK, Simulation.ACTION);
         } else if (inventory.get(0).getAmount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
             burnTimeTotal = burnTime;

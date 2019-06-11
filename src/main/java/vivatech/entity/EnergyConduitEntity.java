@@ -1,17 +1,17 @@
 package vivatech.entity;
 
 import io.github.cottonmc.energy.api.EnergyAttribute;
+import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
-import vivatech.energy.VivatechEnergyAttribute;
 import vivatech.init.VivatechEntities;
 import vivatech.util.EnergyHelper;
 
 public class EnergyConduitEntity extends BlockEntity implements Tickable {
 
-    protected static final int TRANSFER_PER_TICK = 20;
-    protected VivatechEnergyAttribute energy = new VivatechEnergyAttribute(100);
+    protected static final int TRANSFER_PER_TICK = 4;
+    protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(20);
 
     public EnergyConduitEntity() {
         super(VivatechEntities.ENERGY_CONDUIT);

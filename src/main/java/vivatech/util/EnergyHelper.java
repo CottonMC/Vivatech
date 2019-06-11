@@ -36,7 +36,7 @@ public class EnergyHelper {
     }
 
     public static void transfer(EnergyAttribute from, EnergyAttribute to, @Nullable Integer transferSize) {
-        if (!to.canInsertEnergy() || !to.getPreferredType().isCompatibleWith(Vivatech.ENERGY)
+        if (!to.canInsertEnergy() || !to.getPreferredType().isCompatibleWith(Vivatech.INFINITE_VOLTAGE)
                 || to.getCurrentEnergy() == to.getMaxEnergy()) {
             return;
         }

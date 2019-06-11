@@ -1,6 +1,8 @@
 package vivatech;
 
 import io.github.cottonmc.energy.CottonEnergy;
+import io.github.cottonmc.energy.api.ElectricalEnergyType;
+import io.github.cottonmc.energy.api.EnergyType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -15,7 +17,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import vivatech.block.*;
 import vivatech.controller.*;
-import vivatech.energy.InfiniteEnergyType;
 import vivatech.init.VivatechBlocks;
 import vivatech.init.VivatechEntities;
 import vivatech.init.VivatechItems;
@@ -28,7 +29,7 @@ public class Vivatech implements ModInitializer {
     public static final Item.Settings ITEM_SETTINGS = new Item.Settings().itemGroup(ITEM_GROUP);
     public static final Block.Settings METALLIC_BLOCK_SETTINGS = FabricBlockSettings.copy(Blocks.IRON_BLOCK).build();
     public static final Block.Settings MACHINE_BLOCK_SETTINGS = FabricBlockSettings.copy(Blocks.IRON_BLOCK).build();
-    public static final InfiniteEnergyType ENERGY = new InfiniteEnergyType();
+    public static final EnergyType INFINITE_VOLTAGE = new ElectricalEnergyType(Integer.MAX_VALUE);
 
     @Override
     public void onInitialize() {
@@ -48,6 +49,6 @@ public class Vivatech implements ModInitializer {
         ContainerProviderRegistry.INSTANCE.registerFactory(PressBlock.ID, (syncId, id, player, buf) ->
                 new PressController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
 
-        Registry.register(CottonEnergy.ENERGY_REGISTRY, new Identifier(MODID, "infinite_energy_type"), ENERGY);
+        Registry.register(CottonEnergy.ENERGY_REGISTRY, new Identifier(MODID, "infinite_voltage"), INFINITE_VOLTAGE);
     }
 }

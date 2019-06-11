@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import vivatech.Vivatech;
-import vivatech.block.BaseBlock;
 import vivatech.block.CoalGeneratorBlock;
 import vivatech.block.CrusherBlock;
 import vivatech.block.ElectricFurnaceBlock;
@@ -34,7 +33,7 @@ public class VivatechBlocks {
         ENERGY_BANK = new EnergyBankBlock();
         PRESS = new PressBlock();
         
-        ELECTRIC_FURNACE = TierHelper.<ElectricFurnaceBlock>fillTieredBlockArray(ElectricFurnaceBlock::new);
+        ELECTRIC_FURNACE = TierHelper.fillTieredBlockArray(ElectricFurnaceBlock::new);
     }
 
     public static void initialize() {

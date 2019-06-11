@@ -2,6 +2,7 @@ package vivatech.entity;
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.api.EnergyAttribute;
+import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -12,13 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
+import vivatech.Vivatech;
 import vivatech.block.AbstractMachineBlock;
-import vivatech.energy.VivatechEnergyAttribute;
 
 public abstract class AbstractMachineEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
         BlockEntityClientSerializable {
     protected DefaultedList<ItemStack> inventory = DefaultedList.create(getInvSize(), ItemStack.EMPTY);
-    protected VivatechEnergyAttribute energy = new VivatechEnergyAttribute(getMaxEnergy()) {
+    protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), Vivatech.INFINITE_VOLTAGE) {
         @Override
         public boolean canInsertEnergy() { return AbstractMachineEntity.this.canInsertEnergy(); }
 

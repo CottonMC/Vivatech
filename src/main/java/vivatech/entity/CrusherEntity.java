@@ -14,8 +14,8 @@ import vivatech.recipe.CrushingRecipe;
 import javax.annotation.Nullable;
 
 public class CrusherEntity extends AbstractMachineEntity {
-
     private static final int CONSUME_PER_TICK = 1;
+    private static final int TICK_PER_CONSUME = 5;
     private int crushTime = 0;
     private int crushTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -68,7 +68,7 @@ public class CrusherEntity extends AbstractMachineEntity {
     // AbstractMachineEntity
     @Override
     protected int getMaxEnergy() {
-        return 10_000;
+        return 1_000;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CrusherEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (canRun()) {
             crushTime++;
-            energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK, Simulation.ACTION);
+            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK, Simulation.ACTION);
             if (crushTimeTotal == 0) {
                 crushTimeTotal = world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
                         .map(CrushingRecipe::getProcessTime).orElse(200);
