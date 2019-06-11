@@ -1,5 +1,5 @@
 {
-  "type": "c:crushing",
+  "type": "vivatech:crushing",
   "ingredient": {
     "tag": "c:cobalt_ore"
   },

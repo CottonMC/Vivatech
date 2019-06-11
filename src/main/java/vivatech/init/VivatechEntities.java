@@ -5,7 +5,7 @@ import net.minecraft.util.registry.Registry;
 import vivatech.block.*;
 import vivatech.entity.*;
 
-public class VivatechEntities implements Initializable {
+public class VivatechEntities {
     public static final BlockEntityType<EnergyConduitEntity> ENERGY_CONDUIT;
     public static final BlockEntityType<CoalGeneratorEntity> COAL_GENERATOR;
     public static final BlockEntityType<CrusherEntity> CRUSHER;
@@ -22,8 +22,7 @@ public class VivatechEntities implements Initializable {
         PRESS = BlockEntityType.Builder.create(PressEntity::new, VivatechBlocks.PRESS).build(null);
     }
 
-    @Override
-    public void initialize() {
+    public static void initialize() {
         Registry.register(Registry.BLOCK_ENTITY, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.BLOCK_ENTITY, CoalGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.BLOCK_ENTITY, CrusherBlock.ID, CRUSHER);

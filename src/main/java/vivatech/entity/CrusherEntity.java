@@ -1,8 +1,6 @@
 package vivatech.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
-import io.github.cottonmc.cotton.datapack.recipe.CottonRecipes;
-import io.github.cottonmc.cotton.datapack.recipe.CrushingRecipe;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -10,6 +8,8 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
+import vivatech.init.VivatechRecipes;
+import vivatech.recipe.CrushingRecipe;
 
 import javax.annotation.Nullable;
 
@@ -82,7 +82,7 @@ public class CrusherEntity extends AbstractMachineEntity {
             crushTime++;
             energy.extractEnergy(Vivatech.ENERGY, CONSUME_PER_TICK, Simulation.ACTION);
             if (crushTimeTotal == 0) {
-                crushTimeTotal = world.getRecipeManager().getFirstMatch(CottonRecipes.CRUSHING_RECIPE, this, world)
+                crushTimeTotal = world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
                         .map(CrushingRecipe::getProcessTime).orElse(200);
             }
             setBlockActive(true);
@@ -103,7 +103,7 @@ public class CrusherEntity extends AbstractMachineEntity {
 
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
-            Recipe recipe = world.getRecipeManager().getFirstMatch(CottonRecipes.CRUSHING_RECIPE, this, world).orElse(null);
+            Recipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
 

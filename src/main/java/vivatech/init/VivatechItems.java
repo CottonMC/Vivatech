@@ -7,7 +7,7 @@ import vivatech.Vivatech;
 import vivatech.block.*;
 import vivatech.item.BatteryItem;
 
-public class VivatechItems implements Initializable {
+public class VivatechItems {
     public static final Item MACHINE_CHASSIS;
     public static final Item ENERGY_CONDUIT;
     public static final Item COAL_GENERATOR;
@@ -28,8 +28,7 @@ public class VivatechItems implements Initializable {
         BATTERY = new BatteryItem();
     }
 
-    @Override
-    public void initialize() {
+    public static void initialize() {
         Registry.register(Registry.ITEM, VivatechBlocks.MACHINE_CHASSIS_ID, MACHINE_CHASSIS);
         Registry.register(Registry.ITEM, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.ITEM, CoalGeneratorBlock.ID, COAL_GENERATOR);

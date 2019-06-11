@@ -1,6 +1,5 @@
 package vivatech.recipe;
 
-import io.github.cottonmc.cotton.datapack.recipe.ProcessingRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;

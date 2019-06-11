@@ -1,5 +1,5 @@
 {
-  "type": "c:crushing",
+  "type": "vivatech:crushing",
   "ingredient": {
     "item": "minecraft:iron_ore"
   },

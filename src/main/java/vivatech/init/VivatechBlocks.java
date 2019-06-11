@@ -6,7 +6,7 @@ import net.minecraft.util.registry.Registry;
 import vivatech.Vivatech;
 import vivatech.block.*;
 
-public class VivatechBlocks implements Initializable {
+public class VivatechBlocks {
     public static final Identifier MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "machine_chassis");
 
     public static final Block MACHINE_CHASSIS;
@@ -27,8 +27,7 @@ public class VivatechBlocks implements Initializable {
         PRESS = new PressBlock();
     }
 
-    @Override
-    public void initialize() {
+    public static void initialize() {
         Registry.register(Registry.BLOCK, MACHINE_CHASSIS_ID, MACHINE_CHASSIS);
         Registry.register(Registry.BLOCK, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.BLOCK, CoalGeneratorBlock.ID, COAL_GENERATOR);

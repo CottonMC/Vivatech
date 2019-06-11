@@ -32,10 +32,10 @@ public class Vivatech implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        new VivatechRecipes().initialize();
-        new VivatechBlocks().initialize();
-        new VivatechEntities().initialize();
-        new VivatechItems().initialize();
+        VivatechRecipes.initialize();
+        VivatechBlocks.initialize();
+        VivatechEntities.initialize();
+        VivatechItems.initialize();
 
         ContainerProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, id, player, buf) ->
                 new CoalGeneratorController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
