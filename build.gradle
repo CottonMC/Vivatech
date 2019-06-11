@@ -17,6 +17,11 @@ repositories {
 		name = "BuildCraft" //For LibBlockAttributes
 		url = "https://mod-buildcraft.com/maven"
 	}
+	maven {
+		// For REI's dependencies
+		name = 'CurseForge'
+		url = 'https://minecraft.curseforge.com/api/maven'
+	}
 }
 
 dependencies {
@@ -31,6 +36,7 @@ dependencies {
         modCompile ("io.github.cottonmc:cotton:0.7.3+1.14.2-SNAPSHOT") { transitive = false }
 	modCompile ("io.github.cottonmc:cotton-energy:1.4.0+1.14.2-SNAPSHOT") { transitive = false }
 	modCompile ("io.github.cottonmc:cotton-resources:1.2.0+1.14.2-SNAPSHOT") { transitive = false }
+	modCompile "me.shedaniel:RoughlyEnoughItems:2.9.1+build.116"
 
         include ("alexill.mc.lib:libblockattributes:0.4.2") { transitive = false }
         include ("io.github.cottonmc:cotton-energy:1.4.0") { transitive = false }

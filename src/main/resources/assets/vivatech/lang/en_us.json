@@ -9,5 +9,7 @@
   "block.vivatech.electric_furnace": "Electric Furnace",
   "block.vivatech.energy_bank": "Energy Bank",
   "block.vivatech.press": "Press",
-  "item.vivatech.battery": "Battery"
+  "item.vivatech.battery": "Battery",
+  "gui.vivatech.crushing": "Crushing",
+  "gui.vivatech.pressing": "Pressing"
 }
