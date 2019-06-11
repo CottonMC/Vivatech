@@ -20,6 +20,9 @@
     ],
     "client": [
       "vivatech.VivatechClient"
+    ],
+    "rei_plugins": [
+      "vivatech.rei.VivatechREIPlugin"
     ]
   },
 
