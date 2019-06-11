@@ -26,7 +26,9 @@ public class VivatechRecipes {
 
     public static void initialize() {
         Registry.register(Registry.RECIPE_TYPE, PressingRecipe.ID, PRESSING);
+        Registry.register(Registry.RECIPE_TYPE, CrushingRecipe.ID, CRUSHING);
         Registry.register(Registry.RECIPE_SERIALIZER, PressingRecipe.ID, PRESSING_SERIALIZER);
+        Registry.register(Registry.RECIPE_SERIALIZER, CrushingRecipe.ID, CRUSHING_SERIALIZER);
     }
 
     private static <T extends Recipe<?>> RecipeType<T> buildRecipeType(Identifier id) {
