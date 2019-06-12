@@ -12,13 +12,22 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.CrusherEntity;
+import vivatech.util.MachineTier;
+import vivatech.util.TierHelper;
 
-public class CrusherBlock extends AbstractMachineBlock {
+public class CrusherBlock extends AbstractTieredMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "crusher");
+    final Identifier TIERED_ID;
 
-    public CrusherBlock() {
-        super(Vivatech.MACHINE_BLOCK_SETTINGS);
+    public CrusherBlock(MachineTier tier) {
+        super(Vivatech.MACHINE_BLOCK_SETTINGS, tier);
+        TIERED_ID = TierHelper.getTieredID(ID, tier);
     }
+    
+	@Override
+	public Identifier getTieredID() {
+		return TIERED_ID;
+	}
 
     // Block
     @Override
@@ -33,6 +42,6 @@ public class CrusherBlock extends AbstractMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new CrusherEntity();
+        return new CrusherEntity(TIER);
     }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "vivatech:block/normal_machine_chassis",
   "textures": {
-    "front": "vivatech:block/coal_generator_front"
+    "front": "vivatech:block/normal_crusher_front"
   }
 }

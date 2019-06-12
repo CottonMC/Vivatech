@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,active=false":  { "model": "vivatech:block/advanced_crusher" },
+    "facing=east,active=false":   { "model": "vivatech:block/advanced_crusher", "y": 90 },
+    "facing=south,active=false":  { "model": "vivatech:block/advanced_crusher", "y": 180 },
+    "facing=west,active=false":   { "model": "vivatech:block/advanced_crusher", "y": 270 },
+    "facing=north,active=true":   { "model": "vivatech:block/advanced_crusher_active" },
+    "facing=east,active=true":    { "model": "vivatech:block/advanced_crusher_active", "y": 90 },
+    "facing=south,active=true":   { "model": "vivatech:block/advanced_crusher_active", "y": 180 },
+    "facing=west,active=true":    { "model": "vivatech:block/advanced_crusher_active", "y": 270 }
+  }
+}

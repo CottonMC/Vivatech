@@ -88,7 +88,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
             if (cookTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)TIER.getSpeedMultiplier(), Simulation.ACTION);
             if (cookTimeTotal == 0) {
                 cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
-                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * TIER.getSpeedMultiplier()));
+                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * (TIER.getSpeedMultiplier() + 0.5F)));
             }
             setBlockActive(true);
             if (cookTime >= cookTimeTotal) {
@@ -148,7 +148,6 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         super.fromTag(tag);
         cookTime = tag.getInt("CookTime");
         cookTimeTotal = tag.getInt("CookTimeTotal");
-        TIER = MachineTier.values()[tag.getInt("Tier")];
     }
 
     @Override
@@ -156,7 +155,6 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         super.toTag(tag);
         tag.putInt("CookTime", cookTime);
         tag.putInt("CookTimeTotal", cookTimeTotal);
-        tag.putInt("Tier", TIER.ordinal());
         return tag;
     }
 

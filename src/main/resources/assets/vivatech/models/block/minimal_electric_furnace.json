@@ -1,0 +1,6 @@
+{
+  "parent": "vivatech:block/minimal_machine_chassis",
+  "textures": {
+    "front": "vivatech:block/minimal_electric_furnace_front"
+  }
+}

@@ -1,6 +1,10 @@
 package vivatech.entity;
 
+import javax.annotation.Nullable;
+
 import alexiil.mc.lib.attributes.Simulation;
+import io.github.cottonmc.cotton.datapack.recipe.CottonRecipes;
+import io.github.cottonmc.cotton.datapack.recipe.ProcessingRecipe;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -10,10 +14,10 @@ import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
 import vivatech.init.VivatechRecipes;
 import vivatech.recipe.CrushingRecipe;
+import vivatech.util.MachineTier;
 
-import javax.annotation.Nullable;
+public class CrusherEntity extends AbstractTieredMachineEntity {
 
-public class CrusherEntity extends AbstractMachineEntity {
     private static final int CONSUME_PER_TICK = 1;
     private static final int TICK_PER_CONSUME = 5;
     private int crushTime = 0;
@@ -61,6 +65,10 @@ public class CrusherEntity extends AbstractMachineEntity {
         }
     };
 
+    public CrusherEntity(MachineTier tier) {
+        super(VivatechEntities.CRUSHER, tier);
+    }
+    
     public CrusherEntity() {
         super(VivatechEntities.CRUSHER);
     }
@@ -80,10 +88,10 @@ public class CrusherEntity extends AbstractMachineEntity {
     protected void serverTick() {
         if (canRun()) {
             crushTime++;
-            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK, Simulation.ACTION);
+            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)TIER.getSpeedMultiplier(), Simulation.ACTION);
             if (crushTimeTotal == 0) {
-                crushTimeTotal = world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
-                        .map(CrushingRecipe::getProcessTime).orElse(200);
+                crushTimeTotal = (int) (world.getRecipeManager().getFirstMatch(CottonRecipes.CRUSHING_RECIPE, this, world)
+                        .map(CrushingRecipe::getProcessTime).orElse(200) / TIER.getSpeedMultiplier());
             }
             setBlockActive(true);
             if (crushTime >= crushTimeTotal) {

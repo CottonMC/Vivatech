@@ -2,7 +2,7 @@ package vivatech.util;
 
 public enum MachineTier {
 	
-	MINIMAL(1.5F, 0, "minimal"), NORMAL(2F, 3, "normal"), ADVANCED(3F, 5, "advanced");
+	MINIMAL(1F, 0, "minimal"), NORMAL(2F, 3, "normal"), ADVANCED(3F, 5, "advanced");
 	
 	private final float speedMultiplier;
 	private final int upgradeSlots;
