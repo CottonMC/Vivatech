@@ -24,10 +24,10 @@ public class CrusherBlock extends AbstractTieredMachineBlock {
         TIERED_ID = TierHelper.getTieredID(ID, tier);
     }
     
-	@Override
-	public Identifier getTieredID() {
-		return TIERED_ID;
-	}
+    @Override
+    public Identifier getTieredID() {
+        return TIERED_ID;
+    }
 
     // Block
     @Override
