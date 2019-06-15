@@ -12,6 +12,6 @@ final class PressingCategory extends BaseRecipeCategory {
 
     @Override
     public Renderer getIcon() {
-        return Renderable.fromItemStack(new ItemStack(VivatechBlocks.PRESS));
+        return Renderable.fromItemStack(new ItemStack(VivatechBlocks.PRESS.get(0)));
     }
 }

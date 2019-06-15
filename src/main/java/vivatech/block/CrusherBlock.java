@@ -20,7 +20,7 @@ public class CrusherBlock extends AbstractTieredMachineBlock {
     final Identifier TIERED_ID;
 
     public CrusherBlock(MachineTier tier) {
-        super(Vivatech.MACHINE_BLOCK_SETTINGS, tier);
+        super(Vivatech.MACHINE_BLOCK_SETTINGS, "crusher", tier);
         TIERED_ID = TierHelper.getTieredID(ID, tier);
     }
     
@@ -42,6 +42,6 @@ public class CrusherBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new CrusherEntity(TIER);
+        return new CrusherEntity(tier);
     }
 }

@@ -20,7 +20,7 @@ public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
     final Identifier TIERED_ID;
 
     public ElectricFurnaceBlock(MachineTier tier) {
-        super(Vivatech.MACHINE_BLOCK_SETTINGS, tier);
+        super(Vivatech.MACHINE_BLOCK_SETTINGS, "electric_furnace", tier);
         TIERED_ID = TierHelper.getTieredID(ID, tier);
     }
 
@@ -37,7 +37,7 @@ public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new ElectricFurnaceEntity(TIER);
+        return new ElectricFurnaceEntity(tier);
     }
 
 	@Override

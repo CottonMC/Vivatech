@@ -3,7 +3,6 @@ package vivatech.entity;
 import javax.annotation.Nullable;
 
 import alexiil.mc.lib.attributes.Simulation;
-import io.github.cottonmc.cotton.datapack.recipe.CottonRecipes;
 import io.github.cottonmc.cotton.datapack.recipe.ProcessingRecipe;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
@@ -90,7 +89,7 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
             crushTime++;
             if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)TIER.getSpeedMultiplier(), Simulation.ACTION);
             if (crushTimeTotal == 0) {
-                crushTimeTotal = (int) (world.getRecipeManager().getFirstMatch(CottonRecipes.CRUSHING_RECIPE, this, world)
+                crushTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
                         .map(CrushingRecipe::getProcessTime).orElse(200) / TIER.getSpeedMultiplier());
             }
             setBlockActive(true);

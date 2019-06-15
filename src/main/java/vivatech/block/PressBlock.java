@@ -20,7 +20,7 @@ public class PressBlock extends AbstractTieredMachineBlock {
     final Identifier TIERED_ID;
 
     public PressBlock(MachineTier tier) {
-        super(Vivatech.MACHINE_BLOCK_SETTINGS, tier);
+        super(Vivatech.MACHINE_BLOCK_SETTINGS, "press", tier);
         TIERED_ID = TierHelper.getTieredID(ID, tier);
     }
     
@@ -42,6 +42,6 @@ public class PressBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new PressEntity(TIER);
+        return new PressEntity(tier);
     }
 }

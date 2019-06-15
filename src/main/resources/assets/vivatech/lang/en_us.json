@@ -5,20 +5,18 @@
   "block.vivatech.machine_chassis": "Machine Chassis",
   "block.vivatech.energy_conduit": "Energy Conduit",
   "block.vivatech.coal_generator": "Coal Generator",
+  
   "block.vivatech.crusher": "Crusher",
-  "block.vivatech.minimal_crusher": "Minimal Crusher",
-  "block.vivatech.normal_crusher": "Normal Crusher",
-  "block.vivatech.advanced_crusher": "Advanced Crusher",
   "block.vivatech.electric_furnace": "Electric Furnace",
-  "block.vivatech.minimal_electric_furnace": "Minimal Electric Furnace",
-  "block.vivatech.normal_electric_furnace": "Normal Electric Furnace",
-  "block.vivatech.advanced_electric_furnace": "Advanced Electric Furnace",
-  "block.vivatech.minimal_press": "Minimal Press",
-  "block.vivatech.normal_press": "Normal Press",
-  "block.vivatech.advanced_press": "Advanced Press",
-  "block.vivatech.energy_bank": "Energy Bank",
   "block.vivatech.press": "Press",
+  "block.vivatech.energy_bank": "Energy Bank",
+
   "item.vivatech.battery": "Battery",
   "gui.vivatech.crushing": "Crushing",
-  "gui.vivatech.pressing": "Pressing"
+  "gui.vivatech.pressing": "Pressing",
+
+  "machine_tier.tier"     : "Tier: %s",
+  "machine_tier.minimal"  : "Minimal",
+  "machine_tier.normal"   : "Normal",
+  "machine_tier.advanced" : "Advanced"
 }

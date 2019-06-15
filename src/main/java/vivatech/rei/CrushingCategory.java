@@ -12,6 +12,6 @@ final class CrushingCategory extends BaseRecipeCategory {
 
     @Override
     public Renderer getIcon() {
-        return Renderable.fromItemStack(new ItemStack(VivatechBlocks.CRUSHER));
+        return Renderable.fromItemStack(new ItemStack(VivatechBlocks.CRUSHER.get(0)));
     }
 }
