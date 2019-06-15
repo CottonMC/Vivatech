@@ -1,6 +1,5 @@
 package vivatech.init;
 
-
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
