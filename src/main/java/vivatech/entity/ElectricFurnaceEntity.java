@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.AbstractCookingRecipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
@@ -62,10 +63,6 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         }
     };
 
-    public ElectricFurnaceEntity(MachineTier tier) {
-        super(VivatechEntities.ELECTRIC_FURNACE, tier);
-    }
-    
     public ElectricFurnaceEntity() {
     	super(VivatechEntities.ELECTRIC_FURNACE);
     }
@@ -83,12 +80,14 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
 
     @Override
     protected void serverTick() {
+    	MachineTier tier = getMachineTier();
+    	
         if (canRun()) {
             cookTime++;
-            if (cookTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)TIER.getSpeedMultiplier(), Simulation.ACTION);
+            if (cookTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
             if (cookTimeTotal == 0) {
                 cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
-                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * (TIER.getSpeedMultiplier() + 0.5F)));
+                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * (tier.getSpeedMultiplier() + 0.5F)));
             }
             setBlockActive(true);
             if (cookTime >= cookTimeTotal) {
@@ -108,7 +107,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
 
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
-            Recipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).orElse(null);
+            SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
 
@@ -120,7 +119,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         if (inventory.get(0).isEmpty()
                 || output.isEmpty()
                 || inventory.get(1).getAmount() > 64
-                || energy.getCurrentEnergy() < CONSUME_PER_TICK * TIER.getSpeedMultiplier()) {
+                || energy.getCurrentEnergy() < CONSUME_PER_TICK * getMachineTier().getSpeedMultiplier()) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
             return output.getItem() == inventory.get(1).getItem();

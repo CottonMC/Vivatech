@@ -41,4 +41,8 @@ public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock {
 		
 		super.buildTooltip(itemStack_1, blockView_1, list_1, tooltipContext_1);
 	}
+
+	public MachineTier getMachineTier() {
+		return tier;
+	}
 }

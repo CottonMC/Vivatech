@@ -42,6 +42,6 @@ public class PressBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new PressEntity(tier);
+        return new PressEntity();
     }
 }

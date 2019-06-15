@@ -42,6 +42,6 @@ public class CrusherBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new CrusherEntity(tier);
+        return new CrusherEntity();
     }
 }

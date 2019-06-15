@@ -6,7 +6,6 @@ import alexiil.mc.lib.attributes.Simulation;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
@@ -62,10 +61,6 @@ public class PressEntity extends AbstractTieredMachineEntity {
             return 4;
         }
     };
-
-    public PressEntity(MachineTier tier) {
-        super(VivatechEntities.PRESS, tier);
-    }
     
     public PressEntity() {
         super(VivatechEntities.PRESS);
@@ -84,12 +79,14 @@ public class PressEntity extends AbstractTieredMachineEntity {
 
     @Override
     protected void serverTick() {
+    	MachineTier tier = getMachineTier();
+    	
         if (canRun()) {
             pressTime++;
-            if (pressTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int) TIER.getSpeedMultiplier(), Simulation.ACTION);
+            if (pressTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
             if (pressTimeTotal == 0) {
                 pressTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world)
-                        .map(PressingRecipe::getProcessTime).orElse(200) / TIER.getSpeedMultiplier());
+                        .map(PressingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
             }
             setBlockActive(true);
             if (pressTime >= pressTimeTotal) {
@@ -109,7 +106,7 @@ public class PressEntity extends AbstractTieredMachineEntity {
 
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
-            Recipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
+            PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
 

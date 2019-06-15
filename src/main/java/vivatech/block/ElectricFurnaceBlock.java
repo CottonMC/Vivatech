@@ -37,7 +37,7 @@ public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new ElectricFurnaceEntity(tier);
+        return new ElectricFurnaceEntity();
     }
 
 	@Override

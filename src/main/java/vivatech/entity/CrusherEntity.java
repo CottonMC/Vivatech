@@ -3,11 +3,9 @@ package vivatech.entity;
 import javax.annotation.Nullable;
 
 import alexiil.mc.lib.attributes.Simulation;
-import io.github.cottonmc.cotton.datapack.recipe.ProcessingRecipe;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.util.math.Direction;
 import vivatech.Vivatech;
 import vivatech.init.VivatechEntities;
@@ -64,10 +62,6 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
         }
     };
 
-    public CrusherEntity(MachineTier tier) {
-        super(VivatechEntities.CRUSHER, tier);
-    }
-    
     public CrusherEntity() {
         super(VivatechEntities.CRUSHER);
     }
@@ -85,12 +79,14 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
 
     @Override
     protected void serverTick() {
+    	MachineTier tier = getMachineTier();
+    	
         if (canRun()) {
             crushTime++;
-            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)TIER.getSpeedMultiplier(), Simulation.ACTION);
+            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
             if (crushTimeTotal == 0) {
                 crushTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
-                        .map(CrushingRecipe::getProcessTime).orElse(200) / TIER.getSpeedMultiplier());
+                        .map(CrushingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
             }
             setBlockActive(true);
             if (crushTime >= crushTimeTotal) {
@@ -110,7 +106,7 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
 
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
-            Recipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world).orElse(null);
+            CrushingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
 
