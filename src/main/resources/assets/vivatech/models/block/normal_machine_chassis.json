@@ -1,0 +1,9 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "vivatech:block/normal_machine_top",
+    "bottom": "vivatech:block/normal_machine_bottom",
+    "side": "vivatech:block/normal_machine_side",
+    "front": "vivatech:block/normal_machine_side"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vivatech",
+  "pattern": ["CAC", "ABA", "CAC"],
+  "key": {
+    "A": {
+      "item": "minecraft:glass_pane"
+    },
+    "B": {
+      "tag": "c:iron_gear"
+    },
+    "C": {
+      "item": "minecraft:brick"
+    }
+  },
+  "result": {
+    "item": "vivatech:light_machine_chassis"
+  }
+}

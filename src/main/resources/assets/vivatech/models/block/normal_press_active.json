@@ -1,0 +1,6 @@
+{
+  "parent": "vivatech:block/normal_press",
+  "textures": {
+    "front": "vivatech:block/normal_press_active_front"
+  }
+}

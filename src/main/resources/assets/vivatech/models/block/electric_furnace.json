@@ -1,6 +1,0 @@
-{
-  "parent": "vivatech:block/machine_chassis",
-  "textures": {
-    "front": "vivatech:block/electric_furnace_front"
-  }
-}

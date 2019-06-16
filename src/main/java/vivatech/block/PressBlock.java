@@ -12,13 +12,22 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.PressEntity;
+import vivatech.util.MachineTier;
+import vivatech.util.TierHelper;
 
-public class PressBlock extends AbstractMachineBlock {
+public class PressBlock extends AbstractTieredMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "press");
+    final Identifier TIERED_ID;
 
-    public PressBlock() {
-        super(Vivatech.MACHINE_BLOCK_SETTINGS);
+    public PressBlock(MachineTier tier) {
+        super(Vivatech.MACHINE_BLOCK_SETTINGS, "press", tier);
+        TIERED_ID = TierHelper.getTieredID(ID, tier);
     }
+    
+	@Override
+	public Identifier getTieredID() {
+		return TIERED_ID;
+	}
 
     // Block
     @Override

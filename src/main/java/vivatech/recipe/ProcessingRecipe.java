@@ -13,11 +13,12 @@ import net.minecraft.util.PacketByteBuf;
 import net.minecraft.world.World;
 import net.minecraft.world.loot.LootManager;
 import net.minecraft.world.loot.context.LootContext;
+import vivatech.util.MachineTier;
 
 import java.util.Collections;
 import java.util.List;
 
-import static net.minecraft.util.JsonHelper.*;
+import net.minecraft.util.JsonHelper;
 
 /**
  * Implements a generic machine processing recipe with optional loot table for bonus items.
@@ -29,6 +30,7 @@ import static net.minecraft.util.JsonHelper.*;
  *     "ingredient": {
  *         "item": "minecraft:iron_ore"
  *     },
+ *     "tier": "minimal",
  *     "processtime": 200,
  *     "experience": 0.35,
  *     "result": {
@@ -45,14 +47,16 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 	protected final Identifier id;
 	protected final Ingredient input;
 	protected final ItemStack output;
+	protected final MachineTier minTier;
 	protected final float exp;
 	protected final int processTime;
 	protected final Identifier bonusLootTable;
 
-	public ProcessingRecipe(Identifier id, Ingredient input, ItemStack output, float exp, int processTime, Identifier bonusLootTable) {
+	public ProcessingRecipe(Identifier id, Ingredient input, ItemStack output, MachineTier minTier, float exp, int processTime, Identifier bonusLootTable) {
 		this.id = id;
 		this.input = input;
 		this.output = output;
+		this.minTier = minTier;
 		this.exp = exp;
 		this.processTime = processTime;
 		this.bonusLootTable = bonusLootTable;
@@ -71,13 +75,21 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 	public ItemStack getOutput() {
 		return output;
 	}
-
+	
+	public MachineTier getMinTier() {
+		return minTier;
+	}
+	
 	public float getExperience() {
 		return exp;
 	}
 
 	public int getProcessTime() {
 		return processTime;
+	}
+	
+	public int getEnergyCost() {
+		return 0;
 	}
 
 	public Identifier getBonusLootTable() {
@@ -112,7 +124,7 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 
 	@FunctionalInterface
 	public interface Factory<R extends ProcessingRecipe> {
-		R create(Identifier id, Ingredient input, ItemStack output, float exp, int processTime, Identifier bonusLootTable);
+		R create(Identifier id, Ingredient input, ItemStack output, MachineTier minTier, float exp, int processTime, Identifier bonusLootTable);
 	}
 
 	public static class Serializer<R extends ProcessingRecipe> implements RecipeSerializer<R> {
@@ -128,36 +140,45 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 		@Override
 		public R read(Identifier id, JsonObject jsonObject) {
 			Ingredient input = Ingredient.fromJson(
-					hasArray(jsonObject, "ingredient")
-							? getArray(jsonObject, "ingredient")
-							: getObject(jsonObject, "ingredient")
+					JsonHelper.hasArray(jsonObject, "ingredient")
+							? JsonHelper.getArray(jsonObject, "ingredient")
+							: JsonHelper.getObject(jsonObject, "ingredient")
 			);
 
-			ItemStack output = ShapedRecipe.getItemStack(getObject(jsonObject, "result"));
-			float exp = getFloat(jsonObject, "experience", 0.0F);
-			int processTime = getInt(jsonObject, "processtime", this.defaultProcessTime);
+			ItemStack output = ShapedRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
+			
+			MachineTier minTier = JsonHelper.hasString(jsonObject, "tier")
+					? MachineTier.forAffix(JsonHelper.getString(jsonObject, "tier"))
+					: MachineTier.MINIMAL;
+			
+			float exp = JsonHelper.getFloat(jsonObject, "experience", 0.0F);
+			int processTime = JsonHelper.getInt(jsonObject, "processtime", this.defaultProcessTime);
 
-			String bonusLoot = getString(jsonObject, "bonus", null);
+			String bonusLoot = JsonHelper.getString(jsonObject, "bonus", null);
 			Identifier bonusLootId = bonusLoot == null ? null : new Identifier(bonusLoot);
 
-			return factory.create(id, input, output, exp, processTime, bonusLootId);
+			return factory.create(id, input, output, minTier, exp, processTime, bonusLootId);
 		}
 
 		@Override
 		public R read(Identifier id, PacketByteBuf buffer) {
 			Ingredient input = Ingredient.fromPacket(buffer);
 			ItemStack output = buffer.readItemStack();
+			MachineTier minTier = MachineTier.MINIMAL;
+			int tierInt = buffer.readByte();
+			if (tierInt>=0 && tierInt<MachineTier.values().length) minTier = MachineTier.values()[tierInt];
 			float exp = buffer.readFloat();
 			int processTime = buffer.readInt();
 			Identifier bonusLoot = buffer.readBoolean() ? buffer.readIdentifier() : null;
 
-			return factory.create(id, input, output, exp, processTime, bonusLoot);
+			return factory.create(id, input, output, minTier, exp, processTime, bonusLoot);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, R recipe) {
 			recipe.input.write(buffer);
 			buffer.writeItemStack(recipe.output);
+			buffer.writeInt(recipe.minTier.ordinal());
 			buffer.writeFloat(recipe.exp);
 			buffer.writeInt(recipe.processTime);
 

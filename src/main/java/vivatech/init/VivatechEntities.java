@@ -28,10 +28,10 @@ public class VivatechEntities {
     static {
         ENERGY_CONDUIT = BlockEntityType.Builder.create(EnergyConduitEntity::new, VivatechBlocks.ENERGY_CONDUIT).build(null);
         COAL_GENERATOR = BlockEntityType.Builder.create(CoalGeneratorEntity::new, VivatechBlocks.COAL_GENERATOR).build(null);
-        CRUSHER = BlockEntityType.Builder.create(CrusherEntity::new, VivatechBlocks.CRUSHER).build(null);
+        CRUSHER = BlockEntityType.Builder.create(CrusherEntity::new, VivatechBlocks.CRUSHER.toArray(new Block[MachineTier.values().length])).build(null);
         ELECTRIC_FURNACE = BlockEntityType.Builder.create(ElectricFurnaceEntity::new, VivatechBlocks.ELECTRIC_FURNACE.toArray(new Block[MachineTier.values().length])).build(null);
         ENERGY_BANK = BlockEntityType.Builder.create(EnergyBankEntity::new, VivatechBlocks.ENERGY_BANK).build(null);
-        PRESS = BlockEntityType.Builder.create(PressEntity::new, VivatechBlocks.PRESS).build(null);
+        PRESS = BlockEntityType.Builder.create(PressEntity::new, VivatechBlocks.PRESS.toArray(new Block[MachineTier.values().length])).build(null);
     }
 
     public static void initialize() {

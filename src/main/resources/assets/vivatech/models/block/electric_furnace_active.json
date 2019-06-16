@@ -1,6 +1,0 @@
-{
-  "parent": "vivatech:block/electric_furnace",
-  "textures": {
-    "front": "vivatech:block/electric_furnace_active_front"
-  }
-}

@@ -1,6 +1,0 @@
-{
-  "parent": "vivatech:block/crusher",
-  "textures": {
-    "front": "vivatech:block/crusher_active_front"
-  }
-}

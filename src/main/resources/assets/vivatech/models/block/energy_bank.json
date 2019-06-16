@@ -1,5 +1,5 @@
 {
-  "parent": "vivatech:block/machine_chassis",
+  "parent": "vivatech:block/normal_machine_chassis",
   "textures": {
     "side": "vivatech:block/energy_bank_side",
     "front": "vivatech:block/energy_bank_side"

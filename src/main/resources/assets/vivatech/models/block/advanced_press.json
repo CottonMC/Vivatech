@@ -1,0 +1,6 @@
+{
+  "parent": "vivatech:block/advanced_machine_chassis",
+  "textures": {
+    "front": "vivatech:block/advanced_press_front"
+  }
+}
