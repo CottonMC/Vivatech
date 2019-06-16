@@ -87,6 +87,10 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 	public int getProcessTime() {
 		return processTime;
 	}
+	
+	public int getEnergyCost() {
+		return 0;
+	}
 
 	public Identifier getBonusLootTable() {
 		return bonusLootTable;

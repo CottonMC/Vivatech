@@ -15,8 +15,8 @@ import vivatech.util.MachineTier;
 
 public class CrusherEntity extends AbstractTieredMachineEntity {
 
-    private static final int CONSUME_PER_TICK = 1;
-    private static final int TICK_PER_CONSUME = 5;
+    public static final int CONSUME_PER_TICK = 1;
+    public static final int TICK_PER_CONSUME = 5;
     private int crushTime = 0;
     private int crushTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {

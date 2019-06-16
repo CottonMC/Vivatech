@@ -6,6 +6,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
+import vivatech.entity.CrusherEntity;
 import vivatech.init.VivatechRecipes;
 import vivatech.util.MachineTier;
 
@@ -24,5 +25,10 @@ public class CrushingRecipe extends ProcessingRecipe {
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return VivatechRecipes.CRUSHING_SERIALIZER;
+	}
+	
+	@Override
+	public int getEnergyCost() {
+		return (processTime / CrusherEntity.TICK_PER_CONSUME) * CrusherEntity.TICK_PER_CONSUME;
 	}
 }

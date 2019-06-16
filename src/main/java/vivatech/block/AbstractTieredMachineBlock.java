@@ -35,7 +35,7 @@ public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock {
 	@Override
 	public void buildTooltip(ItemStack itemStack_1, BlockView blockView_1, List<Component> list_1, TooltipContext tooltipContext_1) {
 		
-		Component tierLine = new TranslatableComponent("machine_tier.tier", new TranslatableComponent("machine_tier."+(tier.toString().toLowerCase())));
+		Component tierLine = new TranslatableComponent("info.vivatech.tier", new TranslatableComponent("info.vivatech.tier."+(tier.toString().toLowerCase())));
 		tierLine.applyFormat(ChatFormat.GRAY);
 		list_1.add(tierLine);
 		

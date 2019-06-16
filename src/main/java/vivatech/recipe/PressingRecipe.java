@@ -6,6 +6,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
+import vivatech.entity.PressEntity;
 import vivatech.init.VivatechRecipes;
 import vivatech.util.MachineTier;
 
@@ -25,4 +26,9 @@ public class PressingRecipe extends ProcessingRecipe {
     public RecipeType<?> getType() {
         return VivatechRecipes.PRESSING;
     }
+    
+    @Override
+	public int getEnergyCost() {
+		return (processTime / PressEntity.TICK_PER_CONSUME) * PressEntity.TICK_PER_CONSUME;
+	}
 }
