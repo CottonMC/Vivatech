@@ -1,6 +1,5 @@
 package vivatech.init;
 
-
 import com.google.common.collect.ImmutableList;
 
 import net.fabricmc.fabric.api.block.FabricBlockSettings;

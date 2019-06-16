@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.2.2-SNAPSHOT'
+	id 'fabric-loom' version '0.2.3-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
@@ -32,10 +32,10 @@ dependencies {
 
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2" // javax.annotations.*
 
-	modCompile ("alexiil.mc.lib:libblockattributes:0.4.2") { transitive = false }
-	modCompile ("io.github.cottonmc:cotton:0.7.3+1.14.2-SNAPSHOT") { transitive = false }
-	modCompile ("io.github.cottonmc:cotton-energy:1.4.0+1.14.2-SNAPSHOT") { transitive = false }
-	modCompile ("io.github.cottonmc:cotton-resources:1.2.0+1.14.2-SNAPSHOT") { transitive = false }
+	modCompile ("alexiil.mc.lib:libblockattributes:0.4.2")
+	modCompile ("io.github.cottonmc:cotton:0.7.3+1.14.2-SNAPSHOT")
+	modCompile ("io.github.cottonmc:cotton-energy:1.4.0+1.14.2-SNAPSHOT")
+	modCompile ("io.github.cottonmc:cotton-resources:1.2.0+1.14.2-SNAPSHOT")
 	modCompile "me.shedaniel:RoughlyEnoughItems:2.9.1+build.116"
 
 	include ("alexiil.mc.lib:libblockattributes:0.4.2") { transitive = false }

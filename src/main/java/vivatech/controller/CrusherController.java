@@ -11,12 +11,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
 import vivatech.VivatechClient;
+import vivatech.init.VivatechRecipes;
 import vivatech.util.StringHelper;
 
 public class CrusherController extends CottonScreenController {
 
     public CrusherController(int syncId, PlayerInventory playerInventory, BlockContext context) {
-        super(CottonRecipes.CRUSHING_RECIPE, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
+        super(VivatechRecipes.CRUSHING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 
         WPlainPanel root = new WPlainPanel();
         ((WGridPanel) getRootPanel()).add(root, 0, 0);
