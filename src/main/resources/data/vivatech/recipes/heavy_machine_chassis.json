@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vivatech",
+  "pattern": ["CAC", "ABA", "CAC"],
+  "key": {
+    "A": {
+      "tag": "c:steel_plate"
+    },
+    "B": {
+      "tag": "c:tungsten_gear"
+    },
+    "C": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "vivatech:heavy_machine_chassis"
+  }
+}

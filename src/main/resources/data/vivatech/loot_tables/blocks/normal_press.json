@@ -5,7 +5,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "vivatech:press"
+          "name": "vivatech:normal_press"
         }
       ],
       "conditions": [

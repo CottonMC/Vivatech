@@ -5,7 +5,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "vivatech:electric_furnace"
+          "name": "vivatech:advanced_electric_furnace"
         }
       ],
       "conditions": [

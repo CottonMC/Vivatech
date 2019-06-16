@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "vivatech",
-  "pattern": ["A", "B", "C"],
+  "pattern": [" A ", "BBB", " C "],
   "key": {
     "A": {
       "item": "vivatech:light_machine_chassis"
     },
     "B": {
-      "item": "minecraft:furnace"
+      "item": "minecraft:obsidian"
     },
     "C": {
       "item": "vivatech:battery"
     }
   },
   "result": {
-    "item": "vivatech:minimal_electric_furnace"
+    "item": "vivatech:minimal_press"
   }
 }

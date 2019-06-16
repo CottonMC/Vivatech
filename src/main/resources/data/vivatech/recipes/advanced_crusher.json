@@ -4,16 +4,16 @@
   "pattern": ["A", "B", "C"],
   "key": {
     "A": {
-      "item": "vivatech:light_machine_chassis"
+      "item": "vivatech:heavy_machine_chassis"
     },
     "B": {
-      "item": "minecraft:furnace"
+      "item": "vivatech:normal_crusher"
     },
     "C": {
       "item": "vivatech:battery"
     }
   },
   "result": {
-    "item": "vivatech:minimal_electric_furnace"
+    "item": "vivatech:advanced_crusher"
   }
 }

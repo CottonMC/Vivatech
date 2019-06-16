@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "vivatech:block/normal_machine_chassis" }
+    "": { "model": "vivatech:block/minimal_machine_chassis" }
   }
 }
