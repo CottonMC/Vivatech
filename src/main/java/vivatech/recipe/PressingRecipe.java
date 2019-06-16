@@ -7,12 +7,13 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
 import vivatech.init.VivatechRecipes;
+import vivatech.util.MachineTier;
 
 public class PressingRecipe extends ProcessingRecipe {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "pressing");
 
-    public PressingRecipe(Identifier id, Ingredient input, ItemStack output, float exp, int processTime, Identifier bonusLootTable) {
-        super(id, input, output, exp, processTime, bonusLootTable);
+    public PressingRecipe(Identifier id, Ingredient input, ItemStack output, MachineTier minTier, float exp, int processTime, Identifier bonusLootTable) {
+        super(id, input, output, minTier, exp, processTime, bonusLootTable);
     }
 
     @Override
