@@ -22,7 +22,7 @@ import java.util.List;
 public class BatteryItem extends Item implements EnergyAttributeProviderItem {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "battery");
 
-    private static final int MAX_ENERGY = 5_000;
+    private static final int MAX_ENERGY = 500;
 
     public BatteryItem() {
         super(Vivatech.ITEM_SETTINGS.stackSize(1).durability(MAX_ENERGY + 1));
