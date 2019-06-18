@@ -1,0 +1,12 @@
+{
+  "type": "vivatech:crushing",
+  "ingredient": {
+    "tag": "c:tungsten_ingot"
+  },
+  "processtime": 200,
+  “tier”: “normal”,
+  "experience": 0.35,
+  "result": {
+    "item": "c:tungsten_dust"
+  }
+}
