@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vivatech",
+  "pattern": ["A ", "A ", “A “],
+  "key": {
+    "A": {
+      "tag": "c:iron_plate"
+    }
+  },
+  "result": {
+    "item": "vivatech:blank_cutting_pattern"
+  }
+}
