@@ -5,7 +5,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "vivatech:light_machine_chassis"
+          "name": "vivatech:minimal_machine_chassis"
         }
       ],
       "conditions": [
