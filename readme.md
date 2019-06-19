@@ -19,31 +19,6 @@ cool abilities in making armor, tools and in farming.
 * [CurseForge](https://minecraft.curseforge.com/projects/vivatech/files)
 * [GitHub Releases](https://github.com/CottonMC/Vivatech/releases)
 
-### Installation
-
-Drop all of the requirements into your `mods/` folder and launch the game!
-
-### Features
-
-#### Machines
-
-* Electric Furnace
-* Crusher
-* Press
-
-#### Generators
-
-* Coal Generator
-
-#### Energy Management
-
-* Energy Bank
-* Batteries
-
-#### Transportation
-
-* Energy Conduit
-
 ### License
 
 This project is licensed under MIT license. You should give a proper contact to the initial project.
