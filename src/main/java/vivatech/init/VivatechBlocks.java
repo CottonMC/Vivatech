@@ -17,13 +17,13 @@ import vivatech.block.PressBlock;
 import vivatech.util.TierHelper;
 
 public class VivatechBlocks {
-    public static final Identifier LIGHT_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "light_machine_chassis");
-    public static final Identifier REGULAR_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "regular_machine_chassis");
-    public static final Identifier HEAVY_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "heavy_machine_chassis");
+    public static final Identifier MINIMAL_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "minimal_machine_chassis");
+    public static final Identifier NORMAL_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "normal_machine_chassis");
+    public static final Identifier ADVANCED_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "advances_machine_chassis");
 
-    public static final Block LIGHT_MACHINE_CHASSIS;
-    public static final Block REGULAR_MACHINE_CHASSIS;
-    public static final Block HEAVY_MACHINE_CHASSIS;
+    public static final Block MINIMAL_MACHINE_CHASSIS;
+    public static final Block NORMAL_MACHINE_CHASSIS;
+    public static final Block ADVANCED_MACHINE_CHASSIS;
     public static final EnergyConduitBlock ENERGY_CONDUIT;
     public static final CoalGeneratorBlock COAL_GENERATOR;
     public static final ImmutableList<CrusherBlock> CRUSHER;
@@ -32,9 +32,9 @@ public class VivatechBlocks {
     public static final ImmutableList<PressBlock> PRESS;
 
     static {
-        LIGHT_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.STONE).build());
-        REGULAR_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).build());
-        HEAVY_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).hardness(7f).resistance(10f).build());
+        MINIMAL_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.STONE).build());
+        NORMAL_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).build());
+        ADVANCED_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).hardness(7f).resistance(10f).build());
         ENERGY_CONDUIT = new EnergyConduitBlock();
         COAL_GENERATOR = new CoalGeneratorBlock();
         ENERGY_BANK = new EnergyBankBlock();
@@ -45,9 +45,9 @@ public class VivatechBlocks {
     }
 
     public static void initialize() {
-        Registry.register(Registry.BLOCK, LIGHT_MACHINE_CHASSIS_ID, LIGHT_MACHINE_CHASSIS);
-        Registry.register(Registry.BLOCK, REGULAR_MACHINE_CHASSIS_ID, REGULAR_MACHINE_CHASSIS);
-        Registry.register(Registry.BLOCK, HEAVY_MACHINE_CHASSIS_ID, HEAVY_MACHINE_CHASSIS);
+        Registry.register(Registry.BLOCK, MINIMAL_MACHINE_CHASSIS_ID, MINIMAL_MACHINE_CHASSIS);
+        Registry.register(Registry.BLOCK, NORMAL_MACHINE_CHASSIS_ID, NORMAL_MACHINE_CHASSIS);
+        Registry.register(Registry.BLOCK, ADVANCED_MACHINE_CHASSIS_ID, ADVANCED_MACHINE_CHASSIS);
         Registry.register(Registry.BLOCK, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.BLOCK, CoalGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.BLOCK, EnergyBankBlock.ID, ENERGY_BANK);

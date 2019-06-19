@@ -4,16 +4,16 @@
   "pattern": ["CAC", "ABA", "CAC"],
   "key": {
     "A": {
-      "tag": "c:iron_plate"
+      "tag": "c:steel_plate"
     },
     "B": {
-      "tag": "c:cobalt_gear"
+      "tag": "c:tungsten_gear"
     },
     "C": {
-      "tag": "c:steel_ingot"
+      "item": "minecraft:gold_ingot"
     }
   },
   "result": {
-    "item": "vivatech:regular_machine_chassis"
+    "item": "vivatech:advanced_machine_chassis"
   }
 }

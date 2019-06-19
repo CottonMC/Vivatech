@@ -11,9 +11,9 @@ import vivatech.item.BatteryItem;
 import vivatech.util.TierHelper;
 
 public class VivatechItems {
-    public static final Item LIGHT_MACHINE_CHASSIS;
-    public static final Item REGULAR_MACHINE_CHASSIS;
-    public static final Item HEAVY_MACHINE_CHASSIS;
+    public static final Item MINIMAL_MACHINE_CHASSIS;
+    public static final Item NORMAL_MACHINE_CHASSIS;
+    public static final Item ADVANCED_MACHINE_CHASSIS;
     public static final Item ENERGY_CONDUIT;
     public static final Item COAL_GENERATOR;
     public static final Item[] CRUSHER;
@@ -23,9 +23,9 @@ public class VivatechItems {
     public static final Item BATTERY;
 
     static {
-        LIGHT_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.LIGHT_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
-        REGULAR_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.REGULAR_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
-        HEAVY_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.HEAVY_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
+        MINIMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.MINIMAL_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
+        NORMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.NORMAL_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
+        ADVANCED_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.ADVANCED_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
         ENERGY_CONDUIT = new BlockItem(VivatechBlocks.ENERGY_CONDUIT, Vivatech.ITEM_SETTINGS);
         COAL_GENERATOR = new BlockItem(VivatechBlocks.COAL_GENERATOR, Vivatech.ITEM_SETTINGS);
         ENERGY_BANK = new BlockItem(VivatechBlocks.ENERGY_BANK, Vivatech.ITEM_SETTINGS);
@@ -37,9 +37,9 @@ public class VivatechItems {
     }
 
     public static void initialize() {
-        Registry.register(Registry.ITEM, VivatechBlocks.LIGHT_MACHINE_CHASSIS_ID, LIGHT_MACHINE_CHASSIS);
-        Registry.register(Registry.ITEM, VivatechBlocks.REGULAR_MACHINE_CHASSIS_ID, REGULAR_MACHINE_CHASSIS);
-        Registry.register(Registry.ITEM, VivatechBlocks.HEAVY_MACHINE_CHASSIS_ID, HEAVY_MACHINE_CHASSIS);
+        Registry.register(Registry.ITEM, VivatechBlocks.MINIMAL_MACHINE_CHASSIS_ID, MINIMAL_MACHINE_CHASSIS);
+        Registry.register(Registry.ITEM, VivatechBlocks.NORMAL_MACHINE_CHASSIS_ID, NORMAL_MACHINE_CHASSIS);
+        Registry.register(Registry.ITEM, VivatechBlocks.ADVANCED_MACHINE_CHASSIS_ID, ADVANCED_MACHINE_CHASSIS);
         Registry.register(Registry.ITEM, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.ITEM, CoalGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.ITEM, EnergyBankBlock.ID, ENERGY_BANK);
