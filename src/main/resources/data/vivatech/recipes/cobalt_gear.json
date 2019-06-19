@@ -1,0 +1,12 @@
+{
+  "type": "vivatech:cutting",
+  "ingredient": {
+    "tag": "c:cobalt_plate"
+  },
+  "processtime": 200,
+  "pattern": "gear"
+  "experience": 0.35,
+  "result": {
+    "item": "c:cobalt_gear"
+  }
+}
