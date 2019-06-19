@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "vivatech",
-  "pattern": ["A ", "A ", “A “],
+  "pattern": ["A ", "A ", "A "],
   "key": {
     "A": {
       "tag": "c:iron_plate"
