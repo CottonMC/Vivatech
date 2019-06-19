@@ -1,0 +1,13 @@
+{
+  "type": "vivatech:cutting",
+  "ingredient": {
+    "tag": "c:gold_plate"
+  },
+  "processtime": 200,
+  "tier": "normal",
+  "pattern": "gear",
+  "experience": 0.35,
+  "result": {
+    "item": "c:gold_gear"
+  }
+}
