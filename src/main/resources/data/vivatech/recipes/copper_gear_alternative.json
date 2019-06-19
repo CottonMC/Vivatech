@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vivatech",
+  "pattern": [" A ", "AAA", " A "],
+  "key": {
+    "A": {
+      "tag": "c:copper_ingot"
+    }
+  },
+  "result": {
+    "item": "c:copper_gear",
+    "count": 3
+  }
+}
