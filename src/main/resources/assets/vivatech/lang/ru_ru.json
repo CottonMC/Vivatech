@@ -1,13 +1,28 @@
 {
   "itemGroup.vivatech.item_group": "Vivatech",
-  "info.vivatech.energy": "%d Дж",
-  "info.vivatech.energy_with_max": "%d/%d Дж",
-  "block.vivatech.machine_chassis": "Рама Машины",
-  "block.vivatech.energy_conduit": "Труба для Энергии",
+
+  "block.vivatech.minimal_machine_chassis"  : "Минимальный Корпус Машины",
+  "block.vivatech.normal_machine_chassis": "Обычный Корпус Машины",
+  "block.vivatech.advanced_machine_chassis"  : "Продвинутый Корпус Машины",
+  
   "block.vivatech.coal_generator": "Угольный Генератор",
   "block.vivatech.crusher": "Дробитель",
   "block.vivatech.electric_furnace": "Электропечь",
-  "block.vivatech.energy_bank": "Энергохранилище",
   "block.vivatech.press": "Пресс",
-  "item.vivatech.battery": "Аккумулятор"
+  "block.vivatech.energy_bank": "Энергохранилище",
+  "block.vivatech.energy_conduit": "Труба для Энергии",
+
+  "item.vivatech.battery" : "Батарея",
+
+  "gui.vivatech.crushing" : "Дробление",
+  "gui.vivatech.pressing" : "Прессование",
+
+  "info.vivatech.energy": "%d Дж",
+  "info.vivatech.energy_with_max": "%d/%d Дж",
+  "info.vivatech.energy_cost" : "Энергия: %d Дж",
+
+  "info.vivatech.tier"          : "Уровень: %s",
+  "info.vivatech.tier.minimal"  : "Минимальный",
+  "info.vivatech.tier.normal"   : "Обычный",
+  "info.vivatech.tier.advanced" : "Продвинутый"
 }
