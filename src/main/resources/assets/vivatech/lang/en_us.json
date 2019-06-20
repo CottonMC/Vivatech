@@ -1,9 +1,9 @@
 {
   "itemGroup.vivatech.item_group": "Vivatech",
 
-  "block.vivatech.light_machine_chassis"  : "Light Machine Chassis",
-  "block.vivatech.regular_machine_chassis": "Regular Machine Chassis",
-  "block.vivatech.heavy_machine_chassis"  : "Heavy Machine Chassis",
+  "block.vivatech.minimal_machine_chassis"  : "Minimal Machine Chassis",
+  "block.vivatech.normal_machine_chassis": "Normal Machine Chassis",
+  "block.vivatech.advanced_machine_chassis"  : "Advanced Machine Chassis",
   
   "block.vivatech.coal_generator": "Coal Generator",
   "block.vivatech.crusher": "Crusher",
