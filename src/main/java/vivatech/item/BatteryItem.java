@@ -1,6 +1,7 @@
 package vivatech.item;
 
 import io.github.cottonmc.energy.api.EnergyAttribute;
+import io.github.cottonmc.energy.api.EnergyAttributeProviderItem;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,7 +14,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
-import vivatech.energy.EnergyAttributeProviderItem;
 import vivatech.util.StringHelper;
 
 import javax.annotation.Nullable;
