@@ -8,6 +8,7 @@ import vivatech.block.CoalGeneratorBlock;
 import vivatech.block.EnergyBankBlock;
 import vivatech.block.EnergyConduitBlock;
 import vivatech.item.BatteryItem;
+import vivatech.item.ScrewdriverItem;
 import vivatech.util.TierHelper;
 
 public class VivatechItems {
@@ -21,6 +22,7 @@ public class VivatechItems {
     public static final Item ENERGY_BANK;
     public static final Item[] PRESS;
     public static final Item BATTERY;
+    public static final Item SCREWDRIVER;
 
     static {
         MINIMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.MINIMAL_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
@@ -30,6 +32,7 @@ public class VivatechItems {
         COAL_GENERATOR = new BlockItem(VivatechBlocks.COAL_GENERATOR, Vivatech.ITEM_SETTINGS);
         ENERGY_BANK = new BlockItem(VivatechBlocks.ENERGY_BANK, Vivatech.ITEM_SETTINGS);
         BATTERY = new BatteryItem();
+        SCREWDRIVER = new ScrewdriverItem();
         
         ELECTRIC_FURNACE = TierHelper.fillTieredBlockItemArray(VivatechBlocks.ELECTRIC_FURNACE);
         PRESS = TierHelper.fillTieredBlockItemArray(VivatechBlocks.PRESS);
