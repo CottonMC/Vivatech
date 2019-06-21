@@ -47,7 +47,7 @@ public class VivatechItems {
         Registry.register(Registry.ITEM, CoalGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.ITEM, EnergyBankBlock.ID, ENERGY_BANK);
         Registry.register(Registry.ITEM, BatteryItem.ID, BATTERY);
-        
+        Registry.register(Registry.ITEM, ScrewdriverItem.ID, SCREWDRIVER);
         
         TierHelper.registerTieredBlockItems(VivatechBlocks.ELECTRIC_FURNACE, ELECTRIC_FURNACE);
         TierHelper.registerTieredBlockItems(VivatechBlocks.PRESS, PRESS);
