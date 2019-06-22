@@ -14,6 +14,10 @@ repositories {
 		url "http://server.bbkr.space:8081/artifactory/libs-snapshot"
 	}
 	maven {
+		name = "Cotton Release"
+		url "http://server.bbkr.space:8081/artifactory/libs-release"
+	}
+	maven {
 		name = "BuildCraft" //For LibBlockAttributes
 		url = "https://mod-buildcraft.com/maven"
 	}
@@ -33,7 +37,7 @@ dependencies {
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2" // javax.annotations.*
 
 	modCompile ("alexiil.mc.lib:libblockattributes:0.4.2")
-	modCompile ("io.github.cottonmc:cotton:0.7.3+1.14.2-SNAPSHOT")
+	modCompile ("io.github.cottonmc:cotton:0.8.2+1.14.2")
 	modCompile ("io.github.cottonmc:cotton-energy:1.4.0+1.14.2-SNAPSHOT")
 	modCompile ("io.github.cottonmc:cotton-resources:1.2.0+1.14.2-SNAPSHOT")
 	modCompile "me.shedaniel:RoughlyEnoughItems:2.9.1+build.116"

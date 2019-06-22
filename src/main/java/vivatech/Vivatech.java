@@ -25,7 +25,7 @@ import vivatech.init.VivatechRecipes;
 public class Vivatech implements ModInitializer {
     public static final String MODID = "vivatech";
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "item_group"),
-            () -> new ItemStack(VivatechItems.REGULAR_MACHINE_CHASSIS));
+            () -> new ItemStack(VivatechItems.NORMAL_MACHINE_CHASSIS));
     public static final Item.Settings ITEM_SETTINGS = new Item.Settings().itemGroup(ITEM_GROUP);
     public static final Block.Settings METALLIC_BLOCK_SETTINGS = FabricBlockSettings.copy(Blocks.IRON_BLOCK).build();
     public static final Block.Settings MACHINE_BLOCK_SETTINGS = FabricBlockSettings.copy(Blocks.IRON_BLOCK).build();
