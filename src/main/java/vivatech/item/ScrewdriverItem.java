@@ -7,7 +7,7 @@ import vivatech.Vivatech;
 public class ScrewdriverItem extends Item {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "screwdriver");
 
-    public BatteryItem() {
+    public ScrewdriverItem() {
         super(Vivatech.ITEM_SETTINGS.stackSize(1).durability(50));
     }  
 }
