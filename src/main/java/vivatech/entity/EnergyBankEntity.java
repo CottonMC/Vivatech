@@ -1,10 +1,10 @@
 package vivatech.entity;
 
 import io.github.cottonmc.energy.api.EnergyAttribute;
+import io.github.cottonmc.energy.api.EnergyAttributeProviderItem;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
-import vivatech.energy.EnergyAttributeProviderItem;
 import vivatech.init.VivatechEntities;
 import vivatech.util.EnergyHelper;
 

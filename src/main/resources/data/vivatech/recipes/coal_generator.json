@@ -7,7 +7,7 @@
       "item": "minecraft:furnace"
     },
     "B": {
-      "item": "vivatech:light_machine_chassis"
+      "item": "vivatech:minimal_machine_chassis"
     },
     "C": {
       "item": "minecraft:redstone"

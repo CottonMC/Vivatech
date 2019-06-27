@@ -4,7 +4,7 @@
   "pattern": ["A", "B", "C"],
   "key": {
     "A": {
-      "item": "vivatech:heavy_machine_chassis"
+      "item": "vivatech:advanced_machine_chassis"
     },
     "B": {
       "item": "vivatech:normal_press"

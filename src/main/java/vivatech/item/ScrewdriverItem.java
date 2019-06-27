@@ -8,6 +8,6 @@ public class ScrewdriverItem extends Item {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "screwdriver");
 
     public ScrewdriverItem() {
-        super(Vivatech.ITEM_SETTINGS.stackSize(1).durability(50));
+        super(Vivatech.ITEM_SETTINGS.durability(50));
     }  
 }

@@ -25,7 +25,7 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
     private static final int MAX_ENERGY = 500;
 
     public BatteryItem() {
-        super(Vivatech.ITEM_SETTINGS.stackSize(1).durability(MAX_ENERGY + 1));
+        super(Vivatech.ITEM_SETTINGS.stackSize(1).durability(MAX_ENERGY));
     }
 
     // Item
