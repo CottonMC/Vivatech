@@ -165,7 +165,7 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 			Ingredient input = Ingredient.fromPacket(buffer);
 			ItemStack output = buffer.readItemStack();
 			MachineTier minTier = MachineTier.MINIMAL;
-			int tierInt = buffer.readByte();
+			int tierInt = buffer.readInt();
 			if (tierInt>=0 && tierInt<MachineTier.values().length) minTier = MachineTier.values()[tierInt];
 			float exp = buffer.readFloat();
 			int processTime = buffer.readInt();
