@@ -160,9 +160,9 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
 
         public boolean canConnect(Direction direction) {
             BlockPos offsetPos = pos.offset(direction);
-            SearchOption option = SearchOptions.inDirection(direction);
-            return EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, offsetPos, option) != null
-                    || world.getBlockState(offsetPos).getBlock() instanceof EnergyConduitBlock;
+            SearchOption<Object> option = SearchOptions.inDirection(direction);
+            return world.getBlockState(offsetPos).getBlock() instanceof EnergyConduitBlock
+            		|| EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, offsetPos, option) != null;
         }
     }
 
