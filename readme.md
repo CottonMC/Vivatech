@@ -16,7 +16,7 @@ cool abilities in making armor, tools and in farming.
 
 ### Downloads
 
-* [CurseForge](https://minecraft.curseforge.com/projects/vivatech/files)
+* [CurseForge](https://curseforge.com/minecraft/mc-mods/vivatech/files)
 * [GitHub Releases](https://github.com/CottonMC/Vivatech/releases)
 
 ### License
