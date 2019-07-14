@@ -30,12 +30,12 @@ import javax.annotation.Nullable;
 public class EnergyConduitBlock extends Block implements BlockEntityProvider, AttributeProvider {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_conduit");
 
-    public static final BooleanProperty CONNECTED_UP    = BooleanProperty.create("connected_up");
-    public static final BooleanProperty CONNECTED_DOWN  = BooleanProperty.create("connected_down");
-    public static final BooleanProperty CONNECTED_NORTH = BooleanProperty.create("connected_north");
-    public static final BooleanProperty CONNECTED_EAST  = BooleanProperty.create("connected_east");
-    public static final BooleanProperty CONNECTED_SOUTH = BooleanProperty.create("connected_south");
-    public static final BooleanProperty CONNECTED_WEST  = BooleanProperty.create("connected_west");
+    public static final BooleanProperty CONNECTED_UP    = BooleanProperty.of("connected_up");
+    public static final BooleanProperty CONNECTED_DOWN  = BooleanProperty.of("connected_down");
+    public static final BooleanProperty CONNECTED_NORTH = BooleanProperty.of("connected_north");
+    public static final BooleanProperty CONNECTED_EAST  = BooleanProperty.of("connected_east");
+    public static final BooleanProperty CONNECTED_SOUTH = BooleanProperty.of("connected_south");
+    public static final BooleanProperty CONNECTED_WEST  = BooleanProperty.of("connected_west");
 
     public EnergyConduitBlock() {
         super(Vivatech.METALLIC_BLOCK_SETTINGS);

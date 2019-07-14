@@ -119,7 +119,7 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public DefaultedList<Ingredient> getPreviewInputs() {
-		return DefaultedList.create(1, input);
+		return DefaultedList.ofSize(1, input);
 	}
 
 	@FunctionalInterface

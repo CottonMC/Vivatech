@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 import vivatech.entity.AbstractMachineEntity;
 
 public abstract class AbstractMachineBlock extends Block implements BlockEntityProvider, AttributeProvider {
-    public static final DirectionProperty FACING = Properties.FACING_HORIZONTAL;
-    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
     public AbstractMachineBlock(Settings settings) {
         super(settings);
@@ -36,7 +36,7 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        return getDefaultState().with(FACING, context.getPlayerHorizontalFacing().getOpposite());
+        return getDefaultState().with(FACING, context.getPlayerLookDirection().getOpposite());
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ElectricFurnaceScreen extends CottonScreen<ElectricFurnaceControlle
         super.drawBackground(partialTicks, mouseX, mouseY);
 
         // Title
-        String title = StringHelper.getTranslatableComponent("block", ElectricFurnaceBlock.ID).getText();
+        String title = StringHelper.getTranslatableComponent("block", ElectricFurnaceBlock.ID).asString();
         font.draw(title, left + 81 - font.getStringWidth(title) / 2, top, WLabel.DEFAULT_TEXT_COLOR);
     }
 }

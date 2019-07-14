@@ -82,17 +82,17 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
         if (burnTime > 0) {
             burnTime--;
             if (burnTime % TICK_PER_GENERATE == 0) energy.insertEnergy(Vivatech.INFINITE_VOLTAGE, GENERATE_PER_TICK, Simulation.ACTION);
-        } else if (inventory.get(0).getAmount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
+        } else if (inventory.get(0).getCount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
             burnTimeTotal = burnTime;
-            inventory.get(0).subtractAmount(1);
+            inventory.get(0).decrement(1);
             setBlockActive(true);
             updateEntity();
         }
 
         if (burnTime == 0) {
             burnTimeTotal = 0;
-            if (inventory.get(0).getAmount() == 0) {
+            if (inventory.get(0).getCount() == 0) {
                 setBlockActive(false);
             }
             updateEntity();

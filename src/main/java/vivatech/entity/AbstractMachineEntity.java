@@ -18,7 +18,7 @@ import vivatech.block.AbstractMachineBlock;
 
 public abstract class AbstractMachineEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
         BlockEntityClientSerializable {
-    protected DefaultedList<ItemStack> inventory = DefaultedList.create(getInvSize(), ItemStack.EMPTY);
+    protected DefaultedList<ItemStack> inventory = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
     protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), Vivatech.INFINITE_VOLTAGE) {
         @Override
         public boolean canInsertEnergy() { return AbstractMachineEntity.this.canInsertEnergy(); }
@@ -63,7 +63,7 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
         energy.fromTag(tag.getTag("Energy"));
-        inventory = DefaultedList.create(getInvSize(), ItemStack.EMPTY);
+        inventory = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
         Inventories.fromTag(tag, inventory);
     }
 
@@ -110,8 +110,8 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Ticka
     @Override
     public void setInvStack(int slot, ItemStack itemStack) {
         inventory.set(slot, itemStack);
-        if (itemStack.getAmount() > getInvMaxStackAmount()) {
-            itemStack.setAmount(getInvMaxStackAmount());
+        if (itemStack.getCount() > getInvMaxStackAmount()) {
+            itemStack.setCount(getInvMaxStackAmount());
         }
         markDirty();
     }

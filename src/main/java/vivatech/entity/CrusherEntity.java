@@ -93,7 +93,7 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
                 crushTime = 0;
                 crushTimeTotal = 0;
                 crushItem();
-                if (inventory.get(0).getAmount() == 0) {
+                if (inventory.get(0).getCount() == 0) {
                     setBlockActive(false);
                 }
                 updateEntity();
@@ -117,7 +117,7 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
         ItemStack output = getOutputStack();
         if (inventory.get(0).isEmpty()
                 || output.isEmpty()
-                || inventory.get(1).getAmount() > 64
+                || inventory.get(1).getCount() > 64
                 || energy.getCurrentEnergy() < CONSUME_PER_TICK) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
@@ -133,10 +133,10 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
             if (inventory.get(1).isEmpty()) {
                 inventory.set(1, output);
             } else {
-                inventory.get(1).addAmount(1);
+                inventory.get(1).increment(1);
             }
 
-            inventory.get(0).subtractAmount(1);
+            inventory.get(0).decrement(1);
         }
     }
 

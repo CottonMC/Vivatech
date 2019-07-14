@@ -6,44 +6,58 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "vivatech"
-version = "1.0.0-alpha.9+1.14.2"
+version = "1.0.0-alpha.10"
 
 repositories {
+	jcenter()
 	maven {
-		name = "Cotton"
-		url "http://server.bbkr.space:8081/artifactory/libs-snapshot"
+		name = "Fabric"
+		url = "http://maven.fabricmc.net"
 	}
 	maven {
-		name = "Cotton Release"
+		name = "Cotton (Snapshot)"
+		url = "http://server.bbkr.space:8081/artifactory/libs-snapshot"
+	}
+	maven {
+		name = "Cotton"
 		url "http://server.bbkr.space:8081/artifactory/libs-release"
 	}
 	maven {
-		name = "BuildCraft" //For LibBlockAttributes
+		name = "BuildCraft"
 		url = "https://mod-buildcraft.com/maven"
 	}
 	maven {
-		// For REI's dependencies
-		name = 'CurseForge'
-		url = 'https://minecraft.curseforge.com/api/maven'
+		name = "BuildCraft"
+		url = "https://minecraft.curseforge.com/api/maven"
 	}
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.14.2"
-	mappings "net.fabricmc:yarn:1.14.2+build.2"
-	modCompile "net.fabricmc:fabric-loader:0.4.8+build.154"
-	modCompile "net.fabricmc.fabric-api:fabric-api:0.3.0+build.185"
+	minecraft "com.mojang:minecraft:1.14.3"
+	mappings "net.fabricmc:yarn:1.14.3+build.12"
+	modCompile "net.fabricmc:fabric-loader:0.4.8+build.155"
+	modCompile "net.fabricmc.fabric-api:fabric-api:0.3.0+build.194"
 
-	compileOnly "com.google.code.findbugs:jsr305:3.0.2" // javax.annotations.*
+ 	// javax.annotations.*
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
-	modCompile ("alexiil.mc.lib:libblockattributes-all:0.4.7")
-	modCompile ("io.github.cottonmc:cotton:0.8.2+1.14.2")
-	modCompile ("io.github.cottonmc:cotton-energy:1.5.0+1.14.3-SNAPSHOT") {transitive = false}
-	modCompile ("io.github.cottonmc:cotton-resources:1.2.2+1.14.2")
-	modCompile "me.shedaniel:RoughlyEnoughItems:2.9.1+build.116"
+	modCompile "alexiil.mc.lib:libblockattributes-all:0.4.7"
+	modCompile "io.github.cottonmc:LibGui:1.1.0"
+	modCompile "io.github.cottonmc:Jankson:1.0.0-j1.1.2"
+	modCompile "io.github.cottonmc.cotton:cotton-logging:1.0.0-rc.1"
+	modCompile "io.github.cottonmc.cotton:cotton-config:1.0.0-rc.1"
+	modCompile "io.github.cottonmc.cotton:cotton-datapack:1.0.0-rc.1"
+	modCompile "io.github.cottonmc:cotton-energy:1.5.0+1.14.3-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton-resources:1.2.2+1.14.2"
 
-	include ("alexiil.mc.lib:libblockattributes-all:0.4.7") { transitive = false }
-	include ("io.github.cottonmc:cotton-energy:1.5.0+1.14.3-SNAPSHOT") { transitive = false }
+	include "alexiil.mc.lib:libblockattributes-all:0.4.7"
+	include "io.github.cottonmc:LibGui:1.1.0"
+	include "io.github.cottonmc:cotton-energy:1.5.0+1.14.3-SNAPSHOT"
+	include "io.github.cottonmc:cotton-resources:1.2.2+1.14.2"
+
+	// Integration tests
+	modCompile ("me.shedaniel:RoughlyEnoughItems:2.9.6+build.139") { transitive = false }
+	modCompile ("io.github.prospector:modmenu:1.6.3+build.101") { transitive = false }
 }
 
 processResources {

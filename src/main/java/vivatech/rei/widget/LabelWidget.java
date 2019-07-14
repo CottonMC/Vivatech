@@ -5,14 +5,14 @@ import java.util.List;
 
 import me.shedaniel.rei.gui.widget.Widget;
 import net.minecraft.client.gui.Element;
-import net.minecraft.network.chat.Component;
+import net.minecraft.text.Text;
 
 public class LabelWidget extends Widget {
 	protected int x;
 	protected int y;
-	protected Component text;
+	protected Text text;
 	
-	public LabelWidget(int x, int y, Component component) {
+	public LabelWidget(int x, int y, Text component) {
 		this.text = component;
 		this.x = x;
 		this.y = y;
@@ -20,7 +20,7 @@ public class LabelWidget extends Widget {
 	
 	@Override
 	public void render(int mouseX, int mouseY, float delta) {
-		font.draw(text.getFormattedText(), x, y, 0x666666);
+		font.draw(text.asFormattedString(), x, y, 0x666666);
 	}
 
 	

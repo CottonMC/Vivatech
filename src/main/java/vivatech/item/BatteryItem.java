@@ -5,12 +5,12 @@ import io.github.cottonmc.energy.api.EnergyAttributeProviderItem;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormat;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
@@ -25,18 +25,18 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
     private static final int MAX_ENERGY = 500;
 
     public BatteryItem() {
-        super(Vivatech.ITEM_SETTINGS.stackSize(1).durability(MAX_ENERGY));
+        super(Vivatech.ITEM_SETTINGS.maxCount(1).maxDamage(MAX_ENERGY));
     }
 
     // Item
     @Environment(EnvType.CLIENT)
     @Override
-    public void buildTooltip(ItemStack itemStack, @Nullable World world, List<Component> list, TooltipContext context) {
+    public void appendTooltip(ItemStack itemStack, @Nullable World world, List<Text> list, TooltipContext context) {
         list.add(
                 StringHelper.getTranslatableComponent("info", new Identifier(Vivatech.MODID, "energy_with_max"),
                         ((EnergyAttributeProviderItem) itemStack.getItem()).getEnergyAttribute(itemStack).getCurrentEnergy(),
                         MAX_ENERGY)
-                .setStyle(new Style().setColor(ChatFormat.GRAY)));
+                .setStyle(new Style().setColor(Formatting.GRAY)));
     }
 
     // EnergyAttributeProviderItem
@@ -45,7 +45,7 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
         SimpleEnergyAttribute energy = new SimpleEnergyAttribute(MAX_ENERGY, Vivatech.INFINITE_VOLTAGE);
         Runnable listener = () -> {
             stack.getOrCreateTag().put("Energy", energy.toTag());
-            stack.setDamage(getDurability() - energy.getCurrentEnergy());
+            stack.setDamage(getMaxDamage() - energy.getCurrentEnergy());
         };
 
         if (!stack.hasTag() || !stack.getTag().containsKey("Energy")) listener.run();

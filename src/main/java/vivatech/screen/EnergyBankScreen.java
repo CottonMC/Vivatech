@@ -19,7 +19,7 @@ public class EnergyBankScreen extends CottonScreen<EnergyBankController> {
         super.drawBackground(partialTicks, mouseX, mouseY);
 
         // Title
-        String title = StringHelper.getTranslatableComponent("block", EnergyBankBlock.ID).getText();
+        String title = StringHelper.getTranslatableComponent("block", EnergyBankBlock.ID).asString();
         font.draw(title, left + 81 - font.getStringWidth(title) / 2, top, WLabel.DEFAULT_TEXT_COLOR);
 
         // Decorations
