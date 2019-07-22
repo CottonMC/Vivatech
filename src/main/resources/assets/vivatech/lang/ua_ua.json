@@ -1,0 +1,30 @@
+{
+  "itemGroup.vivatech.item_group": "Vivatech",
+
+  "block.vivatech.minimal_machine_chassis": "Мінімальній Корпус Пристрою",
+  "block.vivatech.normal_machine_chassis": "Звичайний Корпус Пристрою",
+  "block.vivatech.advanced_machine_chassis": "Просунутий Корпус Пристрою",
+  
+  "block.vivatech.coal_generator": "Вугільний Генератор",
+  "block.vivatech.crusher": "Дробитель",
+  "block.vivatech.electric_furnace": "Електропіч",
+  "block.vivatech.energy_bank": "Енергосховище",
+  "block.vivatech.energy_conduit": "Електричний кабель",
+  "block.vivatech.press": "Прес",
+
+  "item.vivatech.battery": "Батарея",
+  "item.vivatech.screwdriver": "Викрутка",
+
+  "gui.vivatech.cutting": "Різка",
+  "gui.vivatech.crushing": "Дроблення",
+  "gui.vivatech.pressing": "Пресування",
+
+  "info.vivatech.energy": "%d Дж",
+  "info.vivatech.energy_cost" : "Енергія: %d Дж",
+  "info.vivatech.energy_with_max": "%d/%d Дж",
+
+  "info.vivatech.tier": "Рівень: %s",
+  "info.vivatech.tier.minimal": "Мінімальний",
+  "info.vivatech.tier.normal": "Звичайний",
+  "info.vivatech.tier.advanced": "Просунутий"
+}
