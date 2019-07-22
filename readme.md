@@ -9,9 +9,9 @@ cool abilities in making armor, tools and in farming.
 ### Requirements
 
 * [Fabric API](https://github.com/FabricMC/fabric)
-* [Cotton](https://github.com/CottonMC/cotton)
-* [Cotton Energy](https://github.com/CottonMC/cotton-energy)
-* [Cotton Resources](https://github.com/CottonMC/cotton-resources)
+* [Cotton](https://github.com/CottonMC/Cotton)
+* [Cotton Energy](https://github.com/CottonMC/CottonEnergy)
+* [Cotton Resources](https://github.com/CottonMC/CottonResources)
 * [LibBlockAttributes](https://github.com/AlexIIL/LibBlockAttributes)
 
 ### Downloads
@@ -21,6 +21,6 @@ cool abilities in making armor, tools and in farming.
 
 ### License
 
-This project is licensed under MIT license. You should give a proper contact to the initial project.
+This project is licensed under MIT license. You should give a proper credit to the initial project.
 
-2019, [Vivatech](https://github.com/CottonMC/Vivatech) by [The Cotton Project](https://github.com/CottonMC)
+2019, [Vivatech](https://github.com/CottonMC/Vivatech) by [Cotton](https://github.com/CottonMC)

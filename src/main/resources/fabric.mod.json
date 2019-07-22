@@ -5,7 +5,7 @@
 
   "name": "Vivatech",
   "description": "Classic technologies rethought",
-  "authors": ["The Cotton Project"],
+  "authors": ["falseresync", "Cotton"],
   "contact": {
     "homepage": "https://curseforge.com/minecraft/mc-mods/vivatech",
     "issues": "https://github.com/CottonMC/Vivatech/issues"
@@ -29,10 +29,14 @@
   "depends": {
     "fabricloader": ">=0.4.0",
     "fabric": "*",
-    "cotton": "*",
+    "cotton-logging": "*",
+    "cotton-config": "*",
+    "cotton-datapack": "*",
     "cotton-energy": ">=1.4.0+1.14.2",
-    "cotton-resources": ">=1.2.0+1.14.2",
-    "libblockattributes": "*"
+    "cotton-resources": ">=1.3.2+1.14.3",
+    "libblockattributes-base": "*",
+    "libblockattributes-items": "*",
+    "libblockattributes-fluids": "*"
   }
 }
 

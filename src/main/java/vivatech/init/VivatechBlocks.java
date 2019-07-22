@@ -39,9 +39,9 @@ public class VivatechBlocks {
         COAL_GENERATOR = new CoalGeneratorBlock();
         ENERGY_BANK = new EnergyBankBlock();
         
-        ELECTRIC_FURNACE = TierHelper.<ElectricFurnaceBlock>fillTieredBlockArray(ElectricFurnaceBlock::new);
-        PRESS = TierHelper.<PressBlock>fillTieredBlockArray(PressBlock::new);
-        CRUSHER = TierHelper.<CrusherBlock>fillTieredBlockArray(CrusherBlock::new);
+        ELECTRIC_FURNACE = TierHelper.fillTieredBlockArray(ElectricFurnaceBlock::new);
+        PRESS = TierHelper.fillTieredBlockArray(PressBlock::new);
+        CRUSHER = TierHelper.fillTieredBlockArray(CrusherBlock::new);
     }
 
     public static void initialize() {

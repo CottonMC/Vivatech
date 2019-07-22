@@ -36,7 +36,7 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        return getDefaultState().with(FACING, context.getPlayerLookDirection().getOpposite());
+        return getDefaultState().with(FACING, context.getPlayerFacing().getOpposite());
     }
 
     @Override
