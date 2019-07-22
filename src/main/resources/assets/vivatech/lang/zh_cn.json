@@ -1,10 +1,30 @@
 {
   "itemGroup.vivatech.item_group": "Viva科技",
-  "info.vivatech.energy": "%d J",
-  "info.vivatech.energy_with_max": "%d/%d J",
-  "block.vivatech.machine_chassis": "机器底座",
+  
+  "block.vivatech.minimal_machine_chassis": "最小号机器底座",
+  "block.vivatech.normal_machine_chassis": "普通机器底座",
+  "block.vivatech.advanced_machine_chassis": "高级机器底座",
+  
   "block.vivatech.coal_generator": "煤炭发电机",
   "block.vivatech.crusher": "破碎机",
   "block.vivatech.electric_furnace": "电炉",
-  "block.vivatech.press": "压缩机"
+  "block.vivatech.energy_bank": "能源银行",
+  "block.vivatech.energy_conduit": "能源管道",
+  "block.vivatech.press": "压缩机",
+  
+  "item.vivatech.battery": "电池",
+  "item.vivatech.screwdriver": "螺丝刀",
+  
+  "gui.vivatech.cutting": "切割中",
+  "gui.vivatech.crushing": "粉碎中",
+  "gui.vivatech.pressing": "压缩中",
+  
+  "info.vivatech.energy": "%d J",
+  "info.vivatech.energy_cost": "能量: %d J",
+  "info.vivatech.energy_with_max": "%d/%d J",
+  
+  "info.vivatech.tier": "等级: %s",
+  "info.vivatech.tier.minimal": "最小",
+  "info.vivatech.tier.normal": "正常",
+  "info.vivatech.tier.advanced": "高级"
 }
