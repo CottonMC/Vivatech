@@ -1,5 +1,6 @@
 package vivatech;
 
+import io.github.cottonmc.cotton.logging.ModLogger;
 import io.github.cottonmc.energy.CottonEnergy;
 import io.github.cottonmc.energy.api.ElectricalEnergyType;
 import io.github.cottonmc.energy.api.EnergyType;
@@ -24,6 +25,7 @@ import vivatech.init.VivatechRecipes;
 
 public class Vivatech implements ModInitializer {
     public static final String MODID = "vivatech";
+    public static final ModLogger LOGGER = new ModLogger(MODID);
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "item_group"),
             () -> new ItemStack(VivatechItems.NORMAL_MACHINE_CHASSIS));
     public static final Item.Settings ITEM_SETTINGS = new Item.Settings().group(ITEM_GROUP);

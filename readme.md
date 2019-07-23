@@ -13,6 +13,11 @@ Vivatech is a technology mod for Fabric for Minecraft. It would help you to auto
 - Energy management
 - Multiple tiers of the machines
 
+### Downloads
+
+* [CurseForge](https://curseforge.com/minecraft/mc-mods/vivatech/files)
+* [GitHub Releases](https://github.com/CottonMC/Vivatech/releases)
+
 ### Dependencies
 
 * [Fabric API](https://github.com/FabricMC/fabric)
@@ -21,11 +26,6 @@ Vivatech is a technology mod for Fabric for Minecraft. It would help you to auto
 * [Cotton](https://github.com/CottonMC/Cotton)
 * [Cotton Energy](https://github.com/CottonMC/CottonEnergy)
 * [Cotton Resources](https://github.com/CottonMC/CottonResources)
-
-### Downloads
-
-* [CurseForge](https://curseforge.com/minecraft/mc-mods/vivatech/files)
-* [GitHub Releases](https://github.com/CottonMC/Vivatech/releases)
 
 ### Credits
 

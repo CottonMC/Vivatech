@@ -11,9 +11,7 @@ import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityContext;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.Identifier;
@@ -25,7 +23,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.EnergyConduitEntity;
-import vivatech.network.Network;
+import vivatech.network.EnergyNetwork;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -54,9 +52,9 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
 
     // Block
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
-        super.onPlaced(world, pos, state, entity, stack);
-        Network.call(world);
+    public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState newState, boolean flag) {
+        EnergyNetwork.removeConduit((EnergyConduitEntity) world.getBlockEntity(pos));
+        super.onBlockRemoved(state, world, pos, newState, flag);
     }
 
     @Override
