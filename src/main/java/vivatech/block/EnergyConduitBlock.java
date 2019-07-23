@@ -11,10 +11,11 @@ import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityContext;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.BooleanBiFunction;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -24,8 +25,10 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.EnergyConduitEntity;
+import vivatech.network.Network;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class EnergyConduitBlock extends Block implements BlockEntityProvider, AttributeProvider {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_conduit");
@@ -51,6 +54,12 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
 
     // Block
     @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+        super.onPlaced(world, pos, state, entity, stack);
+        Network.call(world);
+    }
+
+    @Override
     protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
         builder.add(CONNECTED_UP, CONNECTED_DOWN, CONNECTED_NORTH, CONNECTED_EAST, CONNECTED_SOUTH, CONNECTED_WEST);
     }
@@ -62,22 +71,23 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView blockView, BlockPos pos, EntityContext context) {
+        ArrayList<VoxelShape> shapes = new ArrayList<>();
         double startOffset = 0.3125;
         double endOffset = 0.6875;
 
-        VoxelShape shape = VoxelShapes.cuboid(startOffset, startOffset, startOffset, endOffset, endOffset, endOffset);
+        if (state.get(CONNECTED_EAST))  shapes.add(offsetShape(Direction.EAST,  startOffset, endOffset));
+        if (state.get(CONNECTED_WEST))  shapes.add(offsetShape(Direction.WEST,  startOffset, endOffset));
+        if (state.get(CONNECTED_UP))    shapes.add(offsetShape(Direction.UP,    startOffset, endOffset));
+        if (state.get(CONNECTED_DOWN))  shapes.add(offsetShape(Direction.DOWN,  startOffset, endOffset));
+        if (state.get(CONNECTED_SOUTH)) shapes.add(offsetShape(Direction.SOUTH, startOffset, endOffset));
+        if (state.get(CONNECTED_NORTH)) shapes.add(offsetShape(Direction.NORTH, startOffset, endOffset));
 
-        if (state.get(CONNECTED_EAST))  shape = modifyShape(shape, Direction.EAST,  startOffset, endOffset);
-        if (state.get(CONNECTED_WEST))  shape = modifyShape(shape, Direction.WEST,  startOffset, endOffset);
-        if (state.get(CONNECTED_UP))    shape = modifyShape(shape, Direction.UP,    startOffset, endOffset);
-        if (state.get(CONNECTED_DOWN))  shape = modifyShape(shape, Direction.DOWN,  startOffset, endOffset);
-        if (state.get(CONNECTED_SOUTH)) shape = modifyShape(shape, Direction.SOUTH, startOffset, endOffset);
-        if (state.get(CONNECTED_NORTH)) shape = modifyShape(shape, Direction.NORTH, startOffset, endOffset);
-
-        return shape;
+        return VoxelShapes.union(
+                VoxelShapes.cuboid(startOffset, startOffset, startOffset, endOffset, endOffset, endOffset),
+                shapes.toArray(new VoxelShape[0]));
     }
 
-    private VoxelShape modifyShape(VoxelShape shape, Direction direction, double startOffset, double endOffset) {
+    private VoxelShape offsetShape(Direction direction, double startOffset, double endOffset) {
         double minX = startOffset;
         double minY = startOffset;
         double minZ = startOffset;
@@ -94,7 +104,7 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
             case NORTH: minZ = 0; break;
         }
 
-        return VoxelShapes.combineAndSimplify(shape, VoxelShapes.cuboid(minX, minY, minZ, maxX, maxY, maxZ), BooleanBiFunction.OR);
+        return VoxelShapes.cuboid(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     @Override
@@ -113,10 +123,6 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean b) {
         super.neighborUpdate(state, world, pos, otherBlock, otherPos, b);
 
-        updateProperties(state, pos, world);
-    }
-
-    private void updateProperties(BlockState state, BlockPos pos, World world) {
         StateManager sm = new StateManager(state, pos, world);
         BlockState newState = sm
                 .calcProperty(Direction.EAST,   CONNECTED_EAST)
