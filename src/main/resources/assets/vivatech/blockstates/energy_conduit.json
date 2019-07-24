@@ -7,7 +7,14 @@
     },
     {
       "when": {
-        "connected_east": true
+        "AND": [
+          {
+            "connected_east": "!disconnected"
+          },
+          {
+            "connected_east": "!disabled"
+          }
+        ]
       },
       "apply": {
         "model": "vivatech:block/energy_conduit_side",
@@ -17,7 +24,14 @@
     },
     {
       "when": {
-        "connected_south": true
+        "AND": [
+          {
+            "connected_south": "!disconnected"
+          },
+          {
+            "connected_south": "!disabled"
+          }
+        ]
       },
       "apply": {
         "model": "vivatech:block/energy_conduit_side",
@@ -26,7 +40,14 @@
     },
     {
       "when": {
-        "connected_west": true
+        "AND": [
+          {
+            "connected_west": "!disconnected"
+          },
+          {
+            "connected_west": "!disabled"
+          }
+        ]
       },
       "apply": {
         "model": "vivatech:block/energy_conduit_side",
@@ -37,7 +58,14 @@
     },
     {
       "when": {
-        "connected_north": true
+        "AND": [
+          {
+            "connected_north": "!disconnected"
+          },
+          {
+            "connected_north": "!disabled"
+          }
+        ]
       },
       "apply": {
         "model": "vivatech:block/energy_conduit_side",
@@ -46,7 +74,14 @@
     },
     {
       "when": {
-        "connected_up": true
+        "AND": [
+          {
+            "connected_up": "!disconnected"
+          },
+          {
+            "connected_up": "!disabled"
+          }
+        ]
       },
       "apply": {
         "model": "vivatech:block/energy_conduit_side",
@@ -55,7 +90,14 @@
     },
     {
       "when": {
-        "connected_down": true
+        "AND": [
+          {
+            "connected_down": "!disconnected"
+          },
+          {
+            "connected_down": "!disabled"
+          }
+        ]
       },
       "apply": {
         "model": "vivatech:block/energy_conduit_side"

@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "vivatech.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ServerWorldMixin"
+  ],
+  "minVersion": "0.1.0",
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

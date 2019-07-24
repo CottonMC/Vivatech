@@ -26,15 +26,21 @@
     ]
   },
 
+  "mixins": [
+    "vivatech.mixins.json"
+  ],
+
   "depends": {
     "fabricloader": ">=0.4.0",
     "fabric": "*",
-    "cotton-logging": "*",
-    "cotton-config": "*",
-    "cotton-datapack": "*",
+    "jankson": "*",
     "cotton-energy": ">=1.4.0+1.14.2",
     "cotton-resources": ">=1.3.2+1.14.3",
-    "libblockattributes": "*"
+    "libblockattributes": ">=0.4.9"
+  },
+  "suggests": {
+    "modmenu": "*",
+    "roughlyenoughitems": "*"
   }
 }
 

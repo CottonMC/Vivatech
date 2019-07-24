@@ -1,9 +1,6 @@
 package vivatech.block;
 
 import alexiil.mc.lib.attributes.AttributeList;
-import alexiil.mc.lib.attributes.AttributeProvider;
-import alexiil.mc.lib.attributes.SearchOption;
-import alexiil.mc.lib.attributes.SearchOptions;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -13,7 +10,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateFactory;
-import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -23,40 +20,41 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.EnergyConduitEntity;
-import vivatech.network.EnergyNetwork;
+import vivatech.util.EnergyConduitConnection;
+import vivatech.util.IEnergyConduitConnectable;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public class EnergyConduitBlock extends Block implements BlockEntityProvider, AttributeProvider {
+public class EnergyConduitBlock extends Block implements BlockEntityProvider, IEnergyConduitConnectable {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_conduit");
 
-    public static final BooleanProperty CONNECTED_UP    = BooleanProperty.of("connected_up");
-    public static final BooleanProperty CONNECTED_DOWN  = BooleanProperty.of("connected_down");
-    public static final BooleanProperty CONNECTED_NORTH = BooleanProperty.of("connected_north");
-    public static final BooleanProperty CONNECTED_EAST  = BooleanProperty.of("connected_east");
-    public static final BooleanProperty CONNECTED_SOUTH = BooleanProperty.of("connected_south");
-    public static final BooleanProperty CONNECTED_WEST  = BooleanProperty.of("connected_west");
+    public static final EnumProperty<EnergyConduitConnection> CONNECTED_UP
+            = EnumProperty.of("connected_up", EnergyConduitConnection.class);
+    public static final EnumProperty<EnergyConduitConnection> CONNECTED_DOWN
+            = EnumProperty.of("connected_down", EnergyConduitConnection.class);
+    public static final EnumProperty<EnergyConduitConnection> CONNECTED_NORTH
+            = EnumProperty.of("connected_north", EnergyConduitConnection.class);
+    public static final EnumProperty<EnergyConduitConnection> CONNECTED_EAST
+            = EnumProperty.of("connected_east", EnergyConduitConnection.class);
+    public static final EnumProperty<EnergyConduitConnection> CONNECTED_SOUTH
+            = EnumProperty.of("connected_south", EnergyConduitConnection.class);
+    public static final EnumProperty<EnergyConduitConnection> CONNECTED_WEST
+            = EnumProperty.of("connected_west", EnergyConduitConnection.class);
 
     public EnergyConduitBlock() {
         super(Vivatech.METALLIC_BLOCK_SETTINGS);
 
         setDefaultState(getStateFactory().getDefaultState()
-                .with(CONNECTED_UP, false)
-                .with(CONNECTED_DOWN, false)
-                .with(CONNECTED_NORTH, false)
-                .with(CONNECTED_EAST, false)
-                .with(CONNECTED_SOUTH, false)
-                .with(CONNECTED_WEST, false));
+                .with(CONNECTED_UP, EnergyConduitConnection.DISCONNECTED)
+                .with(CONNECTED_DOWN,  EnergyConduitConnection.DISCONNECTED)
+                .with(CONNECTED_NORTH, EnergyConduitConnection.DISCONNECTED)
+                .with(CONNECTED_EAST,  EnergyConduitConnection.DISCONNECTED)
+                .with(CONNECTED_SOUTH,  EnergyConduitConnection.DISCONNECTED)
+                .with(CONNECTED_WEST,  EnergyConduitConnection.DISCONNECTED));
     }
 
     // Block
-    @Override
-    public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState newState, boolean flag) {
-        EnergyNetwork.removeConduit((EnergyConduitEntity) world.getBlockEntity(pos));
-        super.onBlockRemoved(state, world, pos, newState, flag);
-    }
-
     @Override
     protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
         builder.add(CONNECTED_UP, CONNECTED_DOWN, CONNECTED_NORTH, CONNECTED_EAST, CONNECTED_SOUTH, CONNECTED_WEST);
@@ -73,12 +71,18 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
         double startOffset = 0.3125;
         double endOffset = 0.6875;
 
-        if (state.get(CONNECTED_EAST))  shapes.add(offsetShape(Direction.EAST,  startOffset, endOffset));
-        if (state.get(CONNECTED_WEST))  shapes.add(offsetShape(Direction.WEST,  startOffset, endOffset));
-        if (state.get(CONNECTED_UP))    shapes.add(offsetShape(Direction.UP,    startOffset, endOffset));
-        if (state.get(CONNECTED_DOWN))  shapes.add(offsetShape(Direction.DOWN,  startOffset, endOffset));
-        if (state.get(CONNECTED_SOUTH)) shapes.add(offsetShape(Direction.SOUTH, startOffset, endOffset));
-        if (state.get(CONNECTED_NORTH)) shapes.add(offsetShape(Direction.NORTH, startOffset, endOffset));
+        if (state.get(CONNECTED_EAST) != EnergyConduitConnection.DISCONNECTED)
+            shapes.add(offsetShape(Direction.EAST,  startOffset, endOffset));
+        if (state.get(CONNECTED_WEST) != EnergyConduitConnection.DISCONNECTED)
+            shapes.add(offsetShape(Direction.WEST,  startOffset, endOffset));
+        if (state.get(CONNECTED_UP) != EnergyConduitConnection.DISCONNECTED)
+            shapes.add(offsetShape(Direction.UP,    startOffset, endOffset));
+        if (state.get(CONNECTED_DOWN) != EnergyConduitConnection.DISCONNECTED)
+            shapes.add(offsetShape(Direction.DOWN,  startOffset, endOffset));
+        if (state.get(CONNECTED_SOUTH) != EnergyConduitConnection.DISCONNECTED)
+            shapes.add(offsetShape(Direction.SOUTH, startOffset, endOffset));
+        if (state.get(CONNECTED_NORTH) != EnergyConduitConnection.DISCONNECTED)
+            shapes.add(offsetShape(Direction.NORTH, startOffset, endOffset));
 
         return VoxelShapes.union(
                 VoxelShapes.cuboid(startOffset, startOffset, startOffset, endOffset, endOffset, endOffset),
@@ -109,12 +113,12 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
     public BlockState getPlacementState(ItemPlacementContext context) {
         StateManager sm = new StateManager(null, context.getBlockPos(), context.getWorld());
         return getDefaultState()
-                .with(CONNECTED_EAST,   sm.canConnect(Direction.EAST))
-                .with(CONNECTED_WEST,   sm.canConnect(Direction.WEST))
-                .with(CONNECTED_UP,     sm.canConnect(Direction.UP))
-                .with(CONNECTED_DOWN,   sm.canConnect(Direction.DOWN))
-                .with(CONNECTED_SOUTH,  sm.canConnect(Direction.SOUTH))
-                .with(CONNECTED_NORTH,  sm.canConnect(Direction.NORTH));
+                .with(CONNECTED_EAST,   sm.getConnection(Direction.EAST))
+                .with(CONNECTED_WEST,   sm.getConnection(Direction.WEST))
+                .with(CONNECTED_UP,     sm.getConnection(Direction.UP))
+                .with(CONNECTED_DOWN,   sm.getConnection(Direction.DOWN))
+                .with(CONNECTED_SOUTH,  sm.getConnection(Direction.SOUTH))
+                .with(CONNECTED_NORTH,  sm.getConnection(Direction.NORTH));
     }
 
     @Override
@@ -148,25 +152,50 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
             this.world = world;
         }
 
-        public StateManager calcProperty(Direction direction, BooleanProperty property) {
-            boolean sideState = state.get(property);
+        public StateManager calcProperty(Direction direction, EnumProperty<EnergyConduitConnection> property) {
+            EnergyConduitConnection sideState = state.get(property);
 
-            if (canConnect(direction)) {
-                if (!sideState) dirty = true;
-                state = state.with(property, true);
+            EnergyConduitConnection connection = getConnection(direction);
+            if (connection != EnergyConduitConnection.DISCONNECTED) {
+                if (sideState == EnergyConduitConnection.DISCONNECTED
+                        || sideState == EnergyConduitConnection.DISABLED) dirty = true;
+                state = state.with(property, connection);
             } else {
-                if (sideState) dirty = true;
-                state = state.with(property, false);
+                if (sideState != EnergyConduitConnection.DISCONNECTED
+                        && sideState != EnergyConduitConnection.DISABLED) dirty = true;
+                state = state.with(property, connection);
             }
 
             return this;
         }
 
-        public boolean canConnect(Direction direction) {
-            BlockPos offsetPos = pos.offset(direction);
-            SearchOption<Object> option = SearchOptions.inDirection(direction);
-            return world.getBlockState(offsetPos).getBlock() instanceof EnergyConduitBlock
-            		|| EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, offsetPos, option) != null;
+        public EnergyConduitConnection getConnection(Direction direction) {
+            Block block = world.getBlockState(pos.offset(direction)).getBlock();
+
+            if (block instanceof IEnergyConduitConnectable) {
+                return ((IEnergyConduitConnectable) block).getConnection();
+            }
+
+            AttributeList<EnergyAttribute> attributes = EnergyAttribute.ENERGY_ATTRIBUTE.getAll(world, pos.offset(direction));
+            boolean isConsumer = false;
+            boolean isProducer = false;
+            for (int i = 0; i < attributes.getCount(); i++) {
+                EnergyAttribute attribute = attributes.get(i);
+                if (attribute.canExtractEnergy()) isProducer = true;
+                if (attribute.canInsertEnergy()) isConsumer = true;
+            }
+
+            if (isConsumer && isProducer) {
+                return EnergyConduitConnection.ENERGY_BANK;
+            }
+            if (isConsumer) {
+                return EnergyConduitConnection.CONSUMER;
+            }
+            if (isProducer) {
+                return EnergyConduitConnection.PRODUCER;
+            }
+
+            return EnergyConduitConnection.DISCONNECTED;
         }
     }
 
@@ -177,12 +206,9 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, At
         return new EnergyConduitEntity();
     }
 
-    // AttributeProvider
+    // IEnergyConduitConnectable
     @Override
-    public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
-        BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof EnergyConduitEntity) {
-            to.offer(((EnergyConduitEntity) be).getEnergy());
-        }
+    public EnergyConduitConnection getConnection() {
+        return EnergyConduitConnection.CONDUIT;
     }
 }

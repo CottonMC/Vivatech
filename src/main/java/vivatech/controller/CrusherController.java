@@ -1,6 +1,5 @@
 package vivatech.controller;
 
-import io.github.cottonmc.cotton.datapack.recipe.CottonRecipes;
 import io.github.cottonmc.cotton.gui.CottonScreenController;
 import io.github.cottonmc.cotton.gui.widget.WBar;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;

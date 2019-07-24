@@ -1,6 +1,5 @@
 package vivatech.controller;
 
-import io.github.cottonmc.cotton.datapack.recipe.CottonRecipes;
 import io.github.cottonmc.cotton.gui.CottonScreenController;
 import io.github.cottonmc.cotton.gui.widget.WBar;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
@@ -16,7 +15,7 @@ import vivatech.util.StringHelper;
 public class EnergyBankController extends CottonScreenController {
 
     public EnergyBankController(int syncId, PlayerInventory playerInventory, BlockContext context) {
-        super(CottonRecipes.NULL_RECIPE, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
+        super(null, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 
         WPlainPanel root = new WPlainPanel();
         ((WGridPanel) getRootPanel()).add(root, 0, 0);
