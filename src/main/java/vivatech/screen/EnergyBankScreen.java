@@ -6,11 +6,11 @@ import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.entity.player.PlayerEntity;
 import vivatech.VivatechClient;
 import vivatech.block.EnergyBankBlock;
-import vivatech.menu.EnergyBankController;
+import vivatech.menu.EnergyBankMenu;
 import vivatech.util.StringHelper;
 
-public class EnergyBankScreen extends CottonScreen<EnergyBankController> {
-    public EnergyBankScreen(EnergyBankController container, PlayerEntity player) {
+public class EnergyBankScreen extends CottonScreen<EnergyBankMenu> {
+    public EnergyBankScreen(EnergyBankMenu container, PlayerEntity player) {
         super(container, player);
     }
 

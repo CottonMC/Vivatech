@@ -4,11 +4,11 @@ import io.github.cottonmc.cotton.gui.client.CottonScreen;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.entity.player.PlayerEntity;
 import vivatech.block.CoalGeneratorBlock;
-import vivatech.menu.CoalGeneratorController;
+import vivatech.menu.CoalGeneratorMenu;
 import vivatech.util.StringHelper;
 
-public class CoalGeneratorScreen extends CottonScreen<CoalGeneratorController> {
-    public CoalGeneratorScreen(CoalGeneratorController container, PlayerEntity player) {
+public class CoalGeneratorScreen extends CottonScreen<CoalGeneratorMenu> {
+    public CoalGeneratorScreen(CoalGeneratorMenu container, PlayerEntity player) {
         super(container, player);
     }
 

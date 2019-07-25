@@ -1,22 +1,18 @@
 package vivatech.menu;
 
 import io.github.cottonmc.cotton.gui.CottonScreenController;
-import io.github.cottonmc.cotton.gui.widget.WBar;
-import io.github.cottonmc.cotton.gui.widget.WGridPanel;
-import io.github.cottonmc.cotton.gui.widget.WItemSlot;
-import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
+import io.github.cottonmc.cotton.gui.widget.*;
 import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
 import vivatech.VivatechClient;
-import vivatech.init.VivatechRecipes;
 import vivatech.util.StringHelper;
 
-public class CrusherController extends CottonScreenController {
+public class CoalGeneratorMenu extends CottonScreenController {
 
-    public CrusherController(int syncId, PlayerInventory playerInventory, BlockContext context) {
-        super(VivatechRecipes.CRUSHING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
+    public CoalGeneratorMenu(int syncId, PlayerInventory playerInventory, BlockContext context) {
+        super(null, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 
         WPlainPanel root = new WPlainPanel();
         ((WGridPanel) getRootPanel()).add(root, 0, 0);
@@ -26,12 +22,11 @@ public class CrusherController extends CottonScreenController {
         energyBar.withTooltip(StringHelper.getTranslationKey("info", new Identifier(Vivatech.MODID, "energy_with_max")));
         root.add(energyBar, 1, 2, 14, 64);
 
-        WBar progressBar = new WBar(VivatechClient.PROGRESS_BAR_BG, VivatechClient.PROGRESS_BAR,2, 3, WBar.Direction.RIGHT);
-        root.add(progressBar, 59, 27, 40, 18);
+        WBar fireBar = new WBar(VivatechClient.FIRE_BAR_BG, VivatechClient.FIRE_BAR,2, 3);
+        root.add(fireBar, 89, 27, 14, 14);
 
         // Slots
-        root.add(WItemSlot.of(blockInventory, 0), 36, 27);
-        root.add(WItemSlot.outputOf(blockInventory, 1), 108, 27);
+        root.add(new WItemSlot(blockInventory, 0, 1, 1, true, true), 63, 27);
         root.add(createPlayerInventoryPanel(), 0, 72);
 
         root.validate(this);
@@ -39,6 +34,6 @@ public class CrusherController extends CottonScreenController {
 
     @Override
     public int getCraftingResultSlotIndex() {
-        return 1;
+        return -1; //There's no real result slot
     }
 }

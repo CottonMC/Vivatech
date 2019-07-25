@@ -49,15 +49,15 @@ public class Vivatech implements ModInitializer {
         VivatechItems.initialize();
 
         ContainerProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, id, player, buf) ->
-                new CoalGeneratorController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
+                new CoalGeneratorMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(CrusherBlock.ID, (syncId, id, player, buf) ->
-                new CrusherController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
+                new CrusherMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(ElectricFurnaceBlock.ID, (syncId, id, player, buf) ->
-                new ElectricFurnaceController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
+                new ElectricFurnaceMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(EnergyBankBlock.ID, (syncId, id, player, buf) ->
-                new EnergyBankController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
+                new EnergyBankMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(PressBlock.ID, (syncId, id, player, buf) ->
-                new PressController(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
+                new PressMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
 
         Registry.register(CottonEnergy.ENERGY_REGISTRY, new Identifier(MODID, "infinite_voltage"), INFINITE_VOLTAGE);
     }

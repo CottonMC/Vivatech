@@ -21,19 +21,19 @@ public class VivatechClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ScreenProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, identifier, player, buf) ->
-                new CoalGeneratorScreen(new CoalGeneratorController(
+                new CoalGeneratorScreen(new CoalGeneratorMenu(
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
         ScreenProviderRegistry.INSTANCE.registerFactory(CrusherBlock.ID, (syncId, identifier, player, buf) ->
-                new CrusherScreen(new CrusherController(
+                new CrusherScreen(new CrusherMenu(
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
         ScreenProviderRegistry.INSTANCE.registerFactory(ElectricFurnaceBlock.ID, (syncId, identifier, player, buf) ->
-                new ElectricFurnaceScreen(new ElectricFurnaceController(
+                new ElectricFurnaceScreen(new ElectricFurnaceMenu(
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
         ScreenProviderRegistry.INSTANCE.registerFactory(EnergyBankBlock.ID, (syncId, identifier, player, buf) ->
-                new EnergyBankScreen(new EnergyBankController(
+                new EnergyBankScreen(new EnergyBankMenu(
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
         ScreenProviderRegistry.INSTANCE.registerFactory(PressBlock.ID, (syncId, identifier, player, buf) ->
-                new PressScreen(new PressController(
+                new PressScreen(new PressMenu(
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
     }
 }

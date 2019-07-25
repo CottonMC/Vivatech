@@ -4,11 +4,11 @@ import io.github.cottonmc.cotton.gui.client.CottonScreen;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.entity.player.PlayerEntity;
 import vivatech.block.PressBlock;
-import vivatech.menu.PressController;
+import vivatech.menu.PressMenu;
 import vivatech.util.StringHelper;
 
-public class PressScreen extends CottonScreen<PressController> {
-    public PressScreen(PressController container, PlayerEntity player) {
+public class PressScreen extends CottonScreen<PressMenu> {
+    public PressScreen(PressMenu container, PlayerEntity player) {
         super(container, player);
     }
 
