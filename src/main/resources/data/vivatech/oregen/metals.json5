@@ -1,0 +1,19 @@
+{
+  "generators": {
+    "copper": {
+      "dimensions": [
+        {
+          "tag": "overworlds"
+        }
+      ],
+      "biomes": [
+        "*"
+      ],
+      "ore_block": "c:copper_ore",
+      "min_height": 20,
+      "max_height": 54,
+      "cluster_count": 20,
+      "cluster_size": 10
+    }
+  }
+}
