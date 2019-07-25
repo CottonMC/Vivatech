@@ -1,6 +1,5 @@
 package vivatech;
 
-import io.github.cottonmc.cotton.logging.ModLogger;
 import io.github.cottonmc.energy.CottonEnergy;
 import io.github.cottonmc.energy.api.ElectricalEnergyType;
 import io.github.cottonmc.energy.api.EnergyType;
@@ -8,6 +7,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.container.BlockContext;
@@ -16,8 +16,12 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import vivatech.block.*;
-import vivatech.controller.*;
+import vivatech.menu.*;
 import vivatech.init.VivatechBlocks;
 import vivatech.init.VivatechEntities;
 import vivatech.init.VivatechItems;
@@ -25,7 +29,7 @@ import vivatech.init.VivatechRecipes;
 
 public class Vivatech implements ModInitializer {
     public static final String MODID = "vivatech";
-    public static final ModLogger LOGGER = new ModLogger(MODID);
+    public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "item_group"),
             () -> new ItemStack(VivatechItems.NORMAL_MACHINE_CHASSIS));
     public static final Item.Settings ITEM_SETTINGS = new Item.Settings().group(ITEM_GROUP);
@@ -35,6 +39,10 @@ public class Vivatech implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            Configurator.setLevel(MODID, Level.DEBUG);
+        }
+
         VivatechRecipes.initialize();
         VivatechBlocks.initialize();
         VivatechEntities.initialize();

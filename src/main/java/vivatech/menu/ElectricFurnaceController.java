@@ -1,22 +1,18 @@
-package vivatech.controller;
+package vivatech.menu;
 
 import io.github.cottonmc.cotton.gui.CottonScreenController;
-import io.github.cottonmc.cotton.gui.widget.WBar;
-import io.github.cottonmc.cotton.gui.widget.WGridPanel;
-import io.github.cottonmc.cotton.gui.widget.WItemSlot;
-import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
+import io.github.cottonmc.cotton.gui.widget.*;
 import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.Vivatech;
 import vivatech.VivatechClient;
-import vivatech.init.VivatechRecipes;
 import vivatech.util.StringHelper;
 
-public class PressController extends CottonScreenController {
-
-    public PressController(int syncId, PlayerInventory playerInventory, BlockContext context) {
-        super(VivatechRecipes.PRESSING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
+public class ElectricFurnaceController extends CottonScreenController {
+    public ElectricFurnaceController(int syncId, PlayerInventory playerInventory, BlockContext context) {
+        super(RecipeType.SMELTING, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
 
         WPlainPanel root = new WPlainPanel();
         ((WGridPanel) getRootPanel()).add(root, 0, 0);

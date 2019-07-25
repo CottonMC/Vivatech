@@ -11,6 +11,6 @@ final class PressingDisplay extends TieredMachineDisplay<PressingRecipe> {
     
     @Override
     public Identifier getRecipeCategory() {
-        return VivatechREIPlugin.PRESSING;
+        return VivatechReiPlugin.PRESSING;
     }
 }

@@ -12,7 +12,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
 import vivatech.entity.CoalGeneratorEntity;
-import vivatech.util.EnergyConduitConnection;
 
 public class CoalGeneratorBlock extends AbstractMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "coal_generator");
@@ -35,11 +34,5 @@ public class CoalGeneratorBlock extends AbstractMachineBlock {
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
         return new CoalGeneratorEntity();
-    }
-
-    // IEnergyConduitConnectable
-    @Override
-    public EnergyConduitConnection getConnection() {
-        return EnergyConduitConnection.PRODUCER;
     }
 }

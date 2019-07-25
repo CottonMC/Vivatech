@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
 import net.minecraft.container.BlockContext;
 import net.minecraft.util.Identifier;
 import vivatech.block.*;
-import vivatech.controller.*;
+import vivatech.menu.*;
 import vivatech.screen.*;
 
 public class VivatechClient implements ClientModInitializer {

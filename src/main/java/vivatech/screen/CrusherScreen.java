@@ -4,7 +4,7 @@ import io.github.cottonmc.cotton.gui.client.CottonScreen;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.entity.player.PlayerEntity;
 import vivatech.block.CrusherBlock;
-import vivatech.controller.CrusherController;
+import vivatech.menu.CrusherController;
 import vivatech.util.StringHelper;
 
 public class CrusherScreen extends CottonScreen<CrusherController> {

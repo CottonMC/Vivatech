@@ -7,7 +7,7 @@ import vivatech.init.VivatechBlocks;
 
 final class CrushingCategory extends BaseRecipeCategory {
     CrushingCategory() {
-        super(VivatechREIPlugin.CRUSHING, "gui.vivatech.crushing");
+        super(VivatechReiPlugin.CRUSHING, "gui.vivatech.crushing");
     }
 
     @Override

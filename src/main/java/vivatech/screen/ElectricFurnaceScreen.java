@@ -4,7 +4,7 @@ import io.github.cottonmc.cotton.gui.client.CottonScreen;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.entity.player.PlayerEntity;
 import vivatech.block.ElectricFurnaceBlock;
-import vivatech.controller.ElectricFurnaceController;
+import vivatech.menu.ElectricFurnaceController;
 import vivatech.util.StringHelper;
 
 public class ElectricFurnaceScreen extends CottonScreen<ElectricFurnaceController> {

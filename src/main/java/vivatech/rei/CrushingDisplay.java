@@ -11,6 +11,6 @@ final class CrushingDisplay extends TieredMachineDisplay<CrushingRecipe> {
 
     @Override
     public Identifier getRecipeCategory() {
-        return VivatechREIPlugin.CRUSHING;
+        return VivatechReiPlugin.CRUSHING;
     }
 }

@@ -22,7 +22,7 @@
       "vivatech.VivatechClient"
     ],
     "rei_plugins": [
-      "vivatech.rei.VivatechREIPlugin"
+      "vivatech.rei.VivatechReiPlugin"
     ]
   },
 

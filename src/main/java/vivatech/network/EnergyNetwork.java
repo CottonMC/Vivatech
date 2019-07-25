@@ -1,35 +1,31 @@
 package vivatech.network;
 
+import alexiil.mc.lib.attributes.Simulation;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyAttributeProvider;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import vivatech.Vivatech;
-import vivatech.block.EnergyConduitBlock;
 import vivatech.entity.EnergyConduitEntity;
-import vivatech.util.EnergyConduitConnection;
 import vivatech.util.EnergyHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * This class is a modification of corresponding class from
  * <a href="https://github.com/StellarHorizons/Galacticraft-Rewoven">Galacticraft: Rewoven</a>
  */
-public class EnergyNetwork implements EnergyAttributeProvider {
+public class EnergyNetwork {
     public final static ConcurrentLinkedQueue<EnergyNetwork> networks = new ConcurrentLinkedQueue<>();
     public final List<EnergyConduitEntity> conduits = new ArrayList<>();
     public final UUID id;
-    private final SimpleEnergyAttribute energy = new SimpleEnergyAttribute(Integer.MAX_VALUE, Vivatech.INFINITE_VOLTAGE);
 
     public EnergyNetwork(EnergyConduitEntity sourceConduit) {
         networks.add(this);
@@ -40,7 +36,9 @@ public class EnergyNetwork implements EnergyAttributeProvider {
             sourceConduits.add(sourceConduit);
             do {
                 for (EnergyConduitEntity conduit : getAdjacentConduits(sourceConduits.get(0).getWorld(), sourceConduits.get(0).getPos())) {
-                    if (conduit != null && conduit.networkId != this.getId()) {
+                    if (conduit != null
+                            && conduit.getClass() == conduits.get(0).getClass()
+                            && conduit.networkId != this.getId()) {
                         conduits.add(conduit);
                         EnergyNetwork network = getNetworkFromId(conduit.networkId);
                         if (network != null) {
@@ -56,7 +54,7 @@ public class EnergyNetwork implements EnergyAttributeProvider {
                 sourceConduits.remove(e);
             } while (sourceConduits.size() > 0);
         });
-        Vivatech.LOGGER.devInfo("Number of energy networks: " + networks.size());
+        Vivatech.LOGGER.debug("Number of energy networks: " + networks.size());
     }
 
     public UUID getId() {
@@ -64,14 +62,15 @@ public class EnergyNetwork implements EnergyAttributeProvider {
     }
 
     public void update() {
-        List<BlockEntity> adjacentConsumers = new ArrayList<>();
-        List<BlockEntity> adjacentProducers = new ArrayList<>();
-        AtomicInteger totalEnergyProduced = new AtomicInteger();
+        Map<EnergyAttribute, Integer> consumers = new HashMap<>();
+        Map<EnergyAttribute, Integer> producers = new HashMap<>();
+        int totalEnergyNeeded = 0;
+        int totalEnergyAvailable = 0;
 
         for (EnergyConduitEntity conduit : conduits) {
             if (!(conduit.getWorld().getBlockEntity(conduit.getPos()) instanceof EnergyConduitEntity)) {
                 conduits.remove(conduit);
-                Vivatech.LOGGER.devInfo("Removed conduit at " + conduit.getPos());
+                Vivatech.LOGGER.debug("Removed conduit at " + conduit.getPos());
                 for (EnergyConduitEntity movingConduit : conduits) {
                     movingConduit.networkId = new EnergyNetwork(movingConduit).getId();
                 }
@@ -80,25 +79,75 @@ public class EnergyNetwork implements EnergyAttributeProvider {
                 return;
             }
 
-            adjacentConsumers.addAll(getAdjacentConsumers(conduit.getPos(), conduit.getWorld()));
+            for (EnergyAttribute consumer : getAdjacentConsumers(conduit.getPos(), conduit.getWorld())) {
+                int energyNeeded = consumer.getMaxEnergy() - consumer.getCurrentEnergy();
+                if (energyNeeded == 0) continue;
+                totalEnergyNeeded += energyNeeded;
+                consumers.put(consumer, energyNeeded);
+            }
 
-            List<BlockEntity> currentAdjacentProducers = getAdjacentProducers(conduit.getPos(), conduit.getWorld());
-            adjacentProducers.addAll(currentAdjacentProducers);
-            currentAdjacentProducers.forEach(producer ->
-                    totalEnergyProduced.getAndAdd(((EnergyAttributeProvider) producer).getEnergyAttribute().getCurrentEnergy()));
+            for (EnergyAttribute producer : getAdjacentProducers(conduit.getPos(), conduit.getWorld())) {
+                int energyAvailable = producer.getCurrentEnergy();
+                if (energyAvailable == 0) continue;
+                totalEnergyAvailable += energyAvailable;
+                producers.put(producer, energyAvailable);
+            }
+
         }
 
-        if (totalEnergyProduced.get() == 0) return;
-        if (totalEnergyProduced.get() % adjacentProducers.size() != 0) return;
+        if (totalEnergyNeeded == 0
+                || totalEnergyAvailable == 0
+                || consumers.size() == 0
+                || producers.size() == 0) {
+            return;
+        }
 
-        adjacentProducers.forEach(producer -> {
-            EnergyAttribute from = ((EnergyAttributeProvider) producer).getEnergyAttribute();
-            EnergyHelper.transfer(from, energy, from.getCurrentEnergy());
-        });
-        adjacentConsumers.forEach(consumer -> {
-            EnergyAttribute to = ((EnergyAttributeProvider) consumer).getEnergyAttribute();
-            EnergyHelper.transfer(energy, to, totalEnergyProduced.get() / adjacentProducers.size());
-        });
+        consumers = consumers.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.naturalOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        producers = producers.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        SimpleEnergyAttribute networkEnergy = new SimpleEnergyAttribute(conduits.get(0).getTransferRate(), Vivatech.INFINITE_VOLTAGE);
+        int totalEnergyTransferred = 0;
+        for (Map.Entry<EnergyAttribute, Integer> producer : producers.entrySet()) {
+            if (networkEnergy.getCurrentEnergy() == networkEnergy.getMaxEnergy()) {
+                return;
+            }
+            totalEnergyTransferred += EnergyHelper.transfer(producer.getKey(), networkEnergy, producer.getValue(), Simulation.SIMULATE);
+        }
+
+        int energyNeed = totalEnergyTransferred / consumers.size();
+        if (energyNeed == 0) return;
+        for (Map.Entry<EnergyAttribute, Integer> producer : producers.entrySet()) {
+            if (networkEnergy.getCurrentEnergy() == networkEnergy.getMaxEnergy()) {
+                return;
+            }
+            EnergyHelper.transfer(producer.getKey(), networkEnergy, producer.getValue());
+        }
+
+        for (Map.Entry<EnergyAttribute, Integer> consumer : consumers.entrySet()) {
+            if (networkEnergy.getCurrentEnergy() == 0) {
+                return;
+            }
+            int energyTransferred = EnergyHelper.transfer(networkEnergy, consumer.getKey(), energyNeed);
+            consumer.setValue(consumer.getValue() - energyTransferred);
+        }
+
+        consumers = consumers.entrySet().stream()
+                .filter(entry -> entry.getValue() != 0)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        for (Map.Entry<EnergyAttribute, Integer> consumer : consumers.entrySet()) {
+            if (networkEnergy.getCurrentEnergy() == 0) {
+                return;
+            }
+            EnergyHelper.transfer(networkEnergy, consumer.getKey(), networkEnergy.getCurrentEnergy());
+        }
     }
 
     public static EnergyConduitEntity[] getAdjacentConduits(World world, BlockPos pos) {
@@ -115,65 +164,33 @@ public class EnergyNetwork implements EnergyAttributeProvider {
         return adjacentConnections;
     }
 
-    public static List<BlockEntity> getAdjacentConsumers(BlockPos pos, World world) {
-        final List<BlockEntity> adjacentConnections = new ArrayList<>();
+    public static List<EnergyAttribute> getAdjacentConsumers(BlockPos pos, World world) {
+        final List<EnergyAttribute> adjacentConnections = new ArrayList<>();
 
-        BlockState state = world.getBlockState(pos);
-        if (state.get(EnergyConduitBlock.CONNECTED_NORTH) == EnergyConduitConnection.CONSUMER
-                || state.get(EnergyConduitBlock.CONNECTED_NORTH) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.NORTH)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_EAST) == EnergyConduitConnection.CONSUMER
-                || state.get(EnergyConduitBlock.CONNECTED_EAST) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.EAST)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_SOUTH) == EnergyConduitConnection.CONSUMER
-                || state.get(EnergyConduitBlock.CONNECTED_SOUTH) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.SOUTH)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_WEST) == EnergyConduitConnection.CONSUMER
-                || state.get(EnergyConduitBlock.CONNECTED_WEST) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.WEST)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_UP) == EnergyConduitConnection.CONSUMER
-                || state.get(EnergyConduitBlock.CONNECTED_UP) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.UP)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_DOWN) == EnergyConduitConnection.CONSUMER
-                || state.get(EnergyConduitBlock.CONNECTED_DOWN) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.DOWN)));
+        for (Direction direction : Direction.values()) {
+            BlockEntity blockEntity = world.getBlockEntity(pos.offset(direction));
+            if (blockEntity instanceof EnergyAttributeProvider) {
+                EnergyAttribute attribute = ((EnergyAttributeProvider) blockEntity).getEnergyAttribute();
+                if (attribute.canInsertEnergy()) {
+                    adjacentConnections.add(attribute);
+                }
+            }
         }
 
         return adjacentConnections;
     }
 
-    public static List<BlockEntity> getAdjacentProducers(BlockPos pos, World world) {
-        final List<BlockEntity> adjacentConnections = new ArrayList<>();
+    public static List<EnergyAttribute> getAdjacentProducers(BlockPos pos, World world) {
+        final List<EnergyAttribute> adjacentConnections = new ArrayList<>();
 
-        BlockState state = world.getBlockState(pos);
-        if (state.get(EnergyConduitBlock.CONNECTED_NORTH) == EnergyConduitConnection.PRODUCER
-                || state.get(EnergyConduitBlock.CONNECTED_NORTH) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.NORTH)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_EAST) == EnergyConduitConnection.PRODUCER
-                || state.get(EnergyConduitBlock.CONNECTED_EAST) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.EAST)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_SOUTH) == EnergyConduitConnection.PRODUCER
-                || state.get(EnergyConduitBlock.CONNECTED_SOUTH) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.SOUTH)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_WEST) == EnergyConduitConnection.PRODUCER
-                || state.get(EnergyConduitBlock.CONNECTED_WEST) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.WEST)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_UP) == EnergyConduitConnection.PRODUCER
-                || state.get(EnergyConduitBlock.CONNECTED_UP) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.UP)));
-        }
-        if (state.get(EnergyConduitBlock.CONNECTED_DOWN) == EnergyConduitConnection.PRODUCER
-                || state.get(EnergyConduitBlock.CONNECTED_DOWN) == EnergyConduitConnection.ENERGY_BANK) {
-            adjacentConnections.add(world.getBlockEntity(pos.offset(Direction.DOWN)));
+        for (Direction direction : Direction.values()) {
+            BlockEntity blockEntity = world.getBlockEntity(pos.offset(direction));
+            if (blockEntity instanceof EnergyAttributeProvider) {
+                EnergyAttribute attribute = ((EnergyAttributeProvider) blockEntity).getEnergyAttribute();
+                if (attribute.canExtractEnergy()) {
+                    adjacentConnections.add(attribute);
+                }
+            }
         }
 
         return adjacentConnections;
@@ -185,11 +202,5 @@ public class EnergyNetwork implements EnergyAttributeProvider {
             if (network.getId() == id) result.set(network);
         });
         return result.get();
-    }
-
-    // EnergyAttributeProvider
-    @Override
-    public EnergyAttribute getEnergyAttribute() {
-        return energy;
     }
 }

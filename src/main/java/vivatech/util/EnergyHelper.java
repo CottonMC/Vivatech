@@ -35,14 +35,18 @@ public class EnergyHelper {
         tos.forEach(to -> transfer(from, to, finalTransferSize.get()));
     }
 
-    public static void transfer(EnergyAttribute from, EnergyAttribute to, int transferSize) {
+    public static int transfer(EnergyAttribute from, EnergyAttribute to, int transferSize) {
+        return transfer(from, to, transferSize, Simulation.ACTION);
+    }
+
+    public static int transfer(EnergyAttribute from, EnergyAttribute to, int transferSize, Simulation simulation) {
         if (!to.canInsertEnergy()
                 || !to.getPreferredType().isCompatibleWith(Vivatech.INFINITE_VOLTAGE)
                 || to.getCurrentEnergy() == to.getMaxEnergy()) {
-            return;
+            return 0;
         }
 
-        int leftover = to.insertEnergy(from.getPreferredType(), transferSize, Simulation.ACTION);
-        from.extractEnergy(from.getPreferredType(), transferSize - leftover, Simulation.ACTION);
+        int leftover = to.insertEnergy(from.getPreferredType(), transferSize, simulation);
+        return from.extractEnergy(from.getPreferredType(), transferSize - leftover, simulation);
     }
 }

@@ -7,7 +7,7 @@ import vivatech.init.VivatechBlocks;
 
 final class PressingCategory extends BaseRecipeCategory {
     PressingCategory() {
-        super(VivatechREIPlugin.PRESSING, "gui.vivatech.pressing");
+        super(VivatechReiPlugin.PRESSING, "gui.vivatech.pressing");
     }
 
     @Override

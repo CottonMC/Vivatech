@@ -4,7 +4,7 @@ import io.github.cottonmc.cotton.gui.client.CottonScreen;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.entity.player.PlayerEntity;
 import vivatech.block.CoalGeneratorBlock;
-import vivatech.controller.CoalGeneratorController;
+import vivatech.menu.CoalGeneratorController;
 import vivatech.util.StringHelper;
 
 public class CoalGeneratorScreen extends CottonScreen<CoalGeneratorController> {

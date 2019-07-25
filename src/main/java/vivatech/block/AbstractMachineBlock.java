@@ -17,11 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import vivatech.entity.AbstractMachineEntity;
-import vivatech.util.EnergyConduitConnection;
-import vivatech.util.IEnergyConduitConnectable;
 
-public abstract class AbstractMachineBlock extends Block implements BlockEntityProvider, AttributeProvider,
-        IEnergyConduitConnectable {
+public abstract class AbstractMachineBlock extends Block implements BlockEntityProvider, AttributeProvider {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
@@ -61,11 +58,5 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
         if (be instanceof AbstractMachineEntity) {
             to.offer(((AbstractMachineEntity) be).getEnergy());
         }
-    }
-
-    // IEnergyConduitConnectable
-    @Override
-    public EnergyConduitConnection getConnection() {
-        return EnergyConduitConnection.CONSUMER;
     }
 }

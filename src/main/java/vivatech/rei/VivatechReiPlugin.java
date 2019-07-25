@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 import vivatech.recipe.CrushingRecipe;
 import vivatech.recipe.PressingRecipe;
 
-public final class VivatechREIPlugin implements REIPluginEntry {
+public final class VivatechReiPlugin implements REIPluginEntry {
     public static final Identifier ID = new Identifier("vivatech", "rei_plugin");
     public static final Identifier CRUSHING = new Identifier("vivatech", "crushing");
     public static final Identifier PRESSING = new Identifier("vivatech", "pressing");
