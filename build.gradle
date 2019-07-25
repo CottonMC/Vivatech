@@ -6,7 +6,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "vivatech"
-version = "1.0.0-alpha.10+1.14.4"
+version = "1.0.0-alpha.11+1.14.4"
 
 repositories {
     jcenter()
