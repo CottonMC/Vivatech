@@ -10,8 +10,9 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import vivatech.Vivatech;
-import vivatech.block.AbstractTieredMachineBlock;
+import vivatech.common.Vivatech;
+import vivatech.api.block.AbstractTieredMachineBlock;
+import vivatech.api.util.MachineTier;
 
 public class TierHelper {
 

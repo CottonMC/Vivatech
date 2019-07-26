@@ -6,10 +6,8 @@ import io.github.cottonmc.energy.api.EnergyAttribute;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import org.lwjgl.system.CallbackI;
-import vivatech.Vivatech;
+import vivatech.common.Vivatech;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
