@@ -1,0 +1,12 @@
+{
+  "type": "vivatech:crushing",
+  "ingredient": {
+    "tag": "c:osmium_ingot"
+  },
+  "processtime": 200,
+  "tier": "advanced",
+  "experience": 0.35,
+  "result": {
+    "item": "c:osmium_dust"
+  }
+}

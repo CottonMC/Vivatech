@@ -1,0 +1,13 @@
+{
+    "type": "vivatech:cutting",
+    "ingredient": {
+        "tag": "c:electrum_plate"
+    },
+    "processtime": 200,
+    "tier": "normal",
+    "pattern": "gear",
+    "experience": 0.35,
+    "result": {
+        "item": "c:electrum_gear"
+    }
+}

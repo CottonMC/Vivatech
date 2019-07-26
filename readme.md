@@ -20,10 +20,9 @@ Vivatech is a technology mod for Fabric for Minecraft. It would help you to auto
 
 ### Dependencies
 
-* [Fabric API](https://github.com/FabricMC/fabric)
+* [Fabric API](https://github.com/FabricMC/fabric) *Note: this is external dependency*
 * [LibGui](https://github.com/CottonMC/LibGui)
 * [LibBlockAttributes](https://github.com/AlexIIL/LibBlockAttributes)
-* [Cotton](https://github.com/CottonMC/Cotton)
 * [Cotton Energy](https://github.com/CottonMC/CottonEnergy)
 * [Cotton Resources](https://github.com/CottonMC/CottonResources)
 

@@ -1,0 +1,12 @@
+{
+  "type": "vivatech:crushing",
+  "ingredient": {
+    "tag": "c:zinc_ingot"
+  },
+  "processtime": 200,
+  "tier": "minimal",
+  "experience": 0.35,
+  "result": {
+    "item": "c:zinc_dust"
+  }
+}

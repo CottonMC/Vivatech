@@ -1,0 +1,14 @@
+{
+	"minimal": {
+		"metals": [ "cobalt", "lead", "tin", "copper", "silver", "zinc" ]
+	},
+	"normal": {
+		"metals": [ "aluminum", "titanium", "tungsten" ],
+		"gems": [ "ruby", "sapphire", "amethyst", "topaz", "peridot" ],
+		"alloys": [ "electrum", "brass", "steel" ]
+	},
+	"advanced": {
+		"metals": [ "platinum", "iridium", "osmium", "palladium", "uranium" ],
+		"radioactive": [ "uranium", "plutonium", "thorium" ]
+	}
+}

@@ -1,0 +1,13 @@
+{
+    "type": "vivatech:pressing",
+    "ingredient": {
+        "tag": "c:${resource}_ingot"
+    },
+    "processtime": 200,
+    "tier": "${tier}",
+    "pattern": "gear",
+    "experience": 0.35,
+    "result": {
+        "item": "c:${resource}_plate"
+    }
+}

@@ -1,12 +1,13 @@
 {
-  "type": "vivatech:cutting",
-  "ingredient": {
-    "tag": "c:copper_plate"
-  },
-  "processtime": 200,
-  "pattern": "gear",
-  "experience": 0.35,
-  "result": {
-    "item": "c:copper_gear"
-  }
+    "type": "vivatech:cutting",
+    "ingredient": {
+        "tag": "c:copper_plate"
+    },
+    "processtime": 200,
+    "tier": "minimal",
+    "pattern": "gear",
+    "experience": 0.35,
+    "result": {
+        "item": "c:copper_gear"
+    }
 }

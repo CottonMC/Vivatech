@@ -1,0 +1,13 @@
+{
+    "type": "vivatech:pressing",
+    "ingredient": {
+        "tag": "c:tungsten_ingot"
+    },
+    "processtime": 200,
+    "tier": "normal",
+    "pattern": "gear",
+    "experience": 0.35,
+    "result": {
+        "item": "c:tungsten_plate"
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "vivatech:crushing",
+  "ingredient": {
+    "tag": "c:iridium_ingot"
+  },
+  "processtime": 200,
+  "tier": "advanced",
+  "experience": 0.35,
+  "result": {
+    "item": "c:iridium_dust"
+  }
+}

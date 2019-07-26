@@ -1,0 +1,12 @@
+{
+  "type": "vivatech:crushing",
+  "ingredient": {
+    "tag": "c:${resource}_ingot"
+  },
+  "processtime": 200,
+  "tier": "${tier}",
+  "experience": 0.35,
+  "result": {
+    "item": "c:${resource}_dust"
+  }
+}

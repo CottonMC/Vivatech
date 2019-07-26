@@ -1,0 +1,13 @@
+{
+    "type": "vivatech:cutting",
+    "ingredient": {
+        "tag": "c:silver_plate"
+    },
+    "processtime": 200,
+    "tier": "minimal",
+    "pattern": "gear",
+    "experience": 0.35,
+    "result": {
+        "item": "c:silver_gear"
+    }
+}
