@@ -2,14 +2,15 @@
   "itemGroup.vivatech.item_group": "Viva科技",
   
   "block.vivatech.minimal_machine_chassis": "最小号机器底座",
-  "block.vivatech.normal_machine_chassis": "普通机器底座",
+  "block.vivatech.normal_machine_chassis": "标准机器底座",
   "block.vivatech.advanced_machine_chassis": "高级机器底座",
   
   "block.vivatech.coal_generator": "煤炭发电机",
   "block.vivatech.crusher": "破碎机",
+  "block.vivatech.cutter": "切割机",
   "block.vivatech.electric_furnace": "电炉",
-  "block.vivatech.energy_bank": "能源银行",
-  "block.vivatech.energy_conduit": "能源管道",
+  "block.vivatech.energy_bank": "能源库",
+  "block.vivatech.energy_conduit": "能量导管",
   "block.vivatech.press": "压缩机",
   
   "item.vivatech.battery": "电池",
@@ -25,6 +26,6 @@
   
   "info.vivatech.tier": "等级: %s",
   "info.vivatech.tier.minimal": "最小",
-  "info.vivatech.tier.normal": "正常",
+  "info.vivatech.tier.normal": "标准",
   "info.vivatech.tier.advanced": "高级"
 }
