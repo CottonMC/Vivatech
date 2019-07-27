@@ -1,7 +1,7 @@
 {
     "type": "vivatech:pressing",
     "ingredient": {
-        "tag": "c:ruby_ingot"
+        "tag": "c:ruby"
     },
     "processtime": 200,
     "tier": "normal",

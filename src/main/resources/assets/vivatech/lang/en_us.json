@@ -7,13 +7,11 @@
   
   "block.vivatech.coal_generator": "Coal Generator",
   "block.vivatech.crusher": "Crusher",
+  "block.vivatech.cutter": "Cutter",
   "block.vivatech.electric_furnace": "Electric Furnace",
   "block.vivatech.energy_bank": "Energy Bank",
+  "block.vivatech.energy_conduit": "Energy Conduit",
   "block.vivatech.press": "Press",
-
-  "block.vivatech.minimal_energy_conduit": "Minimal Energy Conduit",
-  "block.vivatech.normal_energy_conduit": "Normal Energy Conduit",
-  "block.vivatech.advanced_energy_conduit": "Advanced Energy Conduit",
 
   "item.vivatech.battery": "Battery",
   "item.vivatech.screwdriver": "Screwdriver",

@@ -12,7 +12,7 @@ import vivatech.api.entity.AbstractTieredMachineEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.common.recipe.PressingRecipe;
-import vivatech.api.util.MachineTier;
+import vivatech.api.util.BlockTier;
 
 public class PressEntity extends AbstractTieredMachineEntity {
 
@@ -80,7 +80,7 @@ public class PressEntity extends AbstractTieredMachineEntity {
 
     @Override
     protected void serverTick() {
-    	MachineTier tier = getMachineTier();
+    	BlockTier tier = getTier();
     	
         if (canRun()) {
             pressTime++;

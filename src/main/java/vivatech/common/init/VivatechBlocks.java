@@ -24,35 +24,36 @@ public class VivatechBlocks {
     public static final Block MINIMAL_MACHINE_CHASSIS;
     public static final Block NORMAL_MACHINE_CHASSIS;
     public static final Block ADVANCED_MACHINE_CHASSIS;
-    public static final EnergyConduitBlock ENERGY_CONDUIT;
     public static final CoalGeneratorBlock COAL_GENERATOR;
+    public static final EnergyBankBlock ENERGY_BANK;
+
     public static final ImmutableList<CrusherBlock> CRUSHER;
     public static final ImmutableList<ElectricFurnaceBlock> ELECTRIC_FURNACE;
-    public static final EnergyBankBlock ENERGY_BANK;
+    public static final ImmutableList<EnergyConduitBlock> ENERGY_CONDUIT;
     public static final ImmutableList<PressBlock> PRESS;
 
     static {
         MINIMAL_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.STONE).build());
         NORMAL_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).build());
         ADVANCED_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).hardness(7f).resistance(10f).build());
-        ENERGY_CONDUIT = new EnergyConduitBlock();
         COAL_GENERATOR = new CoalGeneratorBlock();
         ENERGY_BANK = new EnergyBankBlock();
-        
-        ELECTRIC_FURNACE = TierHelper.fillTieredBlockArray(ElectricFurnaceBlock::new);
-        PRESS = TierHelper.fillTieredBlockArray(PressBlock::new);
+
         CRUSHER = TierHelper.fillTieredBlockArray(CrusherBlock::new);
+        ELECTRIC_FURNACE = TierHelper.fillTieredBlockArray(ElectricFurnaceBlock::new);
+        ENERGY_CONDUIT = TierHelper.fillTieredBlockArray(EnergyConduitBlock::new);
+        PRESS = TierHelper.fillTieredBlockArray(PressBlock::new);
     }
 
     public static void initialize() {
         Registry.register(Registry.BLOCK, MINIMAL_MACHINE_CHASSIS_ID, MINIMAL_MACHINE_CHASSIS);
         Registry.register(Registry.BLOCK, NORMAL_MACHINE_CHASSIS_ID, NORMAL_MACHINE_CHASSIS);
         Registry.register(Registry.BLOCK, ADVANCED_MACHINE_CHASSIS_ID, ADVANCED_MACHINE_CHASSIS);
-        Registry.register(Registry.BLOCK, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.BLOCK, CoalGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.BLOCK, EnergyBankBlock.ID, ENERGY_BANK);
-        TierHelper.registerTieredBlocks(ELECTRIC_FURNACE);
         TierHelper.registerTieredBlocks(CRUSHER);
+        TierHelper.registerTieredBlocks(ELECTRIC_FURNACE);
+        TierHelper.registerTieredBlocks(ENERGY_CONDUIT);
         TierHelper.registerTieredBlocks(PRESS);
     }
 }

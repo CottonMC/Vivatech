@@ -13,21 +13,21 @@ import net.minecraft.world.World;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractTieredMachineBlock;
 import vivatech.common.entity.PressEntity;
-import vivatech.api.util.MachineTier;
+import vivatech.api.util.BlockTier;
 import vivatech.util.TierHelper;
 
 public class PressBlock extends AbstractTieredMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "press");
-    final Identifier TIERED_ID;
+    private final Identifier tieredId;
 
-    public PressBlock(MachineTier tier) {
-        super(Vivatech.MACHINE_BLOCK_SETTINGS, "press", tier);
-        TIERED_ID = TierHelper.getTieredID(ID, tier);
+    public PressBlock(BlockTier tier) {
+        super(Vivatech.MACHINE_BLOCK_SETTINGS, ID, tier);
+        tieredId = TierHelper.getTieredID(ID, tier);
     }
     
 	@Override
-	public Identifier getTieredID() {
-		return TIERED_ID;
+	public Identifier getTieredId() {
+		return tieredId;
 	}
 
     // Block

@@ -12,7 +12,7 @@ import vivatech.api.entity.AbstractTieredMachineEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.common.recipe.CrushingRecipe;
-import vivatech.api.util.MachineTier;
+import vivatech.api.util.BlockTier;
 
 public class CrusherEntity extends AbstractTieredMachineEntity {
 
@@ -80,7 +80,7 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
 
     @Override
     protected void serverTick() {
-    	MachineTier tier = getMachineTier();
+    	BlockTier tier = getTier();
     	
         if (canRun()) {
             crushTime++;

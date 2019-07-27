@@ -1,7 +1,7 @@
 {
     "type": "vivatech:pressing",
     "ingredient": {
-        "tag": "c:sapphire_ingot"
+        "tag": "c:sapphire"
     },
     "processtime": 200,
     "tier": "normal",

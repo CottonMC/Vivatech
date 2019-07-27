@@ -1,0 +1,19 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "vivatech:block/minimal_energy_conduit",
+		"particle": "vivatech:block/minimal_energy_conduit"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 5, 11],
+			"faces": {
+				"north": {"uv": [6, 0, 12, 5], "texture": "#0"},
+				"east": {"uv": [6, 0, 12, 5], "texture": "#0"},
+				"south": {"uv": [6, 0, 12, 5], "texture": "#0"},
+				"west": {"uv": [6, 0, 12, 5], "texture": "#0"}
+			}
+		}
+	]
+}

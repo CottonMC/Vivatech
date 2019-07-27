@@ -7,13 +7,11 @@
   
   "block.vivatech.coal_generator": "Угольный Генератор",
   "block.vivatech.crusher": "Дробитель",
+  "block.vivatech.cutter": "Резчик",
   "block.vivatech.electric_furnace": "Электропечь",
   "block.vivatech.energy_bank": "Энергохранилище",
+  "block.vivatech.energy_conduit": "Минимальная Труба для Энергии",
   "block.vivatech.press": "Пресс",
-
-  "block.vivatech.minimal_energy_conduit": "Минимальная Труба для Энергии",
-  "block.vivatech.normal_energy_conduit": "Обычная Труба для Энергии",
-  "block.vivatech.advanced_energy_conduit": "Продвинутая Труба для Энергии",
 
   "item.vivatech.battery": "Батарея",
   "item.vivatech.screwdriver": "Отвёртка",

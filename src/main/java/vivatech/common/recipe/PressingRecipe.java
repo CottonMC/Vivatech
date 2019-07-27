@@ -9,12 +9,12 @@ import vivatech.common.Vivatech;
 import vivatech.api.recipe.ProcessingRecipe;
 import vivatech.common.entity.PressEntity;
 import vivatech.common.init.VivatechRecipes;
-import vivatech.api.util.MachineTier;
+import vivatech.api.util.BlockTier;
 
 public class PressingRecipe extends ProcessingRecipe {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "pressing");
 
-    public PressingRecipe(Identifier id, Ingredient input, ItemStack output, MachineTier minTier, float exp, int processTime, Identifier bonusLootTable) {
+    public PressingRecipe(Identifier id, Ingredient input, ItemStack output, BlockTier minTier, float exp, int processTime, Identifier bonusLootTable) {
         super(id, input, output, minTier, exp, processTime, bonusLootTable);
     }
 

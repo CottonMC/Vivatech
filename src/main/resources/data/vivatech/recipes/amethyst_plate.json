@@ -1,7 +1,7 @@
 {
     "type": "vivatech:pressing",
     "ingredient": {
-        "tag": "c:amethyst_ingot"
+        "tag": "c:amethyst"
     },
     "processtime": 200,
     "tier": "normal",

@@ -36,7 +36,7 @@ public class EnergyNetwork {
             do {
                 for (EnergyConduitEntity conduit : getAdjacentConduits(sourceConduits.get(0).getWorld(), sourceConduits.get(0).getPos())) {
                     if (conduit != null
-                            && conduit.getClass() == conduits.get(0).getClass()
+                            && conduit.getTier() == conduits.get(0).getTier()
                             && conduit.networkId != this.getId()) {
                         conduits.add(conduit);
                         EnergyNetwork network = getNetworkFromId(conduit.networkId);

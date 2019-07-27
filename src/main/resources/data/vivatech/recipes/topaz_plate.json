@@ -1,7 +1,7 @@
 {
     "type": "vivatech:pressing",
     "ingredient": {
-        "tag": "c:topaz_ingot"
+        "tag": "c:topaz"
     },
     "processtime": 200,
     "tier": "normal",

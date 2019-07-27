@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 import vivatech.compat.rei.widget.CottonSlotWidget;
 import vivatech.compat.rei.widget.LabelWidget;
 import vivatech.compat.rei.widget.ProgressBarWidget;
-import vivatech.api.util.MachineTier;
+import vivatech.api.util.BlockTier;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ abstract class BaseRecipeCategory implements RecipeCategory<RecipeDisplay<Recipe
         int x = (int) bounds.getCenterX();
         int y = (int) bounds.getCenterY() - 9;
         
-        MachineTier tier = MachineTier.MINIMAL;
+        BlockTier tier = BlockTier.MINIMAL;
         int energyCost = 0;
         if (display instanceof TieredMachineDisplay) {
         	tier = ((TieredMachineDisplay<?>) display).getMinTier();
@@ -65,7 +65,7 @@ abstract class BaseRecipeCategory implements RecipeCategory<RecipeDisplay<Recipe
         	widgets.add(new LabelWidget(x - (2*18) - 7, y + (2*18), energyComponent));
         }
         
-        if (tier!=MachineTier.MINIMAL) {
+        if (tier!= BlockTier.MINIMAL) {
         	Text tierComponent = new TranslatableText("info.vivatech.tier", new TranslatableText("info.vivatech.tier."+tier.getAffix()))
         			.formatted(Formatting.DARK_GRAY);
         	widgets.add(new LabelWidget(x - (2*18) - 7, y + (3*18), tierComponent));

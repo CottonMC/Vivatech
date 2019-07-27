@@ -22,7 +22,6 @@ public class EnergyBankBlock extends AbstractMachineBlock {
     }
 
     // Block
-
     @Override
     public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hitResult) {
         if (!world.isClient) {

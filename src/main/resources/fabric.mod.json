@@ -16,13 +16,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "vivatech.Vivatech"
+      "vivatech.common.Vivatech"
     ],
     "client": [
-      "vivatech.VivatechClient"
+      "vivatech.client.VivatechClient"
     ],
     "rei_plugins": [
-      "vivatech.rei.VivatechReiPlugin"
+      "vivatech.compat.rei.VivatechReiPlugin"
     ]
   },
 

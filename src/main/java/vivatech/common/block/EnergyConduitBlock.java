@@ -3,16 +3,23 @@ package vivatech.common.block;
 import alexiil.mc.lib.attributes.SearchOption;
 import alexiil.mc.lib.attributes.SearchOptions;
 import io.github.cottonmc.energy.api.EnergyAttribute;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.BooleanBiFunction;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -20,12 +27,19 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import vivatech.api.block.ITieredBlock;
+import vivatech.api.util.BlockTier;
 import vivatech.common.Vivatech;
 import vivatech.common.entity.EnergyConduitEntity;
+import vivatech.util.TierHelper;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public class EnergyConduitBlock extends Block implements BlockEntityProvider {
+public class EnergyConduitBlock extends Block implements BlockEntityProvider, ITieredBlock {
+    private final BlockTier tier;
+    private final Identifier tieredId;
+
     public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_conduit");
 
     public static final BooleanProperty CONNECTED_UP    = BooleanProperty.of("connected_up");
@@ -35,8 +49,11 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider {
     public static final BooleanProperty CONNECTED_SOUTH = BooleanProperty.of("connected_south");
     public static final BooleanProperty CONNECTED_WEST  = BooleanProperty.of("connected_west");
 
-    public EnergyConduitBlock() {
+    public EnergyConduitBlock(BlockTier tier) {
         super(Vivatech.METALLIC_BLOCK_SETTINGS);
+
+        this.tier = tier;
+        this.tieredId = TierHelper.getTieredID(ID, tier);
 
         setDefaultState(getStateFactory().getDefaultState()
                 .with(CONNECTED_UP, false)
@@ -48,6 +65,24 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider {
     }
 
     // Block
+    @Override
+    public String getTranslationKey() {
+        return "block.vivatech." + ID.getPath();
+    }
+
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void buildTooltip(ItemStack stack, BlockView view, List<Text> lines, TooltipContext context) {
+
+        Text tierLine = new TranslatableText("info.vivatech.tier",
+                new TranslatableText("info.vivatech.tier." + tier.toString().toLowerCase()));
+        tierLine.formatted(Formatting.GRAY);
+        lines.add(tierLine);
+
+        super.buildTooltip(stack, view, lines, context);
+
+    }
+
     @Override
     protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
         builder.add(CONNECTED_UP, CONNECTED_DOWN, CONNECTED_NORTH, CONNECTED_EAST, CONNECTED_SOUTH, CONNECTED_WEST);
@@ -159,7 +194,8 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider {
         public boolean canConnect(Direction direction) {
             BlockPos offsetPos = pos.offset(direction);
             SearchOption<Object> option = SearchOptions.inDirection(direction);
-            return world.getBlockState(offsetPos).getBlock() instanceof EnergyConduitBlock
+            Block block = world.getBlockState(offsetPos).getBlock();
+            return block instanceof EnergyConduitBlock && ((ITieredBlock) block).getTier() == getTier()
                     || EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, offsetPos, option) != null;
         }
     }
@@ -169,5 +205,16 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider {
     @Override
     public BlockEntity createBlockEntity(BlockView var1) {
         return new EnergyConduitEntity();
+    }
+
+    // ITieredBlock
+    @Override
+    public Identifier getTieredId() {
+        return tieredId;
+    }
+
+    @Override
+    public BlockTier getTier() {
+        return tier;
     }
 }

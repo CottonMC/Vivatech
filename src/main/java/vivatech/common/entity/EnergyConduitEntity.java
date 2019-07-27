@@ -2,18 +2,22 @@ package vivatech.common.entity;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Tickable;
-import vivatech.api.entity.IConduit;
+import vivatech.api.entity.ITieredEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.network.EnergyNetwork;
 
 import java.util.UUID;
 
-public class EnergyConduitEntity extends BlockEntity implements Tickable, IConduit {
-    private static final int TRANSFER_PER_TICK = 100;
+public class EnergyConduitEntity extends BlockEntity implements Tickable, ITieredEntity {
+    private static final int BASE_TRANSFER_RATE = 50;
     public UUID networkId = null;
 
     public EnergyConduitEntity() {
         super(VivatechEntities.ENERGY_CONDUIT);
+    }
+
+    public int getTransferRate() {
+        return (int) (BASE_TRANSFER_RATE * getTier().getEnergyMultiplier());
     }
 
     // Tickable
@@ -21,11 +25,5 @@ public class EnergyConduitEntity extends BlockEntity implements Tickable, ICondu
     public void tick() {
         if (world.isClient()) return;
         if (networkId == null) networkId = new EnergyNetwork(this).getId();
-    }
-
-    // IConduit
-    @Override
-    public int getTransferRate() {
-        return TRANSFER_PER_TICK;
     }
 }

@@ -11,39 +11,39 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.BlockView;
-import vivatech.api.util.MachineTier;
+import vivatech.api.util.BlockTier;
 
-public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock {
+public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock implements ITieredBlock {
 	
-	protected final MachineTier tier;
-	protected final String id;
+	protected final BlockTier tier;
+	protected final Identifier id;
 
-	public AbstractTieredMachineBlock(Settings settings, String id, MachineTier tier) {
+	public AbstractTieredMachineBlock(Settings settings, Identifier id, BlockTier tier) {
 		super(settings);
 		this.id = id;
 		this.tier = tier;
 	}
 	
-	public abstract Identifier getTieredID();
+	public abstract Identifier getTieredId();
 
 	@Override
 	public String getTranslationKey() {
-		return "block.vivatech."+id;
+		return "block.vivatech." + id.getPath();
 	}
 	
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void buildTooltip(ItemStack itemStack_1, BlockView blockView_1, List<Text> list_1, TooltipContext tooltipContext_1) {
+	public void buildTooltip(ItemStack stack, BlockView view, List<Text> lines, TooltipContext context) {
 		
 		Text tierLine = new TranslatableText("info.vivatech.tier",
 				new TranslatableText("info.vivatech.tier." + tier.toString().toLowerCase()));
 		tierLine.formatted(Formatting.GRAY);
-		list_1.add(tierLine);
+		lines.add(tierLine);
 		
-		super.buildTooltip(itemStack_1, blockView_1, list_1, tooltipContext_1);
+		super.buildTooltip(stack, view, lines, context);
 	}
 
-	public MachineTier getMachineTier() {
+	public BlockTier getTier() {
 		return tier;
 	}
 }

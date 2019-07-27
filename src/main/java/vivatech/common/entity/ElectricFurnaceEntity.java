@@ -13,7 +13,7 @@ import net.minecraft.util.math.Direction;
 import vivatech.common.Vivatech;
 import vivatech.api.entity.AbstractTieredMachineEntity;
 import vivatech.common.init.VivatechEntities;
-import vivatech.api.util.MachineTier;
+import vivatech.api.util.BlockTier;
 
 public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
     private static final int TICK_PER_CONSUME = 5;
@@ -80,7 +80,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
 
     @Override
     protected void serverTick() {
-    	MachineTier tier = getMachineTier();
+    	BlockTier tier = getTier();
     	
         if (canRun()) {
             cookTime++;
@@ -119,7 +119,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         if (inventory.get(0).isEmpty()
                 || output.isEmpty()
                 || inventory.get(1).getCount() > 64
-                || energy.getCurrentEnergy() < CONSUME_PER_TICK * getMachineTier().getSpeedMultiplier()) {
+                || energy.getCurrentEnergy() < CONSUME_PER_TICK * getTier().getSpeedMultiplier()) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
             return output.getItem() == inventory.get(1).getItem();
