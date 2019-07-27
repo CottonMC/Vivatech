@@ -16,7 +16,7 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import vivatech.api.entity.AbstractMachineEntity;
+import vivatech.api.block.entity.AbstractMachineBlockEntity;
 
 public abstract class AbstractMachineBlock extends Block implements BlockEntityProvider, AttributeProvider {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
@@ -55,8 +55,8 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
     @Override
     public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
         BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof AbstractMachineEntity) {
-            to.offer(((AbstractMachineEntity) be).getEnergy());
+        if (be instanceof AbstractMachineBlockEntity) {
+            to.offer(((AbstractMachineBlockEntity) be).getEnergy());
         }
     }
 }

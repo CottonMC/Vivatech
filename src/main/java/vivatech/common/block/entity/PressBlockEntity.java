@@ -1,4 +1,4 @@
-package vivatech.common.entity;
+package vivatech.common.block.entity;
 
 import javax.annotation.Nullable;
 
@@ -6,20 +6,20 @@ import alexiil.mc.lib.attributes.Simulation;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.AbstractCookingRecipe;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.math.Direction;
 import vivatech.common.Vivatech;
-import vivatech.api.entity.AbstractTieredMachineEntity;
+import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
+import vivatech.common.init.VivatechRecipes;
+import vivatech.common.recipe.PressingRecipe;
 import vivatech.api.util.BlockTier;
 
-public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
-    private static final int TICK_PER_CONSUME = 5;
-    private static final int CONSUME_PER_TICK = 2;
-    private int cookTime = 0;
-    private int cookTimeTotal = 0;
+public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
+
+    public static final int TICK_PER_CONSUME = 5;
+    public static final int CONSUME_PER_TICK = 1;
+    private int pressTime = 0;
+    private int pressTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -28,10 +28,10 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
                     return energy.getCurrentEnergy();
                 case 1: // Max Energy
                     return energy.getMaxEnergy();
-                case 2: // Cook Time
-                    return cookTime;
-                case 3: // Cook Time Total
-                    return cookTimeTotal;
+                case 2: // Press Time
+                    return pressTime;
+                case 3: // Press Time Total
+                    return pressTimeTotal;
                 default:
                     return 0;
             }
@@ -46,11 +46,11 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
                 case 1: // Max Energy
                     energy.setMaxEnergy(value);
                     break;
-                case 2: // Cook Time
-                    cookTime = value;
+                case 2: // Press Time
+                    pressTime = value;
                     break;
-                case 3: // Cook Time Total
-                    cookTimeTotal = value;
+                case 3: // Press Time Total
+                    pressTimeTotal = value;
                     break;
                 default:
                     break;
@@ -62,9 +62,9 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
             return 4;
         }
     };
-
-    public ElectricFurnaceEntity() {
-    	super(VivatechEntities.ELECTRIC_FURNACE);
+    
+    public PressBlockEntity() {
+        super(VivatechEntities.PRESS);
     }
 
     // AbstractMachineEntity
@@ -83,31 +83,31 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
     	BlockTier tier = getTier();
     	
         if (canRun()) {
-            cookTime++;
-            if (cookTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
-            if (cookTimeTotal == 0) {
-                cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
-                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * (tier.getSpeedMultiplier() + 0.5F)));
+            pressTime++;
+            if (pressTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
+            if (pressTimeTotal == 0) {
+                pressTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world)
+                        .map(PressingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
             }
             setBlockActive(true);
-            if (cookTime >= cookTimeTotal) {
-                cookTime = 0;
-                cookTimeTotal = 0;
-                smeltItem();
+            if (pressTime >= pressTimeTotal) {
+                pressTime = 0;
+                pressTimeTotal = 0;
+                pressItem();
                 if (inventory.get(0).getCount() == 0) {
                     setBlockActive(false);
                 }
                 updateEntity();
             }
-        } else if (!canRun() && cookTime > 0) {
-            cookTime = 0;
+        } else if (!canRun() && pressTime > 0) {
+            pressTime = 0;
             setBlockActive(false);
         }
     }
 
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
-            SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).orElse(null);
+            PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
 
@@ -119,7 +119,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         if (inventory.get(0).isEmpty()
                 || output.isEmpty()
                 || inventory.get(1).getCount() > 64
-                || energy.getCurrentEnergy() < CONSUME_PER_TICK * getTier().getSpeedMultiplier()) {
+                || energy.getCurrentEnergy() < CONSUME_PER_TICK) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
             return output.getItem() == inventory.get(1).getItem();
@@ -128,7 +128,7 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
         return true;
     }
 
-    public void smeltItem() {
+    public void pressItem() {
         ItemStack output = getOutputStack();
         if (!output.isEmpty()) {
             if (inventory.get(1).isEmpty()) {
@@ -145,22 +145,28 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        cookTime = tag.getInt("CookTime");
-        cookTimeTotal = tag.getInt("CookTimeTotal");
+        pressTime = tag.getInt("PressTime");
+        pressTimeTotal = tag.getInt("PressTimeTotal");
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag.putInt("CookTime", cookTime);
-        tag.putInt("CookTimeTotal", cookTimeTotal);
+        tag.putInt("PressTime", pressTime);
+        tag.putInt("PressTimeTotal", pressTimeTotal);
         return tag;
+    }
+
+    // PropertyDelegateProvider
+    @Override
+    public PropertyDelegate getPropertyDelegate() {
+        return propertyDelegate;
     }
 
     // SidedInventory
     @Override
     public int[] getInvAvailableSlots(Direction direction) {
-        return new int[]{0, 1};
+        return new int[]{0,1};
     }
 
     @Override
@@ -181,11 +187,5 @@ public class ElectricFurnaceEntity extends AbstractTieredMachineEntity {
     @Override
     public boolean isValidInvStack(int slot, ItemStack itemStack) {
         return slot == 0;
-    }
-
-    // PropertyDelegateHolder
-    @Override
-    public PropertyDelegate getPropertyDelegate() {
-        return propertyDelegate;
     }
 }

@@ -1,4 +1,4 @@
-package vivatech.common.entity;
+package vivatech.common.block.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -8,13 +8,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import vivatech.common.Vivatech;
-import vivatech.api.entity.AbstractMachineEntity;
+import vivatech.api.block.entity.AbstractMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.util.EnergyHelper;
 
 import javax.annotation.Nullable;
 
-public class CoalGeneratorEntity extends AbstractMachineEntity {
+public class CoalGeneratorBlockEntity extends AbstractMachineBlockEntity {
     private static final int GENERATE_PER_TICK = 1;
     private static final int TICK_PER_GENERATE = 5;
     private int burnTime = 0;
@@ -63,7 +63,7 @@ public class CoalGeneratorEntity extends AbstractMachineEntity {
     };
 
 
-    public CoalGeneratorEntity() {
+    public CoalGeneratorBlockEntity() {
         super(VivatechEntities.COAL_GENERATOR);
     }
 

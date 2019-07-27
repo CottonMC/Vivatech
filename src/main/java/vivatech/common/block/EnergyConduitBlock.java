@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 import vivatech.api.block.ITieredBlock;
 import vivatech.api.util.BlockTier;
 import vivatech.common.Vivatech;
-import vivatech.common.entity.EnergyConduitEntity;
+import vivatech.common.block.entity.EnergyConduitBlockEntity;
 import vivatech.util.TierHelper;
 
 import javax.annotation.Nullable;
@@ -204,7 +204,7 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, IT
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView var1) {
-        return new EnergyConduitEntity();
+        return new EnergyConduitBlockEntity();
     }
 
     // ITieredBlock

@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import vivatech.common.Vivatech;
-import vivatech.common.entity.EnergyConduitEntity;
+import vivatech.common.block.entity.EnergyConduitBlockEntity;
 import vivatech.util.EnergyHelper;
 
 import java.util.*;
@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
  */
 public class EnergyNetwork {
     public final static ConcurrentLinkedQueue<EnergyNetwork> networks = new ConcurrentLinkedQueue<>();
-    public final List<EnergyConduitEntity> conduits = new ArrayList<>();
+    public final List<EnergyConduitBlockEntity> conduits = new ArrayList<>();
     public final UUID id;
 
-    public EnergyNetwork(EnergyConduitEntity sourceConduit) {
+    public EnergyNetwork(EnergyConduitBlockEntity sourceConduit) {
         networks.add(this);
         id = UUID.randomUUID();
         conduits.add(sourceConduit);
@@ -34,7 +34,7 @@ public class EnergyNetwork {
             List<BlockEntity> sourceConduits = new ArrayList<>();
             sourceConduits.add(sourceConduit);
             do {
-                for (EnergyConduitEntity conduit : getAdjacentConduits(sourceConduits.get(0).getWorld(), sourceConduits.get(0).getPos())) {
+                for (EnergyConduitBlockEntity conduit : getAdjacentConduits(sourceConduits.get(0).getWorld(), sourceConduits.get(0).getPos())) {
                     if (conduit != null
                             && conduit.getTier() == conduits.get(0).getTier()
                             && conduit.networkId != this.getId()) {
@@ -66,11 +66,11 @@ public class EnergyNetwork {
         int totalEnergyNeeded = 0;
         int totalEnergyAvailable = 0;
 
-        for (EnergyConduitEntity conduit : conduits) {
-            if (!(conduit.getWorld().getBlockEntity(conduit.getPos()) instanceof EnergyConduitEntity)) {
+        for (EnergyConduitBlockEntity conduit : conduits) {
+            if (!(conduit.getWorld().getBlockEntity(conduit.getPos()) instanceof EnergyConduitBlockEntity)) {
                 conduits.remove(conduit);
                 Vivatech.LOGGER.debug("Removed conduit at " + conduit.getPos());
-                for (EnergyConduitEntity movingConduit : conduits) {
+                for (EnergyConduitBlockEntity movingConduit : conduits) {
                     movingConduit.networkId = new EnergyNetwork(movingConduit).getId();
                 }
                 conduits.clear();
@@ -149,15 +149,15 @@ public class EnergyNetwork {
         }
     }
 
-    public static EnergyConduitEntity[] getAdjacentConduits(World world, BlockPos pos) {
-        final EnergyConduitEntity[] adjacentConnections = new EnergyConduitEntity[6];
+    public static EnergyConduitBlockEntity[] getAdjacentConduits(World world, BlockPos pos) {
+        final EnergyConduitBlockEntity[] adjacentConnections = new EnergyConduitBlockEntity[6];
 
         for (Direction direction : Direction.values()) {
             BlockEntity blockEntity = world.getBlockEntity(pos.offset(direction));
             if (blockEntity == null) continue;
 
-            if (blockEntity instanceof EnergyConduitEntity) {
-                adjacentConnections[direction.getId()] = (EnergyConduitEntity) blockEntity;
+            if (blockEntity instanceof EnergyConduitBlockEntity) {
+                adjacentConnections[direction.getId()] = (EnergyConduitBlockEntity) blockEntity;
             }
         }
         return adjacentConnections;

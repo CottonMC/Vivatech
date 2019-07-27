@@ -3,7 +3,6 @@
   "package": "vivatech.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BlockEntityMixin",
     "ServerWorldMixin"
   ],
   "minVersion": "0.1.0",

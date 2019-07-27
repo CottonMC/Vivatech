@@ -12,7 +12,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractMachineBlock;
-import vivatech.common.entity.EnergyBankEntity;
+import vivatech.common.block.entity.EnergyBankBlockEntity;
 
 public class EnergyBankBlock extends AbstractMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_bank");
@@ -34,6 +34,6 @@ public class EnergyBankBlock extends AbstractMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new EnergyBankEntity();
+        return new EnergyBankBlockEntity();
     }
 }

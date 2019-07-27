@@ -7,7 +7,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;
 import vivatech.api.recipe.ProcessingRecipe;
-import vivatech.common.entity.PressEntity;
+import vivatech.common.block.entity.PressBlockEntity;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.api.util.BlockTier;
 
@@ -30,6 +30,6 @@ public class PressingRecipe extends ProcessingRecipe {
     
     @Override
 	public int getEnergyCost() {
-		return (processTime / PressEntity.TICK_PER_CONSUME) * PressEntity.TICK_PER_CONSUME;
+		return (processTime / PressBlockEntity.TICK_PER_CONSUME) * PressBlockEntity.TICK_PER_CONSUME;
 	}
 }

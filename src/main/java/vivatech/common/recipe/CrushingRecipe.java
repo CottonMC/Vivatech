@@ -7,7 +7,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;
 import vivatech.api.recipe.ProcessingRecipe;
-import vivatech.common.entity.CrusherEntity;
+import vivatech.common.block.entity.CrusherBlockEntity;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.api.util.BlockTier;
 
@@ -30,6 +30,6 @@ public class CrushingRecipe extends ProcessingRecipe {
 	
 	@Override
 	public int getEnergyCost() {
-		return (processTime / CrusherEntity.TICK_PER_CONSUME) * CrusherEntity.TICK_PER_CONSUME;
+		return (processTime / CrusherBlockEntity.TICK_PER_CONSUME) * CrusherBlockEntity.TICK_PER_CONSUME;
 	}
 }

@@ -1,17 +1,17 @@
-package vivatech.common.entity;
+package vivatech.common.block.entity;
 
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyAttributeProviderItem;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
-import vivatech.api.entity.AbstractMachineEntity;
+import vivatech.api.block.entity.AbstractMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.util.EnergyHelper;
 
 import javax.annotation.Nullable;
 
-public class EnergyBankEntity extends AbstractMachineEntity {
+public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
 
     private static final int TRANSFER_PER_TICK = 4;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -47,7 +47,7 @@ public class EnergyBankEntity extends AbstractMachineEntity {
         }
     };
 
-    public EnergyBankEntity() {
+    public EnergyBankBlockEntity() {
         super(VivatechEntities.ENERGY_BANK);
     }
 

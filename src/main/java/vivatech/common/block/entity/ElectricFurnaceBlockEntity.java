@@ -1,4 +1,4 @@
-package vivatech.common.entity;
+package vivatech.common.block.entity;
 
 import javax.annotation.Nullable;
 
@@ -6,20 +6,20 @@ import alexiil.mc.lib.attributes.Simulation;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.AbstractCookingRecipe;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.math.Direction;
 import vivatech.common.Vivatech;
-import vivatech.api.entity.AbstractTieredMachineEntity;
+import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
-import vivatech.common.init.VivatechRecipes;
-import vivatech.common.recipe.CrushingRecipe;
 import vivatech.api.util.BlockTier;
 
-public class CrusherEntity extends AbstractTieredMachineEntity {
-
-    public static final int CONSUME_PER_TICK = 1;
-    public static final int TICK_PER_CONSUME = 5;
-    private int crushTime = 0;
-    private int crushTimeTotal = 0;
+public class ElectricFurnaceBlockEntity extends AbstractTieredMachineBlockEntity {
+    private static final int TICK_PER_CONSUME = 5;
+    private static final int CONSUME_PER_TICK = 2;
+    private int cookTime = 0;
+    private int cookTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -28,10 +28,10 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
                     return energy.getCurrentEnergy();
                 case 1: // Max Energy
                     return energy.getMaxEnergy();
-                case 2: // Crush Time
-                    return crushTime;
-                case 3: // Crush Time Total
-                    return crushTimeTotal;
+                case 2: // Cook Time
+                    return cookTime;
+                case 3: // Cook Time Total
+                    return cookTimeTotal;
                 default:
                     return 0;
             }
@@ -46,11 +46,11 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
                 case 1: // Max Energy
                     energy.setMaxEnergy(value);
                     break;
-                case 2: // Crush Time
-                    crushTime = value;
+                case 2: // Cook Time
+                    cookTime = value;
                     break;
-                case 3: // Crush Time Total
-                    crushTimeTotal = value;
+                case 3: // Cook Time Total
+                    cookTimeTotal = value;
                     break;
                 default:
                     break;
@@ -63,8 +63,8 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
         }
     };
 
-    public CrusherEntity() {
-        super(VivatechEntities.CRUSHER);
+    public ElectricFurnaceBlockEntity() {
+    	super(VivatechEntities.ELECTRIC_FURNACE);
     }
 
     // AbstractMachineEntity
@@ -83,31 +83,31 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
     	BlockTier tier = getTier();
     	
         if (canRun()) {
-            crushTime++;
-            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
-            if (crushTimeTotal == 0) {
-                crushTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
-                        .map(CrushingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
+            cookTime++;
+            if (cookTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
+            if (cookTimeTotal == 0) {
+                cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
+                        .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * (tier.getSpeedMultiplier() + 0.5F)));
             }
             setBlockActive(true);
-            if (crushTime >= crushTimeTotal) {
-                crushTime = 0;
-                crushTimeTotal = 0;
-                crushItem();
+            if (cookTime >= cookTimeTotal) {
+                cookTime = 0;
+                cookTimeTotal = 0;
+                smeltItem();
                 if (inventory.get(0).getCount() == 0) {
                     setBlockActive(false);
                 }
                 updateEntity();
             }
-        } else if (!canRun() && crushTime > 0) {
-            crushTime = 0;
+        } else if (!canRun() && cookTime > 0) {
+            cookTime = 0;
             setBlockActive(false);
         }
     }
 
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
-            CrushingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world).orElse(null);
+            SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
 
@@ -119,7 +119,7 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
         if (inventory.get(0).isEmpty()
                 || output.isEmpty()
                 || inventory.get(1).getCount() > 64
-                || energy.getCurrentEnergy() < CONSUME_PER_TICK) {
+                || energy.getCurrentEnergy() < CONSUME_PER_TICK * getTier().getSpeedMultiplier()) {
             return false;
         } else if (!inventory.get(1).isEmpty()) {
             return output.getItem() == inventory.get(1).getItem();
@@ -128,7 +128,7 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
         return true;
     }
 
-    public void crushItem() {
+    public void smeltItem() {
         ItemStack output = getOutputStack();
         if (!output.isEmpty()) {
             if (inventory.get(1).isEmpty()) {
@@ -145,28 +145,22 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        crushTime = tag.getInt("CrushTime");
-        crushTimeTotal = tag.getInt("CrushTimeTotal");
+        cookTime = tag.getInt("CookTime");
+        cookTimeTotal = tag.getInt("CookTimeTotal");
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag.putInt("CrushTime", crushTime);
-        tag.putInt("CrushTimeTotal", crushTimeTotal);
+        tag.putInt("CookTime", cookTime);
+        tag.putInt("CookTimeTotal", cookTimeTotal);
         return tag;
-    }
-
-    // PropertyDelegateProvider
-    @Override
-    public PropertyDelegate getPropertyDelegate() {
-        return propertyDelegate;
     }
 
     // SidedInventory
     @Override
     public int[] getInvAvailableSlots(Direction direction) {
-        return new int[]{0,1};
+        return new int[]{0, 1};
     }
 
     @Override
@@ -187,5 +181,11 @@ public class CrusherEntity extends AbstractTieredMachineEntity {
     @Override
     public boolean isValidInvStack(int slot, ItemStack itemStack) {
         return slot == 0;
+    }
+
+    // PropertyDelegateHolder
+    @Override
+    public PropertyDelegate getPropertyDelegate() {
+        return propertyDelegate;
     }
 }

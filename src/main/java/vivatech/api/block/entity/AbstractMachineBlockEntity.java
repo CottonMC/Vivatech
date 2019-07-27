@@ -1,4 +1,4 @@
-package vivatech.api.entity;
+package vivatech.api.block.entity;
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.api.EnergyAttribute;
@@ -17,18 +17,18 @@ import net.minecraft.util.Tickable;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractMachineBlock;
 
-public abstract class AbstractMachineEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
+public abstract class AbstractMachineBlockEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
         BlockEntityClientSerializable, EnergyAttributeProvider {
     protected DefaultedList<ItemStack> inventory = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
     protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), Vivatech.INFINITE_VOLTAGE) {
         @Override
-        public boolean canInsertEnergy() { return AbstractMachineEntity.this.canInsertEnergy(); }
+        public boolean canInsertEnergy() { return AbstractMachineBlockEntity.this.canInsertEnergy(); }
 
         @Override
-        public boolean canExtractEnergy() { return AbstractMachineEntity.this.canExtractEnergy(); }
+        public boolean canExtractEnergy() { return AbstractMachineBlockEntity.this.canExtractEnergy(); }
     };
 
-    public AbstractMachineEntity(BlockEntityType<?> type) {
+    public AbstractMachineBlockEntity(BlockEntityType<?> type) {
         super(type);
     }
 

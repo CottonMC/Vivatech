@@ -12,7 +12,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractTieredMachineBlock;
-import vivatech.common.entity.ElectricFurnaceEntity;
+import vivatech.common.block.entity.ElectricFurnaceBlockEntity;
 import vivatech.api.util.BlockTier;
 import vivatech.util.TierHelper;
 
@@ -38,7 +38,7 @@ public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new ElectricFurnaceEntity();
+        return new ElectricFurnaceBlockEntity();
     }
 
 	@Override

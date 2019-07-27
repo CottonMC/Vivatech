@@ -12,7 +12,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractTieredMachineBlock;
-import vivatech.common.entity.PressEntity;
+import vivatech.common.block.entity.PressBlockEntity;
 import vivatech.api.util.BlockTier;
 import vivatech.util.TierHelper;
 
@@ -43,6 +43,6 @@ public class PressBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new PressEntity();
+        return new PressBlockEntity();
     }
 }

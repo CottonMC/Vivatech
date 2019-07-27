@@ -12,7 +12,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractTieredMachineBlock;
-import vivatech.common.entity.CrusherEntity;
+import vivatech.common.block.entity.CrusherBlockEntity;
 import vivatech.api.util.BlockTier;
 import vivatech.util.TierHelper;
 
@@ -38,7 +38,7 @@ public class CrusherBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new CrusherEntity();
+        return new CrusherBlockEntity();
     }
 
     // ITieredBlock

@@ -1,4 +1,4 @@
-package vivatech.common.entity;
+package vivatech.common.block.entity;
 
 import javax.annotation.Nullable;
 
@@ -8,18 +8,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import vivatech.common.Vivatech;
-import vivatech.api.entity.AbstractTieredMachineEntity;
+import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.init.VivatechRecipes;
-import vivatech.common.recipe.PressingRecipe;
+import vivatech.common.recipe.CrushingRecipe;
 import vivatech.api.util.BlockTier;
 
-public class PressEntity extends AbstractTieredMachineEntity {
+public class CrusherBlockEntity extends AbstractTieredMachineBlockEntity {
 
-    public static final int TICK_PER_CONSUME = 5;
     public static final int CONSUME_PER_TICK = 1;
-    private int pressTime = 0;
-    private int pressTimeTotal = 0;
+    public static final int TICK_PER_CONSUME = 5;
+    private int crushTime = 0;
+    private int crushTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
@@ -28,10 +28,10 @@ public class PressEntity extends AbstractTieredMachineEntity {
                     return energy.getCurrentEnergy();
                 case 1: // Max Energy
                     return energy.getMaxEnergy();
-                case 2: // Press Time
-                    return pressTime;
-                case 3: // Press Time Total
-                    return pressTimeTotal;
+                case 2: // Crush Time
+                    return crushTime;
+                case 3: // Crush Time Total
+                    return crushTimeTotal;
                 default:
                     return 0;
             }
@@ -46,11 +46,11 @@ public class PressEntity extends AbstractTieredMachineEntity {
                 case 1: // Max Energy
                     energy.setMaxEnergy(value);
                     break;
-                case 2: // Press Time
-                    pressTime = value;
+                case 2: // Crush Time
+                    crushTime = value;
                     break;
-                case 3: // Press Time Total
-                    pressTimeTotal = value;
+                case 3: // Crush Time Total
+                    crushTimeTotal = value;
                     break;
                 default:
                     break;
@@ -62,9 +62,9 @@ public class PressEntity extends AbstractTieredMachineEntity {
             return 4;
         }
     };
-    
-    public PressEntity() {
-        super(VivatechEntities.PRESS);
+
+    public CrusherBlockEntity() {
+        super(VivatechEntities.CRUSHER);
     }
 
     // AbstractMachineEntity
@@ -83,31 +83,31 @@ public class PressEntity extends AbstractTieredMachineEntity {
     	BlockTier tier = getTier();
     	
         if (canRun()) {
-            pressTime++;
-            if (pressTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
-            if (pressTimeTotal == 0) {
-                pressTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world)
-                        .map(PressingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
+            crushTime++;
+            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
+            if (crushTimeTotal == 0) {
+                crushTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
+                        .map(CrushingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
             }
             setBlockActive(true);
-            if (pressTime >= pressTimeTotal) {
-                pressTime = 0;
-                pressTimeTotal = 0;
-                pressItem();
+            if (crushTime >= crushTimeTotal) {
+                crushTime = 0;
+                crushTimeTotal = 0;
+                crushItem();
                 if (inventory.get(0).getCount() == 0) {
                     setBlockActive(false);
                 }
                 updateEntity();
             }
-        } else if (!canRun() && pressTime > 0) {
-            pressTime = 0;
+        } else if (!canRun() && crushTime > 0) {
+            crushTime = 0;
             setBlockActive(false);
         }
     }
 
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
-            PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
+            CrushingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
 
@@ -128,7 +128,7 @@ public class PressEntity extends AbstractTieredMachineEntity {
         return true;
     }
 
-    public void pressItem() {
+    public void crushItem() {
         ItemStack output = getOutputStack();
         if (!output.isEmpty()) {
             if (inventory.get(1).isEmpty()) {
@@ -145,15 +145,15 @@ public class PressEntity extends AbstractTieredMachineEntity {
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        pressTime = tag.getInt("PressTime");
-        pressTimeTotal = tag.getInt("PressTimeTotal");
+        crushTime = tag.getInt("CrushTime");
+        crushTimeTotal = tag.getInt("CrushTimeTotal");
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag.putInt("PressTime", pressTime);
-        tag.putInt("PressTimeTotal", pressTimeTotal);
+        tag.putInt("CrushTime", crushTime);
+        tag.putInt("CrushTimeTotal", crushTimeTotal);
         return tag;
     }
 
