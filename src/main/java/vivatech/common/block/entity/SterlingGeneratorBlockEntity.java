@@ -14,7 +14,7 @@ import vivatech.util.EnergyHelper;
 
 import javax.annotation.Nullable;
 
-public class CoalGeneratorBlockEntity extends AbstractMachineBlockEntity {
+public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
     private static final int GENERATE_PER_TICK = 1;
     private static final int TICK_PER_GENERATE = 5;
     private int burnTime = 0;
@@ -63,7 +63,7 @@ public class CoalGeneratorBlockEntity extends AbstractMachineBlockEntity {
     };
 
 
-    public CoalGeneratorBlockEntity() {
+    public SterlingGeneratorBlockEntity() {
         super(VivatechEntities.COAL_GENERATOR);
     }
 

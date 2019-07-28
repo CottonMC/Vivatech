@@ -1,0 +1,6 @@
+{
+  "parent": "vivatech:block/sterling_generator",
+  "textures": {
+    "front": "vivatech:block/sterling_generator_active_front"
+  }
+}

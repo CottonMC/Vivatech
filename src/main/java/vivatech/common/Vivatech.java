@@ -48,7 +48,7 @@ public class Vivatech implements ModInitializer {
         VivatechEntities.initialize();
         VivatechItems.initialize();
 
-        ContainerProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, id, player, buf) ->
+        ContainerProviderRegistry.INSTANCE.registerFactory(SterlingGeneratorBlock.ID, (syncId, id, player, buf) ->
                 new CoalGeneratorMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(CrusherBlock.ID, (syncId, id, player, buf) ->
                 new CrusherMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));

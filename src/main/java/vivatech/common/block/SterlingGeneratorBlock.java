@@ -12,12 +12,12 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractMachineBlock;
-import vivatech.common.block.entity.CoalGeneratorBlockEntity;
+import vivatech.common.block.entity.SterlingGeneratorBlockEntity;
 
-public class CoalGeneratorBlock extends AbstractMachineBlock {
-    public static final Identifier ID = new Identifier(Vivatech.MODID, "coal_generator");
+public class SterlingGeneratorBlock extends AbstractMachineBlock {
+    public static final Identifier ID = new Identifier(Vivatech.MODID, "sterling_generator");
 
-    public CoalGeneratorBlock() {
+    public SterlingGeneratorBlock() {
         super(Vivatech.MACHINE_BLOCK_SETTINGS);
     }
 
@@ -34,6 +34,6 @@ public class CoalGeneratorBlock extends AbstractMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new CoalGeneratorBlockEntity();
+        return new SterlingGeneratorBlockEntity();
     }
 }

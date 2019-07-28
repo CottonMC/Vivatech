@@ -105,6 +105,16 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
         }
     }
 
+    public ItemStack getInputStack() {
+        if (!inventory.get(0).isEmpty()) {
+            PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
+            return recipe != null ? recipe.getInput().getStackArray()[0].copy() : ItemStack.EMPTY;
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+
     public ItemStack getOutputStack() {
         if (!inventory.get(0).isEmpty()) {
             PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
@@ -129,15 +139,16 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
     }
 
     public void pressItem() {
+        ItemStack input = getInputStack();
         ItemStack output = getOutputStack();
-        if (!output.isEmpty()) {
+        if (!output.isEmpty() && !input.isEmpty()) {
             if (inventory.get(1).isEmpty()) {
                 inventory.set(1, output);
             } else {
-                inventory.get(1).increment(1);
+                inventory.get(1).increment(output.getCount());
             }
 
-            inventory.get(0).decrement(1);
+            inventory.get(0).decrement(input.getCount());
         }
     }
 

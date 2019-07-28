@@ -4,14 +4,14 @@
   "block.vivatech.minimal_machine_chassis": "Minimal Machine Chassis",
   "block.vivatech.normal_machine_chassis": "Normal Machine Chassis",
   "block.vivatech.advanced_machine_chassis": "Advanced Machine Chassis",
-  
-  "block.vivatech.coal_generator": "Coal Generator",
+
   "block.vivatech.crusher": "Crusher",
   "block.vivatech.cutter": "Cutter",
   "block.vivatech.electric_furnace": "Electric Furnace",
   "block.vivatech.energy_bank": "Energy Bank",
   "block.vivatech.energy_conduit": "Energy Conduit",
   "block.vivatech.press": "Press",
+  "block.vivatech.sterling_generator": "Sterling Generator",
 
   "item.vivatech.battery": "Battery",
   "item.vivatech.screwdriver": "Screwdriver",

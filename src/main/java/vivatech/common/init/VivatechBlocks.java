@@ -8,7 +8,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import vivatech.common.Vivatech;
-import vivatech.common.block.CoalGeneratorBlock;
+import vivatech.common.block.SterlingGeneratorBlock;
 import vivatech.common.block.CrusherBlock;
 import vivatech.common.block.ElectricFurnaceBlock;
 import vivatech.common.block.EnergyBankBlock;
@@ -24,7 +24,7 @@ public class VivatechBlocks {
     public static final Block MINIMAL_MACHINE_CHASSIS;
     public static final Block NORMAL_MACHINE_CHASSIS;
     public static final Block ADVANCED_MACHINE_CHASSIS;
-    public static final CoalGeneratorBlock COAL_GENERATOR;
+    public static final SterlingGeneratorBlock COAL_GENERATOR;
     public static final EnergyBankBlock ENERGY_BANK;
 
     public static final ImmutableList<CrusherBlock> CRUSHER;
@@ -36,7 +36,7 @@ public class VivatechBlocks {
         MINIMAL_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.STONE).build());
         NORMAL_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).build());
         ADVANCED_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).hardness(7f).resistance(10f).build());
-        COAL_GENERATOR = new CoalGeneratorBlock();
+        COAL_GENERATOR = new SterlingGeneratorBlock();
         ENERGY_BANK = new EnergyBankBlock();
 
         CRUSHER = TierHelper.fillTieredBlockArray(CrusherBlock::new);
@@ -49,7 +49,7 @@ public class VivatechBlocks {
         Registry.register(Registry.BLOCK, MINIMAL_MACHINE_CHASSIS_ID, MINIMAL_MACHINE_CHASSIS);
         Registry.register(Registry.BLOCK, NORMAL_MACHINE_CHASSIS_ID, NORMAL_MACHINE_CHASSIS);
         Registry.register(Registry.BLOCK, ADVANCED_MACHINE_CHASSIS_ID, ADVANCED_MACHINE_CHASSIS);
-        Registry.register(Registry.BLOCK, CoalGeneratorBlock.ID, COAL_GENERATOR);
+        Registry.register(Registry.BLOCK, SterlingGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.BLOCK, EnergyBankBlock.ID, ENERGY_BANK);
         TierHelper.registerTieredBlocks(CRUSHER);
         TierHelper.registerTieredBlocks(ELECTRIC_FURNACE);

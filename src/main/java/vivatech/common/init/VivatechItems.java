@@ -4,9 +4,8 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
 import vivatech.common.Vivatech;
-import vivatech.common.block.CoalGeneratorBlock;
+import vivatech.common.block.SterlingGeneratorBlock;
 import vivatech.common.block.EnergyBankBlock;
-import vivatech.common.block.EnergyConduitBlock;
 import vivatech.common.item.BatteryItem;
 import vivatech.common.item.ScrewdriverItem;
 import vivatech.util.TierHelper;
@@ -46,7 +45,7 @@ public class VivatechItems {
         Registry.register(Registry.ITEM, VivatechBlocks.MINIMAL_MACHINE_CHASSIS_ID, MINIMAL_MACHINE_CHASSIS);
         Registry.register(Registry.ITEM, VivatechBlocks.NORMAL_MACHINE_CHASSIS_ID, NORMAL_MACHINE_CHASSIS);
         Registry.register(Registry.ITEM, VivatechBlocks.ADVANCED_MACHINE_CHASSIS_ID, ADVANCED_MACHINE_CHASSIS);
-        Registry.register(Registry.ITEM, CoalGeneratorBlock.ID, COAL_GENERATOR);
+        Registry.register(Registry.ITEM, SterlingGeneratorBlock.ID, COAL_GENERATOR);
         Registry.register(Registry.ITEM, EnergyBankBlock.ID, ENERGY_BANK);
 
         TierHelper.registerTieredBlockItems(VivatechBlocks.CRUSHER, CRUSHER);

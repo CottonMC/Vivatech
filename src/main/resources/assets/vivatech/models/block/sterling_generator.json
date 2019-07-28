@@ -1,6 +1,6 @@
 {
   "parent": "vivatech:block/normal_machine_chassis",
   "textures": {
-    "front": "vivatech:block/coal_generator_front"
+    "front": "vivatech:block/sterling_generator_front"
   }
 }

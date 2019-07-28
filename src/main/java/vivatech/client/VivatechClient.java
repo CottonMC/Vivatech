@@ -21,7 +21,7 @@ public class VivatechClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ScreenProviderRegistry.INSTANCE.registerFactory(CoalGeneratorBlock.ID, (syncId, identifier, player, buf) ->
+        ScreenProviderRegistry.INSTANCE.registerFactory(SterlingGeneratorBlock.ID, (syncId, identifier, player, buf) ->
                 new CoalGeneratorScreen(new CoalGeneratorMenu(
                         syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())), player));
         ScreenProviderRegistry.INSTANCE.registerFactory(CrusherBlock.ID, (syncId, identifier, player, buf) ->

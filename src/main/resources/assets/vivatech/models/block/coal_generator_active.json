@@ -1,6 +1,0 @@
-{
-  "parent": "vivatech:block/coal_generator",
-  "textures": {
-    "front": "vivatech:block/coal_generator_active_front"
-  }
-}
