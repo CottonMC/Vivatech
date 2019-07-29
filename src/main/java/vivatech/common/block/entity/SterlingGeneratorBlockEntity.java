@@ -15,8 +15,8 @@ import vivatech.util.EnergyHelper;
 import javax.annotation.Nullable;
 
 public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
-    private static final int GENERATE_PER_TICK = 1;
-    private static final int TICK_PER_GENERATE = 5;
+    private static final int GENERATE_PER_FRAME = 1;
+    private static final int TICKS_PER_FRAME = 4;
     private int burnTime = 0;
     private int burnTimeTotal = 0;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -82,7 +82,7 @@ public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
     protected void serverTick() {
         if (burnTime > 0) {
             burnTime--;
-            if (burnTime % TICK_PER_GENERATE == 0) energy.insertEnergy(Vivatech.INFINITE_VOLTAGE, GENERATE_PER_TICK, Simulation.ACTION);
+            if (burnTime % TICKS_PER_FRAME == 0) energy.insertEnergy(Vivatech.INFINITE_VOLTAGE, GENERATE_PER_FRAME, Simulation.ACTION);
         } else if (inventory.get(0).getCount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
             burnTimeTotal = burnTime;
