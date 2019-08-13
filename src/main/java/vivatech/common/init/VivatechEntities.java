@@ -15,7 +15,7 @@ import vivatech.common.block.entity.ElectricFurnaceBlockEntity;
 import vivatech.common.block.entity.EnergyBankBlockEntity;
 import vivatech.common.block.entity.EnergyConduitBlockEntity;
 import vivatech.common.block.entity.PressBlockEntity;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
 
 public class VivatechEntities {
     public static final BlockEntityType<SterlingGeneratorBlockEntity> COAL_GENERATOR;
@@ -29,15 +29,15 @@ public class VivatechEntities {
         COAL_GENERATOR = BlockEntityType.Builder.create(SterlingGeneratorBlockEntity::new,
                 VivatechBlocks.COAL_GENERATOR).build(null);
         CRUSHER = BlockEntityType.Builder.create(CrusherBlockEntity::new,
-                VivatechBlocks.CRUSHER.toArray(new Block[BlockTier.values().length])).build(null);
+                VivatechBlocks.CRUSHER.toArray(new Block[Tier.values().length])).build(null);
         ELECTRIC_FURNACE = BlockEntityType.Builder.create(ElectricFurnaceBlockEntity::new,
-                VivatechBlocks.ELECTRIC_FURNACE.toArray(new Block[BlockTier.values().length])).build(null);
+                VivatechBlocks.ELECTRIC_FURNACE.toArray(new Block[Tier.values().length])).build(null);
         ENERGY_BANK = BlockEntityType.Builder.create(EnergyBankBlockEntity::new,
                 VivatechBlocks.ENERGY_BANK).build(null);
         ENERGY_CONDUIT = BlockEntityType.Builder.create(EnergyConduitBlockEntity::new,
-                VivatechBlocks.ENERGY_CONDUIT.toArray(new Block[BlockTier.values().length])).build(null);
+                VivatechBlocks.ENERGY_CONDUIT.toArray(new Block[Tier.values().length])).build(null);
         PRESS = BlockEntityType.Builder.create(PressBlockEntity::new,
-                VivatechBlocks.PRESS.toArray(new Block[BlockTier.values().length])).build(null);
+                VivatechBlocks.PRESS.toArray(new Block[Tier.values().length])).build(null);
     }
 
     public static void initialize() {

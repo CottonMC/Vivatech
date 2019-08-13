@@ -1,14 +1,18 @@
 package vivatech.api.block.entity;
 
+import alexiil.mc.lib.attributes.item.ItemAttributes;
+import alexiil.mc.lib.attributes.item.impl.DirectFixedItemInv;
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyAttributeProvider;
+import io.github.cottonmc.energy.api.EnergyType;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -19,8 +23,9 @@ import vivatech.api.block.AbstractMachineBlock;
 
 public abstract class AbstractMachineBlockEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
         BlockEntityClientSerializable, EnergyAttributeProvider {
-    protected DefaultedList<ItemStack> inventory = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
-    protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), Vivatech.INFINITE_VOLTAGE) {
+    protected EnergyType energyType;
+    protected DirectFixedItemInv inventory = new DirectFixedItemInv(getInvSize());
+    protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), energyType) {
         @Override
         public boolean canInsertEnergy() { return AbstractMachineBlockEntity.this.canInsertEnergy(); }
 
@@ -28,8 +33,9 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
         public boolean canExtractEnergy() { return AbstractMachineBlockEntity.this.canExtractEnergy(); }
     };
 
-    public AbstractMachineBlockEntity(BlockEntityType<?> type) {
+    public AbstractMachineBlockEntity(BlockEntityType<?> type, EnergyType energyType) {
         super(type);
+        this.energyType = energyType;
     }
 
     protected abstract int getMaxEnergy();
@@ -44,6 +50,10 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     public EnergyAttribute getEnergy() {
         return energy;
+    }
+
+    public DirectFixedItemInv getInventory() {
+        return inventory;
     }
 
     protected void serverTick() {}
@@ -64,15 +74,20 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
         energy.fromTag(tag.getTag("Energy"));
-        inventory = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
-        Inventories.fromTag(tag, inventory);
+        if (tag.containsKey("Items")) {
+            DefaultedList<ItemStack> oldInv = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
+            Inventories.fromTag(tag, oldInv);
+            for (int i = 0; i < inventory.getSlotCount(); i++) {
+                inventory.set(i, oldInv.get(i));
+            }
+        } else inventory.fromTag(tag.getCompound("Inventory"));
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
         tag.put("Energy", energy.toTag());
-        Inventories.toTag(tag, inventory);
+        tag.put("Inventory", inventory.toTag());
         return tag;
     }
 
@@ -89,7 +104,7 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     // SidedInventory
     @Override
     public boolean isInvEmpty() {
-        for (ItemStack itemStack : inventory) if (!itemStack.isEmpty()) return false;
+        for (ItemStack itemStack : inventory.getStoredStacks()) if (!itemStack.isEmpty()) return false;
         return true;
     }
 
@@ -100,12 +115,18 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     @Override
     public ItemStack takeInvStack(int slot, int parts) {
-        return Inventories.splitStack(inventory, slot, parts);
+        return slot >= 0 && slot < inventory.getSlotCount() 
+                && !(inventory.get(slot)).isEmpty() 
+                && parts > 0 ? (inventory.get(slot)).split(parts) : ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack removeInvStack(int slot) {
-        return Inventories.removeStack(inventory, slot);
+        if (slot >= 0 && slot < inventory.getSlotCount()) {
+            ItemStack ret = inventory.get(slot);
+            inventory.set(slot, ItemStack.EMPTY);
+            return ret;
+        } else return ItemStack.EMPTY;
     }
 
     @Override
@@ -131,7 +152,9 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     @Override
     public void clear() {
-        inventory.clear();
+        for (int i = 0; i < inventory.getSlotCount(); i++) {
+            inventory.set(i, ItemStack.EMPTY);
+        }
     }
 
     // BlockEntityClientSerializable

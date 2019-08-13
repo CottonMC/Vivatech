@@ -1,5 +1,6 @@
 package vivatech.common.item;
 
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyAttributeProviderItem;
 import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
@@ -25,7 +26,7 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
     private static final int MAX_ENERGY = 500;
 
     public BatteryItem() {
-        super(Vivatech.ITEM_SETTINGS.maxCount(1).maxDamage(MAX_ENERGY));
+        super(Vivatech.getSettings().maxCount(1).maxDamage(MAX_ENERGY));
     }
 
     // Item
@@ -42,7 +43,7 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
     // EnergyAttributeProviderItem
     @Override
     public EnergyAttribute getEnergyAttribute(ItemStack stack) {
-        SimpleEnergyAttribute energy = new SimpleEnergyAttribute(MAX_ENERGY, Vivatech.INFINITE_VOLTAGE);
+        SimpleEnergyAttribute energy = new SimpleEnergyAttribute(MAX_ENERGY, DefaultEnergyTypes.LOW_VOLTAGE);
         Runnable listener = () -> {
             stack.getOrCreateTag().put("Energy", energy.toTag());
             stack.setDamage(getMaxDamage() - energy.getCurrentEnergy());

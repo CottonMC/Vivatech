@@ -110,7 +110,7 @@ public class EnergyNetwork {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-        SimpleEnergyAttribute networkEnergy = new SimpleEnergyAttribute(conduits.get(0).getTransferRate(), Vivatech.INFINITE_VOLTAGE);
+        SimpleEnergyAttribute networkEnergy = new SimpleEnergyAttribute(conduits.get(0).getTransferRate(), conduits.get(0).getTier().getEnergyType());
         int totalEnergyTransferred = 0;
         for (Map.Entry<EnergyAttribute, Integer> producer : producers.entrySet()) {
             if (networkEnergy.getCurrentEnergy() == networkEnergy.getMaxEnergy()) {

@@ -3,6 +3,8 @@ package vivatech.common.block.entity;
 import javax.annotation.Nullable;
 
 import alexiil.mc.lib.attributes.Simulation;
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +14,7 @@ import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.common.recipe.PressingRecipe;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
 
 public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
 
@@ -62,9 +64,13 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
             return 4;
         }
     };
-    
+
     public PressBlockEntity() {
-        super(VivatechEntities.PRESS);
+        this(DefaultEnergyTypes.LOW_VOLTAGE);
+    }
+    
+    public PressBlockEntity(EnergyType type) {
+        super(VivatechEntities.PRESS, type);
     }
 
     // AbstractMachineEntity
@@ -80,11 +86,11 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
 
     @Override
     protected void serverTick() {
-    	BlockTier tier = getTier();
+    	Tier tier = getTier();
     	
         if (canRun()) {
             pressTime++;
-            if (pressTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
+            if (pressTime % TICK_PER_CONSUME == 0) energy.extractEnergy(tier.getEnergyType(), CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
             if (pressTimeTotal == 0) {
                 pressTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world)
                         .map(PressingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());

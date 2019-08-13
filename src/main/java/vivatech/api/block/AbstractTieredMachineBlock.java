@@ -11,20 +11,21 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.BlockView;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
+import vivatech.api.tier.Tiered;
 
-public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock implements ITieredBlock {
+public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock implements Tiered {
 	
-	protected final BlockTier tier;
+	protected final Tier tier;
 	protected final Identifier id;
 
-	public AbstractTieredMachineBlock(Settings settings, Identifier id, BlockTier tier) {
+	public AbstractTieredMachineBlock(Settings settings, Identifier id, Tier tier) {
 		super(settings);
 		this.id = id;
 		this.tier = tier;
 	}
 	
-	public abstract Identifier getTieredId();
+	public abstract Identifier getTierId();
 
 	@Override
 	public String getTranslationKey() {
@@ -43,7 +44,7 @@ public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock im
 		super.buildTooltip(stack, view, lines, context);
 	}
 
-	public BlockTier getTier() {
+	public Tier getTier() {
 		return tier;
 	}
 }

@@ -13,20 +13,20 @@ import net.minecraft.world.World;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractTieredMachineBlock;
 import vivatech.common.block.entity.PressBlockEntity;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
 import vivatech.util.TierHelper;
 
 public class PressBlock extends AbstractTieredMachineBlock {
     public static final Identifier ID = new Identifier(Vivatech.MODID, "press");
     private final Identifier tieredId;
 
-    public PressBlock(BlockTier tier) {
+    public PressBlock(Tier tier) {
         super(Vivatech.MACHINE_BLOCK_SETTINGS, ID, tier);
         tieredId = TierHelper.getTieredID(ID, tier);
     }
     
 	@Override
-	public Identifier getTieredId() {
+	public Identifier getTierId() {
 		return tieredId;
 	}
 
@@ -43,6 +43,6 @@ public class PressBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new PressBlockEntity();
+        return new PressBlockEntity(this.getTier().getEnergyType());
     }
 }

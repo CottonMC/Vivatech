@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.loot.LootManager;
 import net.minecraft.world.loot.context.LootContext;
 import vivatech.common.recipe.CrushingRecipe;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,12 +48,12 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 	protected final Identifier id;
 	protected final Ingredient input;
 	protected final ItemStack output;
-	protected final BlockTier minTier;
+	protected final Tier minTier;
 	protected final float exp;
 	protected final int processTime;
 	protected final Identifier bonusLootTable;
 
-	public ProcessingRecipe(Identifier id, Ingredient input, ItemStack output, BlockTier minTier, float exp, int processTime, Identifier bonusLootTable) {
+	public ProcessingRecipe(Identifier id, Ingredient input, ItemStack output, Tier minTier, float exp, int processTime, Identifier bonusLootTable) {
 		this.id = id;
 		this.input = input;
 		this.output = output;
@@ -77,7 +77,7 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 		return output;
 	}
 	
-	public BlockTier getMinTier() {
+	public Tier getMinTier() {
 		return minTier;
 	}
 	
@@ -125,7 +125,7 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 
 	@FunctionalInterface
 	public interface Factory<R extends ProcessingRecipe> {
-		R create(Identifier id, Ingredient input, ItemStack output, BlockTier minTier, float exp, int processTime, Identifier bonusLootTable);
+		R create(Identifier id, Ingredient input, ItemStack output, Tier minTier, float exp, int processTime, Identifier bonusLootTable);
 	}
 
 	public static class Serializer<R extends ProcessingRecipe> implements RecipeSerializer<R> {
@@ -148,9 +148,9 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 
 			ItemStack output = ShapedRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
 			
-			BlockTier minTier = JsonHelper.hasString(jsonObject, "tier")
-					? BlockTier.forAffix(JsonHelper.getString(jsonObject, "tier"))
-					: BlockTier.MINIMAL;
+			Tier minTier = JsonHelper.hasString(jsonObject, "tier")
+					? Tier.forAffix(JsonHelper.getString(jsonObject, "tier"))
+					: Tier.MINIMAL;
 			
 			float exp = JsonHelper.getFloat(jsonObject, "experience", 0.0F);
 			int processTime = JsonHelper.getInt(jsonObject, "processtime", this.defaultProcessTime);
@@ -165,9 +165,9 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 		public R read(Identifier id, PacketByteBuf buffer) {
 			Ingredient input = Ingredient.fromPacket(buffer);
 			ItemStack output = buffer.readItemStack();
-			BlockTier minTier = BlockTier.MINIMAL;
+			Tier minTier = Tier.MINIMAL;
 			int tierInt = buffer.readInt();
-			if (tierInt>=0 && tierInt< BlockTier.values().length) minTier = BlockTier.values()[tierInt];
+			if (tierInt>=0 && tierInt< Tier.values().length) minTier = Tier.values()[tierInt];
 			float exp = buffer.readFloat();
 			int processTime = buffer.readInt();
 			Identifier bonusLoot = buffer.readBoolean() ? buffer.readIdentifier() : null;

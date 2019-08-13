@@ -9,12 +9,12 @@ import vivatech.common.Vivatech;
 import vivatech.api.recipe.ProcessingRecipe;
 import vivatech.common.block.entity.CrusherBlockEntity;
 import vivatech.common.init.VivatechRecipes;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
 
 public class CuttingRecipe extends ProcessingRecipe {
 	public static final Identifier ID = new Identifier(Vivatech.MODID, "cutting");
 
-	public CuttingRecipe(Identifier id, Ingredient input, ItemStack output, BlockTier minTier, float exp, int processTime, Identifier bonusLootTable) {
+	public CuttingRecipe(Identifier id, Ingredient input, ItemStack output, Tier minTier, float exp, int processTime, Identifier bonusLootTable) {
 		super(id, input, output, minTier, exp, processTime, bonusLootTable);
 	}
 

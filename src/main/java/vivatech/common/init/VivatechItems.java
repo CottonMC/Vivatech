@@ -26,11 +26,11 @@ public class VivatechItems {
     public static final Item SCREWDRIVER;
 
     static {
-        MINIMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.MINIMAL_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
-        NORMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.NORMAL_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
-        ADVANCED_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.ADVANCED_MACHINE_CHASSIS, Vivatech.ITEM_SETTINGS);
-        COAL_GENERATOR = new BlockItem(VivatechBlocks.COAL_GENERATOR, Vivatech.ITEM_SETTINGS);
-        ENERGY_BANK = new BlockItem(VivatechBlocks.ENERGY_BANK, Vivatech.ITEM_SETTINGS);
+        MINIMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.MINIMAL_MACHINE_CHASSIS, Vivatech.getSettings());
+        NORMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.NORMAL_MACHINE_CHASSIS, Vivatech.getSettings());
+        ADVANCED_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.ADVANCED_MACHINE_CHASSIS, Vivatech.getSettings());
+        COAL_GENERATOR = new BlockItem(VivatechBlocks.COAL_GENERATOR, Vivatech.getSettings());
+        ENERGY_BANK = new BlockItem(VivatechBlocks.ENERGY_BANK, Vivatech.getSettings());
 
         CRUSHER = TierHelper.fillTieredBlockItemArray(VivatechBlocks.CRUSHER);
         ELECTRIC_FURNACE = TierHelper.fillTieredBlockItemArray(VivatechBlocks.ELECTRIC_FURNACE);

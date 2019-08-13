@@ -3,6 +3,8 @@ package vivatech.common.block.entity;
 import javax.annotation.Nullable;
 
 import alexiil.mc.lib.attributes.Simulation;
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +15,7 @@ import net.minecraft.util.math.Direction;
 import vivatech.common.Vivatech;
 import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
 
 public class ElectricFurnaceBlockEntity extends AbstractTieredMachineBlockEntity {
     private static final int TICK_PER_CONSUME = 5;
@@ -64,7 +66,11 @@ public class ElectricFurnaceBlockEntity extends AbstractTieredMachineBlockEntity
     };
 
     public ElectricFurnaceBlockEntity() {
-    	super(VivatechEntities.ELECTRIC_FURNACE);
+        this(DefaultEnergyTypes.LOW_VOLTAGE);
+    }
+
+    public ElectricFurnaceBlockEntity(EnergyType type) {
+    	super(VivatechEntities.ELECTRIC_FURNACE, type);
     }
 
     // AbstractMachineEntity
@@ -80,11 +86,11 @@ public class ElectricFurnaceBlockEntity extends AbstractTieredMachineBlockEntity
 
     @Override
     protected void serverTick() {
-    	BlockTier tier = getTier();
+    	Tier tier = getTier();
     	
         if (canRun()) {
             cookTime++;
-            if (cookTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
+            if (cookTime % TICK_PER_CONSUME == 0) energy.extractEnergy(tier.getEnergyType(), CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
             if (cookTimeTotal == 0) {
                 cookTimeTotal = (int) (world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, this, world)
                         .map(AbstractCookingRecipe::getCookTime).orElse(200) / (2 * (tier.getSpeedMultiplier() + 0.5F)));

@@ -3,6 +3,8 @@ package vivatech.common.block.entity;
 import javax.annotation.Nullable;
 
 import alexiil.mc.lib.attributes.Simulation;
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +14,7 @@ import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.common.recipe.CrushingRecipe;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
 
 public class CrusherBlockEntity extends AbstractTieredMachineBlockEntity {
 
@@ -64,7 +66,11 @@ public class CrusherBlockEntity extends AbstractTieredMachineBlockEntity {
     };
 
     public CrusherBlockEntity() {
-        super(VivatechEntities.CRUSHER);
+        this(DefaultEnergyTypes.LOW_VOLTAGE);
+    }
+
+    public CrusherBlockEntity(EnergyType type) {
+        super(VivatechEntities.CRUSHER, type);
     }
 
     // AbstractMachineEntity
@@ -80,11 +86,11 @@ public class CrusherBlockEntity extends AbstractTieredMachineBlockEntity {
 
     @Override
     protected void serverTick() {
-    	BlockTier tier = getTier();
+    	Tier tier = getTier();
     	
         if (canRun()) {
             crushTime++;
-            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(Vivatech.INFINITE_VOLTAGE, CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
+            if (crushTime % TICK_PER_CONSUME == 0) energy.extractEnergy(getTier().getEnergyType(), CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
             if (crushTimeTotal == 0) {
                 crushTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
                         .map(CrushingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());

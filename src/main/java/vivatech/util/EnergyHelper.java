@@ -39,7 +39,7 @@ public class EnergyHelper {
 
     public static int transfer(EnergyAttribute from, EnergyAttribute to, int transferSize, Simulation simulation) {
         if (!to.canInsertEnergy()
-                || !to.getPreferredType().isCompatibleWith(Vivatech.INFINITE_VOLTAGE)
+                || !to.getPreferredType().isCompatibleWith(from.getPreferredType())
                 || to.getCurrentEnergy() == to.getMaxEnergy()) {
             return 0;
         }

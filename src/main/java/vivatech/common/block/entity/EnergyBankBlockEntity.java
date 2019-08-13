@@ -1,7 +1,9 @@
 package vivatech.common.block.entity;
 
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyAttributeProviderItem;
+import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
@@ -48,7 +50,7 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
     };
 
     public EnergyBankBlockEntity() {
-        super(VivatechEntities.ENERGY_BANK);
+        super(VivatechEntities.ENERGY_BANK, DefaultEnergyTypes.LOW_VOLTAGE);
     }
 
     // AbstractMachineEntity

@@ -3,15 +3,15 @@ package vivatech.common.block.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Tickable;
-import vivatech.api.block.ITieredBlock;
-import vivatech.api.block.entity.IConduitBlockEntity;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tiered;
+import vivatech.api.block.entity.Conduit;
+import vivatech.api.tier.Tier;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.network.EnergyNetwork;
 
 import java.util.UUID;
 
-public class EnergyConduitBlockEntity extends BlockEntity implements Tickable, IConduitBlockEntity {
+public class EnergyConduitBlockEntity extends BlockEntity implements Tickable, Conduit {
     public UUID networkId = null;
 
     public EnergyConduitBlockEntity() {
@@ -25,14 +25,14 @@ public class EnergyConduitBlockEntity extends BlockEntity implements Tickable, I
         if (networkId == null) networkId = new EnergyNetwork(this).getId();
     }
 
-    // ITieredEntity
+    // TieredBlockEntity
     @Override
-    public BlockTier getTier() {
+    public Tier getTier() {
         Block block = world.getBlockState(pos).getBlock();
-        if (block instanceof ITieredBlock) {
-            return ((ITieredBlock) block).getTier();
+        if (block instanceof Tiered) {
+            return ((Tiered) block).getTier();
         } else {
-            return BlockTier.MINIMAL;
+            return Tier.MINIMAL;
         }
     }
 }

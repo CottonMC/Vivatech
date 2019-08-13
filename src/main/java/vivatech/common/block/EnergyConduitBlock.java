@@ -27,8 +27,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import vivatech.api.block.ITieredBlock;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tiered;
+import vivatech.api.tier.Tier;
 import vivatech.common.Vivatech;
 import vivatech.common.block.entity.EnergyConduitBlockEntity;
 import vivatech.util.TierHelper;
@@ -36,8 +36,8 @@ import vivatech.util.TierHelper;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EnergyConduitBlock extends Block implements BlockEntityProvider, ITieredBlock {
-    private final BlockTier tier;
+public class EnergyConduitBlock extends Block implements BlockEntityProvider, Tiered {
+    private final Tier tier;
     private final Identifier tieredId;
 
     public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_conduit");
@@ -49,7 +49,7 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, IT
     public static final BooleanProperty CONNECTED_SOUTH = BooleanProperty.of("connected_south");
     public static final BooleanProperty CONNECTED_WEST  = BooleanProperty.of("connected_west");
 
-    public EnergyConduitBlock(BlockTier tier) {
+    public EnergyConduitBlock(Tier tier) {
         super(Vivatech.METALLIC_BLOCK_SETTINGS);
 
         this.tier = tier;
@@ -195,7 +195,7 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, IT
             BlockPos offsetPos = pos.offset(direction);
             SearchOption<Object> option = SearchOptions.inDirection(direction);
             Block block = world.getBlockState(offsetPos).getBlock();
-            return block instanceof EnergyConduitBlock && ((ITieredBlock) block).getTier() == getTier()
+            return block instanceof EnergyConduitBlock && ((Tiered) block).getTier() == getTier()
                     || EnergyAttribute.ENERGY_ATTRIBUTE.getFirstOrNull(world, offsetPos, option) != null;
         }
     }
@@ -209,12 +209,12 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, IT
 
     // ITieredBlock
     @Override
-    public Identifier getTieredId() {
+    public Identifier getTierId() {
         return tieredId;
     }
 
     @Override
-    public BlockTier getTier() {
+    public Tier getTier() {
         return tier;
     }
 }

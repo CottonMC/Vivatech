@@ -1,6 +1,6 @@
 package vivatech.api.block.entity;
 
-public interface IConduitBlockEntity extends ITieredBlockEntity {
+public interface Conduit extends TieredBlockEntity {
     int BASE_TRANSFER_RATE = 50;
 
     default int getTransferRate() {

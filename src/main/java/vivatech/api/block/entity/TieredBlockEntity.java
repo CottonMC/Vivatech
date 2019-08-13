@@ -2,20 +2,20 @@ package vivatech.api.block.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
-import vivatech.api.block.ITieredBlock;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tiered;
+import vivatech.api.tier.Tier;
 
 /**
  * WARNING: Only apply on BlockEntity!
  */
-public interface ITieredBlockEntity {
-    default BlockTier getTier() {
+public interface TieredBlockEntity {
+    default Tier getTier() {
         BlockEntity self = (BlockEntity) this;
         Block block = self.getWorld().getBlockState(self.getPos()).getBlock();
-        if (block instanceof ITieredBlock) {
-            return ((ITieredBlock) block).getTier();
+        if (block instanceof Tiered) {
+            return ((Tiered) block).getTier();
         } else {
-            return BlockTier.MINIMAL;
+            return Tier.MINIMAL;
         }
-    };
+    }
 }

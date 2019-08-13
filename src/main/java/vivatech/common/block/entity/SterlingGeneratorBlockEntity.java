@@ -1,6 +1,8 @@
 package vivatech.common.block.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
+import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
@@ -64,7 +66,7 @@ public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
 
 
     public SterlingGeneratorBlockEntity() {
-        super(VivatechEntities.COAL_GENERATOR);
+        super(VivatechEntities.COAL_GENERATOR, DefaultEnergyTypes.LOW_VOLTAGE);
     }
 
     // AbstractMachineEntity
@@ -82,7 +84,7 @@ public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
     protected void serverTick() {
         if (burnTime > 0) {
             burnTime--;
-            if (burnTime % TICKS_PER_FRAME == 0) energy.insertEnergy(Vivatech.INFINITE_VOLTAGE, GENERATE_PER_FRAME, Simulation.ACTION);
+            if (burnTime % TICKS_PER_FRAME == 0) energy.insertEnergy(energyType, GENERATE_PER_FRAME, Simulation.ACTION);
         } else if (inventory.get(0).getCount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
             burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
             burnTimeTotal = burnTime;

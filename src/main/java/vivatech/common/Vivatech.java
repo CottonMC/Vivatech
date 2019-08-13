@@ -32,10 +32,11 @@ public class Vivatech implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "item_group"),
             () -> new ItemStack(VivatechItems.NORMAL_MACHINE_CHASSIS));
-    public static final Item.Settings ITEM_SETTINGS = new Item.Settings().group(ITEM_GROUP);
+    public static Item.Settings getSettings() {
+        return new Item.Settings().group(ITEM_GROUP);
+    }
     public static final Block.Settings METALLIC_BLOCK_SETTINGS = FabricBlockSettings.copy(Blocks.IRON_BLOCK).build();
     public static final Block.Settings MACHINE_BLOCK_SETTINGS = FabricBlockSettings.copy(Blocks.IRON_BLOCK).build();
-    public static final EnergyType INFINITE_VOLTAGE = new ElectricalEnergyType(Integer.MAX_VALUE);
 
     @Override
     public void onInitialize() {
@@ -58,7 +59,5 @@ public class Vivatech implements ModInitializer {
                 new EnergyBankMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
         ContainerProviderRegistry.INSTANCE.registerFactory(PressBlock.ID, (syncId, id, player, buf) ->
                 new PressMenu(syncId, player.inventory, BlockContext.create(player.world, buf.readBlockPos())));
-
-        Registry.register(CottonEnergy.ENERGY_REGISTRY, new Identifier(MODID, "infinite_voltage"), INFINITE_VOLTAGE);
     }
 }

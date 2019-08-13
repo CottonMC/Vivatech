@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import me.shedaniel.rei.api.RecipeDisplay;
 import net.minecraft.item.ItemStack;
 import vivatech.api.recipe.ProcessingRecipe;
-import vivatech.api.util.BlockTier;
+import vivatech.api.tier.Tier;
 
 public abstract class TieredMachineDisplay<T extends ProcessingRecipe> implements RecipeDisplay<T> {
 	protected final T recipe;
@@ -45,7 +45,7 @@ public abstract class TieredMachineDisplay<T extends ProcessingRecipe> implement
         return input;
     }
 	
-	public BlockTier getMinTier() {
+	public Tier getMinTier() {
 		return recipe.getMinTier();
 	}
 	
