@@ -2,20 +2,24 @@ package vivatech.common.block.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import vivatech.api.tier.Tiered;
-import vivatech.api.block.entity.Conduit;
 import vivatech.api.tier.Tier;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.network.EnergyNetwork;
 
 import java.util.UUID;
 
-public class EnergyConduitBlockEntity extends BlockEntity implements Tickable, Conduit {
+public class EnergyConduitBlockEntity extends BlockEntity implements Tickable, Tiered {
     public UUID networkId = null;
 
     public EnergyConduitBlockEntity() {
         super(VivatechEntities.ENERGY_CONDUIT);
+    }
+
+    public int getTransferRate() {
+        return getTier().getEnergyType().getMaximumTransferSize();
     }
 
     // Tickable
@@ -23,6 +27,16 @@ public class EnergyConduitBlockEntity extends BlockEntity implements Tickable, C
     public void tick() {
         if (world.isClient()) return;
         if (networkId == null) networkId = new EnergyNetwork(this).getId();
+    }
+
+    @Override
+    public Identifier getTierId() {
+        Block block = this.getWorld().getBlockState(this.getPos()).getBlock();
+        if (block instanceof Tiered) {
+            return ((Tiered) block).getTierId();
+        } else {
+            return null;
+        }
     }
 
     // TieredBlockEntity

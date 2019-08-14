@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * <a href="https://github.com/StellarHorizons/Galacticraft-Rewoven">Galacticraft: Rewoven</a>
  */
 public class EnergyNetwork {
+    //TODO: modify to support cable system? Toss out instead?
     public final static ConcurrentLinkedQueue<EnergyNetwork> networks = new ConcurrentLinkedQueue<>();
     public final List<EnergyConduitBlockEntity> conduits = new ArrayList<>();
     public final UUID id;
@@ -30,7 +31,7 @@ public class EnergyNetwork {
         networks.add(this);
         id = UUID.randomUUID();
         conduits.add(sourceConduit);
-        networks.forEach(__ -> {
+        networks.forEach(net -> {
             List<BlockEntity> sourceConduits = new ArrayList<>();
             sourceConduits.add(sourceConduit);
             do {

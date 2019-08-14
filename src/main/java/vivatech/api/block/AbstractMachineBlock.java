@@ -26,7 +26,6 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
 
     public AbstractMachineBlock(Settings settings) {
         super(settings);
-
         setDefaultState(getStateFactory().getDefaultState().with(FACING, Direction.NORTH).with(ACTIVE, false));
     }
 
@@ -57,7 +56,7 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
     public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof AbstractMachineBlockEntity) {
-            to.offer(((AbstractMachineBlockEntity) be).getEnergy());
+            to.offer(((AbstractMachineBlockEntity)be).getEnergy());
             to.offer(((AbstractMachineBlockEntity)be).getInventory());
         }
     }

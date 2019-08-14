@@ -1,6 +1,5 @@
 package vivatech.api.block.entity;
 
-import alexiil.mc.lib.attributes.item.ItemAttributes;
 import alexiil.mc.lib.attributes.item.impl.DirectFixedItemInv;
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.api.EnergyAttribute;
@@ -12,13 +11,11 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
-import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractMachineBlock;
 
 public abstract class AbstractMachineBlockEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
@@ -114,10 +111,9 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     }
 
     @Override
-    public ItemStack takeInvStack(int slot, int parts) {
-        return slot >= 0 && slot < inventory.getSlotCount() 
-                && !(inventory.get(slot)).isEmpty() 
-                && parts > 0 ? (inventory.get(slot)).split(parts) : ItemStack.EMPTY;
+    public ItemStack takeInvStack(int slot, int count) {
+        return slot >= 0 && slot < inventory.getSlotCount() && !(inventory.get(slot)).isEmpty() && count > 0 ?
+                (inventory.get(slot)).split(count) : ItemStack.EMPTY;
     }
 
     @Override
