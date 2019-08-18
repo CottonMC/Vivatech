@@ -2,6 +2,7 @@ package vivatech.compat.rei.widget;
 
 import io.github.cottonmc.cotton.gui.EmptyInventory;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
+import me.shedaniel.rei.api.Renderer;
 import me.shedaniel.rei.gui.widget.SlotWidget;
 import net.minecraft.item.ItemStack;
 
@@ -15,19 +16,19 @@ public final class CottonSlotWidget extends SlotWidget {
     private final int x;
     private final int y;
 
-    private CottonSlotWidget(int x, int y, List<ItemStack> itemList, boolean showToolTips, boolean clickToMoreRecipes, WItemSlot renderSlot) {
-        super(x, y, itemList, false, showToolTips, clickToMoreRecipes);
+    private CottonSlotWidget(int x, int y, Renderer renderer, boolean showToolTips, boolean clickToMoreRecipes, WItemSlot renderSlot) {
+        super(x, y, renderer, false, showToolTips, clickToMoreRecipes);
         this.renderSlot = renderSlot;
         this.x = x;
         this.y = y;
     }
 
-    public CottonSlotWidget(int x, int y, List<ItemStack> itemList, boolean showToolTips, boolean clickToMoreRecipes) {
+    public CottonSlotWidget(int x, int y, Renderer itemList, boolean showToolTips, boolean clickToMoreRecipes) {
         this(x, y, itemList, showToolTips, clickToMoreRecipes, WItemSlot.of(EmptyInventory.INSTANCE, 0));
     }
 
     public static CottonSlotWidget createBig(int x, int y, List<ItemStack> itemList, boolean showToolTips, boolean clickToMoreRecipes) {
-        return new CottonSlotWidget(x, y, itemList, showToolTips, clickToMoreRecipes, WItemSlot.outputOf(EmptyInventory.INSTANCE, 0));
+        return new CottonSlotWidget(x, y, Renderer.fromItemStacks(itemList), showToolTips, clickToMoreRecipes, WItemSlot.outputOf(EmptyInventory.INSTANCE, 0));
     }
 
     @Override

@@ -1,27 +1,27 @@
 package vivatech.compat.rei;
 
 import com.google.common.collect.ImmutableList;
+import me.shedaniel.math.api.Rectangle;
 import me.shedaniel.rei.api.RecipeCategory;
 import me.shedaniel.rei.api.RecipeDisplay;
+import me.shedaniel.rei.api.Renderer;
 import me.shedaniel.rei.gui.widget.RecipeBaseWidget;
 import me.shedaniel.rei.gui.widget.Widget;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import vivatech.api.tier.Tier;
 import vivatech.compat.rei.widget.CottonSlotWidget;
 import vivatech.compat.rei.widget.LabelWidget;
 import vivatech.compat.rei.widget.ProgressBarWidget;
-import vivatech.api.tier.Tier;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-abstract class BaseRecipeCategory implements RecipeCategory<RecipeDisplay<Recipe<?>>> {
+abstract class BaseRecipeCategory implements RecipeCategory<RecipeDisplay> {
     private final Identifier id;
     private final String translationKey;
 
@@ -41,10 +41,10 @@ abstract class BaseRecipeCategory implements RecipeCategory<RecipeDisplay<Recipe
     }
 
     @Override
-    public List<Widget> setupDisplay(Supplier<RecipeDisplay<Recipe<?>>> recipeDisplaySupplier, Rectangle bounds) {
-        RecipeDisplay<?> display = recipeDisplaySupplier.get();
-        int x = (int) bounds.getCenterX();
-        int y = (int) bounds.getCenterY() - 9;
+    public List<Widget> setupDisplay(Supplier<RecipeDisplay> recipeDisplaySupplier, Rectangle bounds) {
+        RecipeDisplay display = recipeDisplaySupplier.get();
+        int x = bounds.getCenterX();
+        int y = bounds.getCenterY() - 9;
         
         Tier tier = Tier.MINIMAL;
         int energyCost = 0;
@@ -56,7 +56,7 @@ abstract class BaseRecipeCategory implements RecipeCategory<RecipeDisplay<Recipe
         ArrayList<Widget> widgets = new ArrayList<>();
         widgets.add(new RecipeBaseWidget(bounds));
         widgets.add(new ProgressBarWidget(x - 18 - 5, y, 40, 18, 200));
-        widgets.add(new CottonSlotWidget(x - 2 * 18 - 9, y, display.getInput().get(0), true, true));
+        widgets.add(new CottonSlotWidget(x - 2 * 18 - 9, y, Renderer.fromItemStacks(display.getInput().get(0)), true, true));
         widgets.add(CottonSlotWidget.createBig(x + 2 * 18 - 9, y, display.getOutput(), true, true));
         
         if (energyCost!=0) {
