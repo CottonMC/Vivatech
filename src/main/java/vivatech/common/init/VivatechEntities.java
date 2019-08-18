@@ -9,12 +9,7 @@ import vivatech.common.block.ElectricFurnaceBlock;
 import vivatech.common.block.EnergyBankBlock;
 import vivatech.common.block.EnergyConduitBlock;
 import vivatech.common.block.PressBlock;
-import vivatech.common.block.entity.SterlingGeneratorBlockEntity;
-import vivatech.common.block.entity.CrusherBlockEntity;
-import vivatech.common.block.entity.ElectricFurnaceBlockEntity;
-import vivatech.common.block.entity.EnergyBankBlockEntity;
-import vivatech.common.block.entity.EnergyConduitBlockEntity;
-import vivatech.common.block.entity.PressBlockEntity;
+import vivatech.common.block.entity.*;
 import vivatech.api.tier.Tier;
 
 public class VivatechEntities {
@@ -24,6 +19,7 @@ public class VivatechEntities {
     public static final BlockEntityType<EnergyBankBlockEntity> ENERGY_BANK;
     public static final BlockEntityType<EnergyConduitBlockEntity> ENERGY_CONDUIT;
     public static final BlockEntityType<PressBlockEntity> PRESS;
+    public static final BlockEntityType<ConnectorBlockEntity> CONNECTOR;
 
     static {
         COAL_GENERATOR = BlockEntityType.Builder.create(SterlingGeneratorBlockEntity::new,
@@ -38,6 +34,8 @@ public class VivatechEntities {
                 VivatechBlocks.ENERGY_CONDUIT.toArray(new Block[Tier.values().length])).build(null);
         PRESS = BlockEntityType.Builder.create(PressBlockEntity::new,
                 VivatechBlocks.PRESS.toArray(new Block[Tier.values().length])).build(null);
+        CONNECTOR = BlockEntityType.Builder.create(ConnectorBlockEntity::new,
+                VivatechBlocks.CONNECTOR.toArray(new Block[Tier.values().length])).build(null);
     }
 
     public static void initialize() {

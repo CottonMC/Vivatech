@@ -8,12 +8,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import vivatech.common.Vivatech;
-import vivatech.common.block.SterlingGeneratorBlock;
-import vivatech.common.block.CrusherBlock;
-import vivatech.common.block.ElectricFurnaceBlock;
-import vivatech.common.block.EnergyBankBlock;
-import vivatech.common.block.EnergyConduitBlock;
-import vivatech.common.block.PressBlock;
+import vivatech.common.block.*;
 import vivatech.util.TierHelper;
 
 public class VivatechBlocks {
@@ -31,6 +26,7 @@ public class VivatechBlocks {
     public static final ImmutableList<ElectricFurnaceBlock> ELECTRIC_FURNACE;
     public static final ImmutableList<EnergyConduitBlock> ENERGY_CONDUIT;
     public static final ImmutableList<PressBlock> PRESS;
+    public static final ImmutableList<ConnectorBlock> CONNECTOR;
 
     static {
         MINIMAL_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.STONE).build());
@@ -43,6 +39,7 @@ public class VivatechBlocks {
         ELECTRIC_FURNACE = TierHelper.fillTieredBlockArray(ElectricFurnaceBlock::new);
         ENERGY_CONDUIT = TierHelper.fillTieredBlockArray(EnergyConduitBlock::new);
         PRESS = TierHelper.fillTieredBlockArray(PressBlock::new);
+        CONNECTOR = TierHelper.fillTieredBlockArray(ConnectorBlock::new);
     }
 
     public static void initialize() {

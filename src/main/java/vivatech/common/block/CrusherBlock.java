@@ -41,7 +41,7 @@ public class CrusherBlock extends AbstractTieredMachineBlock {
         return new CrusherBlockEntity(this.getTier().getEnergyType());
     }
 
-    // ITieredBlock
+    // Tiered
     @Override
     public Identifier getTierId() {
         return tieredId;

@@ -5,17 +5,17 @@ import io.github.cottonmc.energy.api.EnergyType;
 
 public enum Tier {
 	
-	MINIMAL(1F, 1F, 0, "minimal", DefaultEnergyTypes.LOW_VOLTAGE),
-	NORMAL(2F, 2F, 3, "normal", DefaultEnergyTypes.MEDIUM_VOLTAGE),
-	ADVANCED(4F, 4F, 5, "advanced", DefaultEnergyTypes.HIGH_VOLTAGE);
+	MINIMAL(1, 1F, 0, "minimal", DefaultEnergyTypes.LOW_VOLTAGE),
+	NORMAL(2, 2F, 3, "normal", DefaultEnergyTypes.MEDIUM_VOLTAGE),
+	ADVANCED(4, 4F, 5, "advanced", DefaultEnergyTypes.HIGH_VOLTAGE);
 	
-	private float energyMultiplier;
+	private int energyMultiplier;
 	private float speedMultiplier;
 	private int upgradeSlots;
 	private final String affix;
 	private final EnergyType energyType;
 	
-	Tier(float energyMultiplier, float speedMultiplier, int upgradeSlots, String affix, EnergyType energyType) {
+	Tier(int energyMultiplier, float speedMultiplier, int upgradeSlots, String affix, EnergyType energyType) {
 		this.energyMultiplier = energyMultiplier;
 		this.speedMultiplier = speedMultiplier;
 		this.upgradeSlots = upgradeSlots;
@@ -23,7 +23,7 @@ public enum Tier {
 		this.energyType = energyType;
 	}
 
-	public float getEnergyMultiplier() {
+	public int getEnergyMultiplier() {
 		return energyMultiplier;
 	}
 

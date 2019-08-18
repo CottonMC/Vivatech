@@ -7,7 +7,6 @@ import net.minecraft.util.Tickable;
 import vivatech.api.tier.Tiered;
 import vivatech.api.tier.Tier;
 import vivatech.common.init.VivatechEntities;
-import vivatech.common.network.EnergyNetwork;
 
 import java.util.UUID;
 
@@ -26,7 +25,6 @@ public class EnergyConduitBlockEntity extends BlockEntity implements Tickable, T
     @Override
     public void tick() {
         if (world.isClient()) return;
-        if (networkId == null) networkId = new EnergyNetwork(this).getId();
     }
 
     @Override
