@@ -9,10 +9,11 @@ import com.google.common.collect.ImmutableList;
 
 import me.shedaniel.rei.api.RecipeDisplay;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import vivatech.api.recipe.ProcessingRecipe;
 import vivatech.api.tier.Tier;
 
-public abstract class TieredMachineDisplay<T extends ProcessingRecipe> implements RecipeDisplay<T> {
+public abstract class TieredMachineDisplay<T extends ProcessingRecipe> implements RecipeDisplay {
 	protected final T recipe;
 	protected final List<List<ItemStack>> input;
 	List<ItemStack> output;
@@ -26,10 +27,10 @@ public abstract class TieredMachineDisplay<T extends ProcessingRecipe> implement
 	}
 	
 	@Override
-	public Optional<T> getRecipe() {
-		return Optional.of(recipe);
+	public Optional<Identifier> getRecipeLocation() {
+		return Optional.ofNullable(recipe).map(ProcessingRecipe::getId);
 	}
-
+	
 	@Override
 	public List<List<ItemStack>> getInput() {
 		return input;

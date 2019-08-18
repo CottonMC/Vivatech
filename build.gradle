@@ -54,7 +54,7 @@ dependencies {
     include "io.github.cottonmc:cotton-resources:1.4.0+1.14.4"
 
     // Integration tests
-    modImplementation ("me.shedaniel:RoughlyEnoughItems:2.9.7+build.143") {
+    modImplementation ("me.shedaniel:RoughlyEnoughItems:3.0-pre+build.1") {
         exclude group: "io.github.prospector.modmenu", module: "ModMenu"
     }
 }

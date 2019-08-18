@@ -21,7 +21,7 @@
     "client": [
       "vivatech.client.VivatechClient"
     ],
-    "rei_plugins": [
+    "rei_plugins_v0": [
       "vivatech.compat.rei.VivatechReiPlugin"
     ]
   },
