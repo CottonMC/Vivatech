@@ -2,7 +2,6 @@ package vivatech.common.block;
 
 import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
-import javafx.beans.property.BooleanProperty;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -20,19 +19,19 @@ import net.minecraft.world.World;
 import vivatech.api.tier.Tier;
 import vivatech.api.tier.Tiered;
 import vivatech.common.Vivatech;
-import vivatech.common.block.entity.ConnectorBlockEntity;
+import vivatech.common.block.entity.EnergyConnectorBlockEntity;
 import vivatech.util.TierHelper;
 
 import javax.annotation.Nullable;
 
-public class ConnectorBlock extends Block implements BlockEntityProvider, AttributeProvider, Tiered {
+public class EnergyConnectorBlock extends Block implements BlockEntityProvider, AttributeProvider, Tiered {
 	public static final Identifier ID = new Identifier(Vivatech.MODID, "connector");
 	private final Tier tier;
 	private final Identifier tieredId;
 
 	public static final DirectionProperty FACING = Properties.FACING;
 
-	public ConnectorBlock(Tier tier) {
+	public EnergyConnectorBlock(Tier tier) {
 		super(FabricBlockSettings.of(Material.WOOD).build());
 		this.tier = tier;
 		tieredId = TierHelper.getTieredID(ID, tier);
@@ -48,8 +47,8 @@ public class ConnectorBlock extends Block implements BlockEntityProvider, Attrib
 	@Override
 	public void onBlockRemoved(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean boolean_1) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof ConnectorBlockEntity) {
-			((ConnectorBlockEntity)be).dropPeers();
+		if (be instanceof EnergyConnectorBlockEntity) {
+			((EnergyConnectorBlockEntity)be).dropAllPeers();
 		}
 		super.onBlockRemoved(oldState, world, pos, newState, boolean_1);
 	}
@@ -57,15 +56,15 @@ public class ConnectorBlock extends Block implements BlockEntityProvider, Attrib
 	@Override
 	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof ConnectorBlockEntity) {
-			to.offer(((ConnectorBlockEntity)be).getEnergyAttribute());
+		if (be instanceof EnergyConnectorBlockEntity) {
+			to.offer(((EnergyConnectorBlockEntity)be).getEnergy());
 		}
 	}
 
 	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockView view) {
-		return new ConnectorBlockEntity(this.getTier());
+		return new EnergyConnectorBlockEntity(this.getTier());
 	}
 
 	@Override

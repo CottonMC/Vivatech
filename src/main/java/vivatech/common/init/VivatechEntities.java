@@ -19,7 +19,7 @@ public class VivatechEntities {
     public static final BlockEntityType<EnergyBankBlockEntity> ENERGY_BANK;
     public static final BlockEntityType<EnergyConduitBlockEntity> ENERGY_CONDUIT;
     public static final BlockEntityType<PressBlockEntity> PRESS;
-    public static final BlockEntityType<ConnectorBlockEntity> CONNECTOR;
+    public static final BlockEntityType<EnergyConnectorBlockEntity> CONNECTOR;
 
     static {
         COAL_GENERATOR = BlockEntityType.Builder.create(SterlingGeneratorBlockEntity::new,
@@ -34,7 +34,7 @@ public class VivatechEntities {
                 VivatechBlocks.ENERGY_CONDUIT.toArray(new Block[Tier.values().length])).build(null);
         PRESS = BlockEntityType.Builder.create(PressBlockEntity::new,
                 VivatechBlocks.PRESS.toArray(new Block[Tier.values().length])).build(null);
-        CONNECTOR = BlockEntityType.Builder.create(ConnectorBlockEntity::new,
+        CONNECTOR = BlockEntityType.Builder.create(EnergyConnectorBlockEntity::new,
                 VivatechBlocks.CONNECTOR.toArray(new Block[Tier.values().length])).build(null);
     }
 

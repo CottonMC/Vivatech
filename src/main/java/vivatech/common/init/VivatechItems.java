@@ -2,7 +2,9 @@ package vivatech.common.init;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import vivatech.api.wire.WireItem;
 import vivatech.common.Vivatech;
 import vivatech.common.block.SterlingGeneratorBlock;
 import vivatech.common.block.EnergyBankBlock;
@@ -25,6 +27,10 @@ public class VivatechItems {
     public static final Item BATTERY;
     public static final Item SCREWDRIVER;
 
+    public static final Item LV_WIRE;
+    public static final Item MV_WIRE;
+    public static final Item HV_WIRE;
+
     static {
         MINIMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.MINIMAL_MACHINE_CHASSIS, Vivatech.getSettings());
         NORMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.NORMAL_MACHINE_CHASSIS, Vivatech.getSettings());
@@ -39,6 +45,10 @@ public class VivatechItems {
 
         BATTERY = new BatteryItem();
         SCREWDRIVER = new ScrewdriverItem();
+
+        LV_WIRE = new WireItem(VivatechWires.LOW_VOLTAGE, Vivatech.getSettings());
+        MV_WIRE = new WireItem(VivatechWires.MEDIUM_VOLTAGE, Vivatech.getSettings());
+        HV_WIRE = new WireItem(VivatechWires.HIGH_VOLTAGE, Vivatech.getSettings());
     }
 
     public static void initialize() {
@@ -55,5 +65,9 @@ public class VivatechItems {
 
         Registry.register(Registry.ITEM, BatteryItem.ID, BATTERY);
         Registry.register(Registry.ITEM, ScrewdriverItem.ID, SCREWDRIVER);
+
+        Registry.register(Registry.ITEM, new Identifier(Vivatech.MODID, "lv_wire"), LV_WIRE);
+        Registry.register(Registry.ITEM, new Identifier(Vivatech.MODID, "mv_wire"), MV_WIRE);
+        Registry.register(Registry.ITEM, new Identifier(Vivatech.MODID, "hv_wire"), HV_WIRE);
     }
 }

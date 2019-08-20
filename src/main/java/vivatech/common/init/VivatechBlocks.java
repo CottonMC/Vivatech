@@ -26,7 +26,7 @@ public class VivatechBlocks {
     public static final ImmutableList<ElectricFurnaceBlock> ELECTRIC_FURNACE;
     public static final ImmutableList<EnergyConduitBlock> ENERGY_CONDUIT;
     public static final ImmutableList<PressBlock> PRESS;
-    public static final ImmutableList<ConnectorBlock> CONNECTOR;
+    public static final ImmutableList<EnergyConnectorBlock> CONNECTOR;
 
     static {
         MINIMAL_MACHINE_CHASSIS = new Block(FabricBlockSettings.copy(Blocks.STONE).build());
@@ -39,7 +39,7 @@ public class VivatechBlocks {
         ELECTRIC_FURNACE = TierHelper.fillTieredBlockArray(ElectricFurnaceBlock::new);
         ENERGY_CONDUIT = TierHelper.fillTieredBlockArray(EnergyConduitBlock::new);
         PRESS = TierHelper.fillTieredBlockArray(PressBlock::new);
-        CONNECTOR = TierHelper.fillTieredBlockArray(ConnectorBlock::new);
+        CONNECTOR = TierHelper.fillTieredBlockArray(EnergyConnectorBlock::new);
     }
 
     public static void initialize() {
