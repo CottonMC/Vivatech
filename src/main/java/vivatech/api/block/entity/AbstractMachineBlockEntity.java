@@ -22,17 +22,18 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
         BlockEntityClientSerializable, EnergyAttributeProvider {
     protected EnergyType energyType;
     protected DirectFixedItemInv inventory = new DirectFixedItemInv(getInvSize());
-    protected SimpleEnergyAttribute energy = new SimpleEnergyAttribute(getMaxEnergy(), energyType) {
-        @Override
-        public boolean canInsertEnergy() { return AbstractMachineBlockEntity.this.canInsertEnergy(); }
-
-        @Override
-        public boolean canExtractEnergy() { return AbstractMachineBlockEntity.this.canExtractEnergy(); }
-    };
+    protected SimpleEnergyAttribute energy;
 
     public AbstractMachineBlockEntity(BlockEntityType<?> type, EnergyType energyType) {
         super(type);
         this.energyType = energyType;
+        this.energy = new SimpleEnergyAttribute(getMaxEnergy(), energyType) {
+            @Override
+            public boolean canInsertEnergy() { return AbstractMachineBlockEntity.this.canInsertEnergy(); }
+
+            @Override
+            public boolean canExtractEnergy() { return AbstractMachineBlockEntity.this.canExtractEnergy(); }
+        };
     }
 
     protected abstract int getMaxEnergy();

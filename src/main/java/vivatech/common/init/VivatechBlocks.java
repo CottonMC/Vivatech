@@ -52,5 +52,6 @@ public class VivatechBlocks {
         TierHelper.registerTieredBlocks(ELECTRIC_FURNACE);
         TierHelper.registerTieredBlocks(ENERGY_CONDUIT);
         TierHelper.registerTieredBlocks(PRESS);
+        TierHelper.registerTieredBlocks(CONNECTOR);
     }
 }

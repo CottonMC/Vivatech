@@ -1,6 +1,7 @@
 package vivatech.common.block.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
+import io.github.cottonmc.energy.CottonEnergy;
 import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;

@@ -1,14 +1,10 @@
 package vivatech.common.init;
 
+import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
-import vivatech.common.block.SterlingGeneratorBlock;
-import vivatech.common.block.CrusherBlock;
-import vivatech.common.block.ElectricFurnaceBlock;
-import vivatech.common.block.EnergyBankBlock;
-import vivatech.common.block.EnergyConduitBlock;
-import vivatech.common.block.PressBlock;
+import vivatech.common.block.*;
 import vivatech.common.block.entity.*;
 import vivatech.api.tier.Tier;
 
@@ -45,5 +41,6 @@ public class VivatechEntities {
         Registry.register(Registry.BLOCK_ENTITY, EnergyBankBlock.ID, ENERGY_BANK);
         Registry.register(Registry.BLOCK_ENTITY, EnergyConduitBlock.ID, ENERGY_CONDUIT);
         Registry.register(Registry.BLOCK_ENTITY, PressBlock.ID, PRESS);
+        Registry.register(Registry.BLOCK_ENTITY, EnergyConnectorBlock.ID, CONNECTOR);
     }
 }

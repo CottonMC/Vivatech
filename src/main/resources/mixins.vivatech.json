@@ -4,6 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
+  "client": [
+    "MixinClientPlayerEntity"
+  ],
   "minVersion": "0.1.0",
   "injectors": {
     "defaultRequire": 1

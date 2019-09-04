@@ -27,7 +27,7 @@
   },
 
   "mixins": [
-    "vivatech.mixins.json"
+    "mixins.vivatech.json"
   ],
 
   "depends": {

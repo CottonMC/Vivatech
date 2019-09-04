@@ -78,13 +78,13 @@ public class EnergyConnectorBlockEntity extends BlockEntity implements Tickable,
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-
+	public void fromClientTag(CompoundTag tag) {
+		fromTag(tag);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		return null;
+	public CompoundTag toClientTag(CompoundTag tag) {
+		return toTag(tag);
 	}
 
 	@Override
@@ -92,21 +92,14 @@ public class EnergyConnectorBlockEntity extends BlockEntity implements Tickable,
 		//TODO: sparking
 		for (BlockPos pos : peers) {
 			EnergyAttribute peer = EnergyAttribute.ENERGY_ATTRIBUTE.getFirst(world, pos);
-			if (peer != EnergyAttribute.EMPTY_ENERGY) {
-				if (peer.getPreferredType().isCompatibleWith(energy.getPreferredType())) {
-					if (energy.getCurrentEnergy() > peer.getCurrentEnergy()) {
-						int tryExtract = energy.extractEnergy(type, type.getMaximumTransferSize(), Simulation.SIMULATE);
-						int tryInsert = peer.insertEnergy(type, tryExtract, Simulation.SIMULATE);
-						if (tryInsert > 0) {
-							energy.extractEnergy(type, tryInsert, Simulation.ACTION);
-							peer.insertEnergy(type, tryInsert, Simulation.ACTION);
-						}
-					}
-				}
-			}
+			pushEnergy(peer);
 		}
 		Direction offset = world.getBlockState(getPos()).get(EnergyConnectorBlock.FACING);
 		EnergyAttribute insertInto = EnergyAttribute.ENERGY_ATTRIBUTE.getFirst(world, pos.offset(offset), SearchOptions.inDirection(offset.getOpposite()));
+		pushEnergy(insertInto);
+	}
+
+	private void pushEnergy(EnergyAttribute insertInto) {
 		if (insertInto != EnergyAttribute.EMPTY_ENERGY) {
 			if (insertInto.getPreferredType().isCompatibleWith(energy.getPreferredType())) {
 				if (energy.getCurrentEnergy() > insertInto.getCurrentEnergy()) {
