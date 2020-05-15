@@ -100,7 +100,7 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
                 pressTime = 0;
                 pressTimeTotal = 0;
                 pressItem();
-                if (inventory.get(0).getCount() == 0) {
+                if (inventory.getStack(0).getCount() == 0) {
                     setBlockActive(false);
                 }
                 updateEntity();
@@ -113,17 +113,17 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
 
     public ItemStack getInputStack() {
         // Quick cheat to port
-//        if (!inventory.get(0).isEmpty()) {
+//        if (!inventory.getStack(0).isEmpty()) {
 //            PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
 //            return recipe != null ? recipe.getInput().getStackArray()[0].copy() : ItemStack.EMPTY;
 //        }
 
-        return inventory.get(0);
+        return inventory.getStack(0);
     }
 
 
     public ItemStack getOutputStack() {
-        if (!inventory.get(0).isEmpty()) {
+        if (!inventory.getStack(0).isEmpty()) {
             PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
             return recipe != null ? recipe.getOutput().copy() : ItemStack.EMPTY;
         }
@@ -133,13 +133,13 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
 
     public boolean canRun() {
         ItemStack output = getOutputStack();
-        if (inventory.get(0).isEmpty()
+        if (inventory.getStack(0).isEmpty()
                 || output.isEmpty()
-                || inventory.get(1).getCount() > 64
+                || inventory.getStack(1).getCount() > 64
                 || energy.getCurrentEnergy() < CONSUME_PER_TICK) {
             return false;
-        } else if (!inventory.get(1).isEmpty()) {
-            return output.getItem() == inventory.get(1).getItem();
+        } else if (!inventory.getStack(1).isEmpty()) {
+            return output.getItem() == inventory.getStack(1).getItem();
         }
 
         return true;
@@ -149,13 +149,13 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
         ItemStack input = getInputStack();
         ItemStack output = getOutputStack();
         if (!output.isEmpty() && !input.isEmpty()) {
-            if (inventory.get(1).isEmpty()) {
-                inventory.set(1, output);
+            if (inventory.getStack(1).isEmpty()) {
+                inventory.setStack(1, output);
             } else {
-                inventory.get(1).increment(output.getCount());
+                inventory.getStack(1).increment(output.getCount());
             }
 
-            inventory.get(0).decrement(input.getCount());
+            inventory.getStack(0).decrement(input.getCount());
         }
     }
 

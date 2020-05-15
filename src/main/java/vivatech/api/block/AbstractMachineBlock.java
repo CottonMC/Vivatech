@@ -57,7 +57,7 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof AbstractMachineBlockEntity) {
             to.offer(((AbstractMachineBlockEntity)be).getEnergy());
-            to.offer(((AbstractMachineBlockEntity)be).getInventory());
+            to.offer(((AbstractMachineBlockEntity)be).getInventoryComponent());
         }
     }
 

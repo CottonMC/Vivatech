@@ -30,7 +30,7 @@ public class ElectricFurnaceMenu extends CottonCraftingController {
 
         // Slots
         root.add(WItemSlot.of(blockInventory, 0), 36, 27);
-        root.add(WItemSlot.outputOf(blockInventory, 1), 108, 27);
+        root.add(WItemSlot.outputOf(blockInventory, 1).setModifiable(false), 108, 27);
         root.add(createPlayerInventoryPanel(), 0, 72);
 
         root.validate(this);

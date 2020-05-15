@@ -86,17 +86,17 @@ public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
         if (burnTime > 0) {
             burnTime--;
             if (burnTime % TICKS_PER_FRAME == 0) energy.insertEnergy(energyType, GENERATE_PER_FRAME, Simulation.ACTION);
-        } else if (inventory.get(0).getCount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
-            burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.get(0).getItem(), 0) / 2;
+        } else if (inventory.getStack(0).getCount() > 0 && energy.getCurrentEnergy() < energy.getMaxEnergy()) {
+            burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.getStack(0).getItem(), 0) / 2;
             burnTimeTotal = burnTime;
-            inventory.get(0).decrement(1);
+            inventory.getStack(0).decrement(1);
             setBlockActive(true);
             updateEntity();
         }
 
         if (burnTime == 0) {
             burnTimeTotal = 0;
-            if (inventory.get(0).getCount() == 0) {
+            if (inventory.getStack(0).getCount() == 0) {
                 setBlockActive(false);
             }
             updateEntity();

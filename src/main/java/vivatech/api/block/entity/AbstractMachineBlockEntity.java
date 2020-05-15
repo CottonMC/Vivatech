@@ -1,6 +1,8 @@
 package vivatech.api.block.entity;
 
-import alexiil.mc.lib.attributes.item.impl.DirectFixedItemInv;
+import io.github.cottonmc.component.api.ActionType;
+import io.github.cottonmc.component.item.InventoryComponent;
+import io.github.cottonmc.component.item.impl.SimpleInventoryComponent;
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
 import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyAttributeProvider;
@@ -21,7 +23,7 @@ import vivatech.api.block.AbstractMachineBlock;
 public abstract class AbstractMachineBlockEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
         BlockEntityClientSerializable, EnergyAttributeProvider {
     protected EnergyType energyType;
-    protected DirectFixedItemInv inventory = new DirectFixedItemInv(getInvSize());
+    protected InventoryComponent inventory = new SimpleInventoryComponent(getInvSize());
     protected SimpleEnergyAttribute energy;
 
     public AbstractMachineBlockEntity(BlockEntityType<?> type, EnergyType energyType) {
@@ -50,7 +52,7 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
         return energy;
     }
 
-    public DirectFixedItemInv getInventory() {
+    public InventoryComponent getInventoryComponent() {
         return inventory;
     }
 
@@ -72,20 +74,14 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
         energy.fromTag(tag.getCompound("Energy"));
-        if (tag.contains("Items")) {
-            DefaultedList<ItemStack> oldInv = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
-            Inventories.fromTag(tag, oldInv);
-            for (int i = 0; i < inventory.getSlotCount(); i++) {
-                inventory.set(i, oldInv.get(i));
-            }
-        } else inventory.fromTag(tag.getCompound("Inventory"));
+        inventory.fromTag(tag);
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
         tag.put("Energy", energy.toTag());
-        tag.put("Inventory", inventory.toTag());
+        tag = inventory.toTag(tag);
         return tag;
     }
 
@@ -100,38 +96,30 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     }
 
     // SidedInventory
+
     @Override
     public boolean isInvEmpty() {
-        for (ItemStack itemStack : inventory.getStoredStacks()) if (!itemStack.isEmpty()) return false;
-        return true;
+        return inventory.isEmpty();
     }
 
     @Override
     public ItemStack getInvStack(int slot) {
-        return inventory.get(slot);
+        return inventory.getMutableStacks().get(slot);
     }
 
     @Override
     public ItemStack takeInvStack(int slot, int count) {
-        return slot >= 0 && slot < inventory.getSlotCount() && !(inventory.get(slot)).isEmpty() && count > 0 ?
-                (inventory.get(slot)).split(count) : ItemStack.EMPTY;
+        return inventory.takeStack(slot, count, ActionType.PERFORM);
     }
 
     @Override
     public ItemStack removeInvStack(int slot) {
-        if (slot >= 0 && slot < inventory.getSlotCount()) {
-            ItemStack ret = inventory.get(slot);
-            inventory.set(slot, ItemStack.EMPTY);
-            return ret;
-        } else return ItemStack.EMPTY;
+        return inventory.removeStack(slot, ActionType.PERFORM);
     }
 
     @Override
     public void setInvStack(int slot, ItemStack itemStack) {
-        inventory.set(slot, itemStack);
-        if (itemStack.getCount() > getInvMaxStackAmount()) {
-            itemStack.setCount(getInvMaxStackAmount());
-        }
+        inventory.setStack(slot, itemStack);
         markDirty();
     }
 
@@ -141,17 +129,15 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
             return false;
         } else {
             return player.squaredDistanceTo(
-                    (double) pos.getX() + 0.5D,
-                    (double) pos.getY() + 0.5D,
-                    (double) pos.getZ() + 0.5D) <= 64.0D;
+                (double) pos.getX() + 0.5D,
+                (double) pos.getY() + 0.5D,
+                (double) pos.getZ() + 0.5D) <= 64.0D;
         }
     }
 
     @Override
     public void clear() {
-        for (int i = 0; i < inventory.getSlotCount(); i++) {
-            inventory.set(i, ItemStack.EMPTY);
-        }
+        inventory.clear();
     }
 
     // BlockEntityClientSerializable

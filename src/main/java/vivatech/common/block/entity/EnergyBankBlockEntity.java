@@ -5,6 +5,7 @@ import io.github.cottonmc.energy.api.EnergyAttribute;
 import io.github.cottonmc.energy.api.EnergyAttributeProviderItem;
 import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.container.PropertyDelegate;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import vivatech.api.block.entity.AbstractMachineBlockEntity;
@@ -63,7 +64,7 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
     protected void serverTick() {
         boolean updateNeeded = false;
 
-        ItemStack chargingStack = inventory.get(0);
+        ItemStack chargingStack = inventory.getStack(0);
         if (!chargingStack.isEmpty() && energy.getCurrentEnergy() <= energy.getMaxEnergy()) {
             EnergyAttributeProviderItem chargingItem = (EnergyAttributeProviderItem) chargingStack.getItem();
             EnergyAttribute stackEnergy = chargingItem.getEnergyAttribute(chargingStack);
@@ -74,7 +75,7 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
             updateNeeded = true;
         }
 
-        ItemStack dischargingStack = inventory.get(1);
+        ItemStack dischargingStack = inventory.getStack(1);
         if (!dischargingStack.isEmpty() && energy.getCurrentEnergy() > 0) {
             EnergyAttributeProviderItem dischargingItem = (EnergyAttributeProviderItem) dischargingStack.getItem();
             EnergyAttribute stackEnergy = dischargingItem.getEnergyAttribute(dischargingStack);
