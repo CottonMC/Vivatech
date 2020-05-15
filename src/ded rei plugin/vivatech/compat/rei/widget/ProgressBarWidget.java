@@ -5,7 +5,7 @@ import me.shedaniel.rei.gui.widget.Widget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.render.GuiLighting;
 import net.minecraft.container.PropertyDelegate;
-import vivatech.client.VivatechClient;
+import vivatech.util.TextureData;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +39,7 @@ public final class ProgressBarWidget extends Widget {
                 return 2;
             }
         };
-        renderBar = new RenderWBar(VivatechClient.PROGRESS_BAR_BG, VivatechClient.PROGRESS_BAR, 0, 1, WBar.Direction.RIGHT, renderProperties);
+        renderBar = new RenderWBar(TextureData.PROGRESS_BAR_BG, TextureData.PROGRESS_BAR, 0, 1, WBar.Direction.RIGHT, renderProperties);
         renderBar.setSize(width, height);
     }
 

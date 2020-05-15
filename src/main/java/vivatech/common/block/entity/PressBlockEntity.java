@@ -112,12 +112,13 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
     }
 
     public ItemStack getInputStack() {
-        if (!inventory.get(0).isEmpty()) {
-            PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
-            return recipe != null ? recipe.getInput().getStackArray()[0].copy() : ItemStack.EMPTY;
-        }
+        // Quick cheat to port
+//        if (!inventory.get(0).isEmpty()) {
+//            PressingRecipe recipe = world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world).orElse(null);
+//            return recipe != null ? recipe.getInput().getStackArray()[0].copy() : ItemStack.EMPTY;
+//        }
 
-        return ItemStack.EMPTY;
+        return inventory.get(0);
     }
 
 

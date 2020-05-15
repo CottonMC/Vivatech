@@ -34,7 +34,7 @@ public class WireItem extends Item {
 		if (world.getBlockEntity(pos) instanceof WireConnector) {
 			WireConnector be = (WireConnector)world.getBlockEntity(pos);
 			if (be.canAcceptWire(type)) {
-				if (!stack.getOrCreateTag().containsKey("ConnectTo")) {
+				if (!stack.getOrCreateTag().contains("ConnectTo")) {
 					CompoundTag tag = new CompoundTag();
 					tag.putInt("x", pos.getX());
 					tag.putInt("y", pos.getY());

@@ -12,7 +12,7 @@ import vivatech.common.init.VivatechRecipes;
 import vivatech.api.tier.Tier;
 
 public class PressingRecipe extends ProcessingRecipe {
-    public static final Identifier ID = new Identifier(Vivatech.MODID, "pressing");
+    public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "pressing");
 
     public PressingRecipe(Identifier id, Ingredient input, ItemStack output, Tier minTier, float exp, int processTime, Identifier bonusLootTable) {
         super(id, input, output, minTier, exp, processTime, bonusLootTable);

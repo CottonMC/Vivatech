@@ -9,7 +9,7 @@ import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -26,12 +26,12 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
 
     public AbstractMachineBlock(Settings settings) {
         super(settings);
-        setDefaultState(getStateFactory().getDefaultState().with(FACING, Direction.NORTH).with(ACTIVE, false));
+        setDefaultState(getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(ACTIVE, false));
     }
 
     // Block
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, ACTIVE);
     }
 

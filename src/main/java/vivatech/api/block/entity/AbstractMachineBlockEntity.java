@@ -71,8 +71,8 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        energy.fromTag(tag.getTag("Energy"));
-        if (tag.containsKey("Items")) {
+        energy.fromTag(tag.getCompound("Energy"));
+        if (tag.contains("Items")) {
             DefaultedList<ItemStack> oldInv = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
             Inventories.fromTag(tag, oldInv);
             for (int i = 0; i < inventory.getSlotCount(); i++) {

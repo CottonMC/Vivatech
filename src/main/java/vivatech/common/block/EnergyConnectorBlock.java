@@ -8,7 +8,7 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
@@ -25,7 +25,7 @@ import vivatech.util.TierHelper;
 import javax.annotation.Nullable;
 
 public class EnergyConnectorBlock extends Block implements BlockEntityProvider, AttributeProvider, Tiered {
-	public static final Identifier ID = new Identifier(Vivatech.MODID, "connector");
+	public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "connector");
 	private final Tier tier;
 	private final Identifier tieredId;
 
@@ -35,11 +35,11 @@ public class EnergyConnectorBlock extends Block implements BlockEntityProvider, 
 		super(FabricBlockSettings.of(Material.WOOD).build());
 		this.tier = tier;
 		tieredId = TierHelper.getTieredID(ID, tier);
-		this.setDefaultState(this.getStateFactory().getDefaultState().with(FACING, Direction.DOWN));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.DOWN));
 	}
 
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(FACING);
 	}

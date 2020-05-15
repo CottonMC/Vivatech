@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BatteryItem extends Item implements EnergyAttributeProviderItem {
-    public static final Identifier ID = new Identifier(Vivatech.MODID, "battery");
+    public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "battery");
 
     private static final int MAX_ENERGY = 500;
 
@@ -34,7 +34,7 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
     @Override
     public void appendTooltip(ItemStack itemStack, @Nullable World world, List<Text> list, TooltipContext context) {
         list.add(
-                StringHelper.getTranslatableComponent("info", new Identifier(Vivatech.MODID, "energy_with_max"),
+                StringHelper.getTranslatableComponent("info", new Identifier(Vivatech.MOD_ID, "energy_with_max"),
                         ((EnergyAttributeProviderItem) itemStack.getItem()).getEnergyAttribute(itemStack).getCurrentEnergy(),
                         MAX_ENERGY)
                 .setStyle(new Style().setColor(Formatting.GRAY)));
@@ -49,8 +49,8 @@ public class BatteryItem extends Item implements EnergyAttributeProviderItem {
             stack.setDamage(getMaxDamage() - energy.getCurrentEnergy());
         };
 
-        if (!stack.hasTag() || !stack.getTag().containsKey("Energy")) listener.run();
-        energy.fromTag(stack.getTag().getTag("Energy"));
+        if (!stack.hasTag() || !stack.getTag().contains("Energy")) listener.run();
+        energy.fromTag(stack.getTag().getCompound("Energy"));
 
         energy.listen(listener);
         return energy;

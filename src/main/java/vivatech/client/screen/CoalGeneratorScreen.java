@@ -1,13 +1,13 @@
 package vivatech.client.screen;
 
-import io.github.cottonmc.cotton.gui.client.CottonScreen;
+import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.entity.player.PlayerEntity;
 import vivatech.common.block.SterlingGeneratorBlock;
 import vivatech.common.menu.CoalGeneratorMenu;
 import vivatech.util.StringHelper;
 
-public class CoalGeneratorScreen extends CottonScreen<CoalGeneratorMenu> {
+public class CoalGeneratorScreen extends CottonInventoryScreen<CoalGeneratorMenu> {
     public CoalGeneratorScreen(CoalGeneratorMenu container, PlayerEntity player) {
         super(container, player);
     }
@@ -18,6 +18,6 @@ public class CoalGeneratorScreen extends CottonScreen<CoalGeneratorMenu> {
 
         // Title
         String title = StringHelper.getTranslatableComponent("block", SterlingGeneratorBlock.ID).asString();
-        font.draw(title, left + 81 - font.getStringWidth(title) / 2, top, WLabel.DEFAULT_TEXT_COLOR);
+        font.draw(title, x + 81 - font.getStringWidth(title) / 2.0F, y, WLabel.DEFAULT_TEXT_COLOR);
     }
 }

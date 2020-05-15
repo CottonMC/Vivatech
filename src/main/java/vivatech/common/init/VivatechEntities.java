@@ -35,12 +35,12 @@ public class VivatechEntities {
     }
 
     public static void initialize() {
-        Registry.register(Registry.BLOCK_ENTITY, SterlingGeneratorBlock.ID, COAL_GENERATOR);
-        Registry.register(Registry.BLOCK_ENTITY, CrusherBlock.ID, CRUSHER);
-        Registry.register(Registry.BLOCK_ENTITY, ElectricFurnaceBlock.ID, ELECTRIC_FURNACE);
-        Registry.register(Registry.BLOCK_ENTITY, EnergyBankBlock.ID, ENERGY_BANK);
-        Registry.register(Registry.BLOCK_ENTITY, EnergyConduitBlock.ID, ENERGY_CONDUIT);
-        Registry.register(Registry.BLOCK_ENTITY, PressBlock.ID, PRESS);
-        Registry.register(Registry.BLOCK_ENTITY, EnergyConnectorBlock.ID, CONNECTOR);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, SterlingGeneratorBlock.ID, COAL_GENERATOR);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, CrusherBlock.ID, CRUSHER);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, ElectricFurnaceBlock.ID, ELECTRIC_FURNACE);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, EnergyBankBlock.ID, ENERGY_BANK);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, EnergyConduitBlock.ID, ENERGY_CONDUIT);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, PressBlock.ID, PRESS);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, EnergyConnectorBlock.ID, CONNECTOR);
     }
 }

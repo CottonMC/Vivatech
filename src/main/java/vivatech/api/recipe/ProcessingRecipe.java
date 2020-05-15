@@ -3,6 +3,8 @@ package vivatech.api.recipe;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootManager;
+import net.minecraft.loot.context.LootContext;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
@@ -11,8 +13,6 @@ import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.world.World;
-import net.minecraft.world.loot.LootManager;
-import net.minecraft.world.loot.context.LootContext;
 import vivatech.common.recipe.CrushingRecipe;
 import vivatech.api.tier.Tier;
 
@@ -99,7 +99,7 @@ public abstract class ProcessingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
-		return input.method_8093(inventory.getInvStack(0));
+		return input.test(inventory.getInvStack(0));
 	}
 
 	@Override

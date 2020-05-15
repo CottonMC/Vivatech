@@ -20,10 +20,10 @@
     ],
     "client": [
       "vivatech.client.VivatechClient"
-    ],
-    "rei_plugins_v0": [
-      "vivatech.compat.rei.VivatechReiPlugin"
-    ]
+    ]//,
+//    "rei_plugins_v0": [
+//      "vivatech.compat.rei.VivatechReiPlugin"
+//    ]
   },
 
   "mixins": [
@@ -34,7 +34,6 @@
     "fabricloader": ">=0.4.0",
     "fabric": "*",
     "libgui": ">=1.2.2",
-    "cotton-energy": ">=1.4.0+1.14.2",
     "cotton-resources": ">=1.3.2+1.14.3",
     "libblockattributes": ">=0.4.9"
   },

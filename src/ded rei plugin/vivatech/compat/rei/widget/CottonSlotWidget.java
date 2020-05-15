@@ -3,7 +3,7 @@ package vivatech.compat.rei.widget;
 import io.github.cottonmc.cotton.gui.EmptyInventory;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import me.shedaniel.rei.api.Renderer;
-import me.shedaniel.rei.gui.widget.SlotWidget;
+import me.shedaniel.rei.gui.widget.SlotBaseWidget;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * A slot widget that uses Cotton's {@link WItemSlot} for rendering.
  */
-public final class CottonSlotWidget extends SlotWidget {
+public final class CottonSlotWidget extends SlotBaseWidget {
     private final WItemSlot renderSlot;
     private final int x;
     private final int y;

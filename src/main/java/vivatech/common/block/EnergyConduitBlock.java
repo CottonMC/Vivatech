@@ -7,14 +7,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -40,7 +39,7 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, Ti
     private final Tier tier;
     private final Identifier tieredId;
 
-    public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_conduit");
+    public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "energy_conduit");
 
     public static final BooleanProperty CONNECTED_UP    = BooleanProperty.of("connected_up");
     public static final BooleanProperty CONNECTED_DOWN  = BooleanProperty.of("connected_down");
@@ -55,7 +54,7 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, Ti
         this.tier = tier;
         this.tieredId = TierHelper.getTieredID(ID, tier);
 
-        setDefaultState(getStateFactory().getDefaultState()
+        setDefaultState(getStateManager().getDefaultState()
                 .with(CONNECTED_UP, false)
                 .with(CONNECTED_DOWN, false)
                 .with(CONNECTED_NORTH, false)
@@ -84,13 +83,9 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, Ti
     }
 
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        super.appendProperties(builder);
         builder.add(CONNECTED_UP, CONNECTED_DOWN, CONNECTED_NORTH, CONNECTED_EAST, CONNECTED_SOUTH, CONNECTED_WEST);
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -132,7 +127,7 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, Ti
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        StateManager sm = new StateManager(null, context.getBlockPos(), context.getWorld());
+        StateHelper sm = new StateHelper(null, context.getBlockPos(), context.getWorld());
         return getDefaultState()
                 .with(CONNECTED_EAST,   sm.canConnect(Direction.EAST))
                 .with(CONNECTED_WEST,   sm.canConnect(Direction.WEST))
@@ -150,7 +145,7 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, Ti
     }
 
     private void updateProperties(BlockState state, BlockPos pos, World world) {
-        StateManager sm = new StateManager(state, pos, world);
+        StateHelper sm = new StateHelper(state, pos, world);
         BlockState newState = sm
                 .calcProperty(Direction.EAST,   CONNECTED_EAST)
                 .calcProperty(Direction.WEST,   CONNECTED_WEST)
@@ -165,19 +160,19 @@ public class EnergyConduitBlock extends Block implements BlockEntityProvider, Ti
         }
     }
 
-    private class StateManager {
+    private class StateHelper {
         public boolean dirty = false;
         public BlockState state;
         public BlockPos pos;
         public World world;
 
-        public StateManager(BlockState state, BlockPos pos, World world) {
+        public StateHelper(BlockState state, BlockPos pos, World world) {
             this.state = state;
             this.pos = pos;
             this.world = world;
         }
 
-        public StateManager calcProperty(Direction direction, BooleanProperty property) {
+        public StateHelper calcProperty(Direction direction, BooleanProperty property) {
             boolean sideState = state.get(property);
 
             if (canConnect(direction)) {

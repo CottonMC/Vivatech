@@ -1,13 +1,13 @@
 package vivatech.client.screen;
 
-import io.github.cottonmc.cotton.gui.client.CottonScreen;
+import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import net.minecraft.entity.player.PlayerEntity;
 import vivatech.common.block.PressBlock;
 import vivatech.common.menu.PressMenu;
 import vivatech.util.StringHelper;
 
-public class PressScreen extends CottonScreen<PressMenu> {
+public class PressScreen extends CottonInventoryScreen<PressMenu> {
     public PressScreen(PressMenu container, PlayerEntity player) {
         super(container, player);
     }
@@ -18,6 +18,6 @@ public class PressScreen extends CottonScreen<PressMenu> {
 
         // Title
         String title = StringHelper.getTranslatableComponent("block", PressBlock.ID).asString();
-        font.draw(title, left + 81 - font.getStringWidth(title) / 2, top, WLabel.DEFAULT_TEXT_COLOR);
+        font.draw(title, x + 81 - font.getStringWidth(title) / 2, y, WLabel.DEFAULT_TEXT_COLOR);
     }
 }

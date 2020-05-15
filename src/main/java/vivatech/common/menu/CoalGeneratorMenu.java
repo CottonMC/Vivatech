@@ -1,15 +1,18 @@
 package vivatech.common.menu;
 
-import io.github.cottonmc.cotton.gui.CottonScreenController;
-import io.github.cottonmc.cotton.gui.widget.*;
+import io.github.cottonmc.cotton.gui.CottonCraftingController;
+import io.github.cottonmc.cotton.gui.widget.WBar;
+import io.github.cottonmc.cotton.gui.widget.WGridPanel;
+import io.github.cottonmc.cotton.gui.widget.WItemSlot;
+import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
 import net.minecraft.container.BlockContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;
-import vivatech.client.VivatechClient;
 import vivatech.util.StringHelper;
+import vivatech.util.TextureData;
 
-public class CoalGeneratorMenu extends CottonScreenController {
+public class CoalGeneratorMenu extends CottonCraftingController {
 
     public CoalGeneratorMenu(int syncId, PlayerInventory playerInventory, BlockContext context) {
         super(null, syncId, playerInventory, getBlockInventory(context), getBlockPropertyDelegate(context));
@@ -18,11 +21,11 @@ public class CoalGeneratorMenu extends CottonScreenController {
         ((WGridPanel) getRootPanel()).add(root, 0, 0);
 
         // Bars
-        WBar energyBar = new WBar(VivatechClient.ENERGY_BAR_BG, VivatechClient.ENERGY_BAR, 0, 1);
-        energyBar.withTooltip(StringHelper.getTranslationKey("info", new Identifier(Vivatech.MODID, "energy_with_max")));
+        WBar energyBar = new WBar(TextureData.ENERGY_BAR_BG, TextureData.ENERGY_BAR, 0, 1);
+        energyBar.withTooltip(StringHelper.getTranslationKey("info", new Identifier(Vivatech.MOD_ID, "energy_with_max")));
         root.add(energyBar, 1, 2, 14, 64);
 
-        WBar fireBar = new WBar(VivatechClient.FIRE_BAR_BG, VivatechClient.FIRE_BAR,2, 3);
+        WBar fireBar = new WBar(TextureData.FIRE_BAR_BG, TextureData.FIRE_BAR, 2, 3);
         root.add(fireBar, 89, 27, 14, 14);
 
         // Slots

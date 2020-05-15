@@ -20,8 +20,8 @@ public class VivatechWires {
 	}
 
 	public static void init() {
-		Registry.register(WireType.WIRE_TYPES, new Identifier(Vivatech.MODID, "low_voltage"), LOW_VOLTAGE);
-		Registry.register(WireType.WIRE_TYPES, new Identifier(Vivatech.MODID, "medium_voltage"), MEDIUM_VOLTAGE);
-		Registry.register(WireType.WIRE_TYPES, new Identifier(Vivatech.MODID, "high_voltage"), HIGH_VOLTAGE);
+		Registry.register(WireType.WIRE_TYPES, new Identifier(Vivatech.MOD_ID, "low_voltage"), LOW_VOLTAGE);
+		Registry.register(WireType.WIRE_TYPES, new Identifier(Vivatech.MOD_ID, "medium_voltage"), MEDIUM_VOLTAGE);
+		Registry.register(WireType.WIRE_TYPES, new Identifier(Vivatech.MOD_ID, "high_voltage"), HIGH_VOLTAGE);
 	}
 }

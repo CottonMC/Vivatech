@@ -69,8 +69,8 @@ public class VivatechItems {
         Registry.register(Registry.ITEM, BatteryItem.ID, BATTERY);
         Registry.register(Registry.ITEM, ScrewdriverItem.ID, SCREWDRIVER);
 
-        Registry.register(Registry.ITEM, new Identifier(Vivatech.MODID, "lv_wire"), LV_WIRE);
-        Registry.register(Registry.ITEM, new Identifier(Vivatech.MODID, "mv_wire"), MV_WIRE);
-        Registry.register(Registry.ITEM, new Identifier(Vivatech.MODID, "hv_wire"), HV_WIRE);
+        Registry.register(Registry.ITEM, new Identifier(Vivatech.MOD_ID, "lv_wire"), LV_WIRE);
+        Registry.register(Registry.ITEM, new Identifier(Vivatech.MOD_ID, "mv_wire"), MV_WIRE);
+        Registry.register(Registry.ITEM, new Identifier(Vivatech.MOD_ID, "hv_wire"), HV_WIRE);
     }
 }

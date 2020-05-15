@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -15,7 +16,7 @@ import vivatech.api.block.AbstractMachineBlock;
 import vivatech.common.block.entity.EnergyBankBlockEntity;
 
 public class EnergyBankBlock extends AbstractMachineBlock {
-    public static final Identifier ID = new Identifier(Vivatech.MODID, "energy_bank");
+    public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "energy_bank");
 
     public EnergyBankBlock() {
         super(Vivatech.MACHINE_BLOCK_SETTINGS);
@@ -23,12 +24,12 @@ public class EnergyBankBlock extends AbstractMachineBlock {
 
     // Block
     @Override
-    public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hitResult) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hitResult) {
         if (!world.isClient) {
             ContainerProviderRegistry.INSTANCE.openContainer(ID, player, buf -> buf.writeBlockPos(pos));
         }
 
-        return true;
+        return ActionResult.SUCCESS;
     }
 
     // BlockEntityProvider

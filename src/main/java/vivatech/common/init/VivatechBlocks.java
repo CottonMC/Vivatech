@@ -12,9 +12,9 @@ import vivatech.common.block.*;
 import vivatech.util.TierHelper;
 
 public class VivatechBlocks {
-    public static final Identifier MINIMAL_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "minimal_machine_chassis");
-    public static final Identifier NORMAL_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "normal_machine_chassis");
-    public static final Identifier ADVANCED_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MODID, "advanced_machine_chassis");
+    public static final Identifier MINIMAL_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MOD_ID, "minimal_machine_chassis");
+    public static final Identifier NORMAL_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MOD_ID, "normal_machine_chassis");
+    public static final Identifier ADVANCED_MACHINE_CHASSIS_ID = new Identifier(Vivatech.MOD_ID, "advanced_machine_chassis");
 
     public static final Block MINIMAL_MACHINE_CHASSIS;
     public static final Block NORMAL_MACHINE_CHASSIS;
