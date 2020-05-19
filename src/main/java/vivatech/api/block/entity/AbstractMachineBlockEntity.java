@@ -12,16 +12,15 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import vivatech.api.block.AbstractMachineBlock;
 
 public abstract class AbstractMachineBlockEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
         BlockEntityClientSerializable, EnergyAttributeProvider {
+    protected boolean active = false;
     protected EnergyType energyType;
     protected InventoryComponent inventory = new SimpleInventoryComponent(getInvSize());
     protected SimpleEnergyAttribute energy;
@@ -60,13 +59,15 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     protected void clientTick() {}
 
-    protected void setBlockActive(boolean active) {
-        world.setBlockState(pos, world.getBlockState(pos).with(AbstractMachineBlock.ACTIVE, active), 3);
+    protected void setActive(boolean active) {
+        if (this.active == active) return;
+        this.active = active;
+        world.setBlockState(pos, getCachedState().with(AbstractMachineBlock.ACTIVE, active), 3);
     }
 
-    protected void updateEntity() {
+    protected void notifyWorldListeners() {
         markDirty();
-        world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        world.updateListeners(pos, getCachedState(), world.getBlockState(pos), 3);
     }
 
     // BlockEntity

@@ -3,13 +3,13 @@ package vivatech.common.block.entity;
 import javax.annotation.Nullable;
 
 import alexiil.mc.lib.attributes.Simulation;
+import io.github.cottonmc.component.api.ActionType;
 import io.github.cottonmc.energy.api.DefaultEnergyTypes;
 import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
-import vivatech.common.Vivatech;
 import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.init.VivatechRecipes;
@@ -17,7 +17,6 @@ import vivatech.common.recipe.CrushingRecipe;
 import vivatech.api.tier.Tier;
 
 public class CrusherBlockEntity extends AbstractTieredMachineBlockEntity {
-
     public static final int CONSUME_PER_TICK = 1;
     public static final int TICK_PER_CONSUME = 5;
     private int crushTime = 0;
@@ -95,19 +94,19 @@ public class CrusherBlockEntity extends AbstractTieredMachineBlockEntity {
                 crushTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.CRUSHING, this, world)
                         .map(CrushingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
             }
-            setBlockActive(true);
+            setActive(true);
             if (crushTime >= crushTimeTotal) {
                 crushTime = 0;
                 crushTimeTotal = 0;
                 crushItem();
                 if (inventory.getStack(0).getCount() == 0) {
-                    setBlockActive(false);
+                    setActive(false);
                 }
-                updateEntity();
+                notifyWorldListeners();
             }
         } else if (!canRun() && crushTime > 0) {
             crushTime = 0;
-            setBlockActive(false);
+            setActive(false);
         }
     }
 
@@ -148,13 +147,8 @@ public class CrusherBlockEntity extends AbstractTieredMachineBlockEntity {
         ItemStack input = getInputStack();
         ItemStack output = getOutputStack();
         if (!output.isEmpty() && !input.isEmpty()) {
-            if (inventory.getStack(1).isEmpty()) {
-                inventory.setStack(1, output);
-            } else {
-                inventory.getStack(1).increment(output.getCount());
-            }
-
-            inventory.getStack(0).decrement(input.getCount());
+            inventory.insertStack(1, output, ActionType.PERFORM);
+            inventory.takeStack(0, 1, ActionType.PERFORM);
         }
     }
 

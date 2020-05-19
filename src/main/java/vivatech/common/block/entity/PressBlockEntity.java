@@ -9,7 +9,6 @@ import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
-import vivatech.common.Vivatech;
 import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.common.init.VivatechRecipes;
@@ -95,19 +94,19 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
                 pressTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world)
                         .map(PressingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
             }
-            setBlockActive(true);
+            setActive(true);
             if (pressTime >= pressTimeTotal) {
                 pressTime = 0;
                 pressTimeTotal = 0;
                 pressItem();
                 if (inventory.getStack(0).getCount() == 0) {
-                    setBlockActive(false);
+                    setActive(false);
                 }
-                updateEntity();
+                notifyWorldListeners();
             }
         } else if (!canRun() && pressTime > 0) {
             pressTime = 0;
-            setBlockActive(false);
+            setActive(false);
         }
     }
 

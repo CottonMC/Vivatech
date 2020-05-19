@@ -1,16 +1,13 @@
 package vivatech.common.block.entity;
 
 import alexiil.mc.lib.attributes.Simulation;
-import io.github.cottonmc.energy.CottonEnergy;
 import io.github.cottonmc.energy.api.DefaultEnergyTypes;
-import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
-import vivatech.common.Vivatech;
 import vivatech.api.block.entity.AbstractMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
 import vivatech.util.EnergyHelper;
@@ -90,21 +87,21 @@ public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
             burnTime = FurnaceBlockEntity.createFuelTimeMap().getOrDefault(inventory.getStack(0).getItem(), 0) / 2;
             burnTimeTotal = burnTime;
             inventory.getStack(0).decrement(1);
-            setBlockActive(true);
-            updateEntity();
+            setActive(true);
+            notifyWorldListeners();
         }
 
         if (burnTime == 0) {
             burnTimeTotal = 0;
             if (inventory.getStack(0).getCount() == 0) {
-                setBlockActive(false);
+                setActive(false);
             }
-            updateEntity();
+            notifyWorldListeners();
         }
 
         if (energy.getCurrentEnergy() != 0) {
             EnergyHelper.emit(energy, world, pos);
-            updateEntity();
+            notifyWorldListeners();
         }
     }
 

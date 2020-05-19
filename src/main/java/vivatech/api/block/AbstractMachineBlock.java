@@ -41,14 +41,15 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
     }
 
     @Override
-    public void onBlockRemoved(BlockState stateFrom, World world, BlockPos pos, BlockState stateTo, boolean boolean_1) {
+    public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.getBlock() != newState.getBlock()) {
+            if (getInventory(state, world, pos) != null) {
+                ItemScatterer.spawn(world, pos, getInventory(state, world, pos));
+                world.updateHorizontalAdjacent(pos, this);
+            }
 
-        if(getInventory(stateFrom, world, pos) != null) {
-            ItemScatterer.spawn(world, pos, getInventory(stateFrom, world, pos));
-            world.updateHorizontalAdjacent(pos, this);
+            super.onBlockRemoved(state, world, pos, newState, moved);
         }
-
-        super.onBlockRemoved(stateFrom, world, pos, stateTo, boolean_1);
     }
 
     // AttributeProvider
