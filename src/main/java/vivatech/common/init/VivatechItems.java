@@ -21,7 +21,6 @@ public class VivatechItems {
 
     public static final Item[] CRUSHER;
     public static final Item[] ELECTRIC_FURNACE;
-    public static final Item[] ENERGY_CONDUIT;
     public static final Item[] PRESS;
     public static final Item[] CONNECTOR;
 
@@ -41,7 +40,6 @@ public class VivatechItems {
 
         CRUSHER = TierHelper.fillTieredBlockItemArray(VivatechBlocks.CRUSHER);
         ELECTRIC_FURNACE = TierHelper.fillTieredBlockItemArray(VivatechBlocks.ELECTRIC_FURNACE);
-        ENERGY_CONDUIT = TierHelper.fillTieredBlockItemArray(VivatechBlocks.ENERGY_CONDUIT);
         PRESS = TierHelper.fillTieredBlockItemArray(VivatechBlocks.PRESS);
         CONNECTOR = TierHelper.fillTieredBlockItemArray(VivatechBlocks.CONNECTOR);
 
@@ -62,7 +60,6 @@ public class VivatechItems {
 
         TierHelper.registerTieredBlockItems(VivatechBlocks.CRUSHER, CRUSHER);
         TierHelper.registerTieredBlockItems(VivatechBlocks.ELECTRIC_FURNACE, ELECTRIC_FURNACE);
-        TierHelper.registerTieredBlockItems(VivatechBlocks.ENERGY_CONDUIT, ENERGY_CONDUIT);
         TierHelper.registerTieredBlockItems(VivatechBlocks.PRESS, PRESS);
         TierHelper.registerTieredBlockItems(VivatechBlocks.CONNECTOR, CONNECTOR);
 

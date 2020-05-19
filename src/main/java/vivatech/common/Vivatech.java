@@ -19,12 +19,13 @@ public class Vivatech implements ModInitializer {
     public static final String MOD_ID = "vivatech";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID, "item_group"),
-            () -> new ItemStack(VivatechItems.NORMAL_MACHINE_CHASSIS));
+        () -> new ItemStack(VivatechItems.NORMAL_MACHINE_CHASSIS));
+    public static final Block.Settings METALLIC_BLOCK_SETTINGS = Block.Settings.copy(Blocks.IRON_BLOCK);
+    public static final Block.Settings MACHINE_BLOCK_SETTINGS = Block.Settings.copy(Blocks.IRON_BLOCK);
+
     public static Item.Settings getSettings() {
         return new Item.Settings().group(ITEM_GROUP);
     }
-    public static final Block.Settings METALLIC_BLOCK_SETTINGS = Block.Settings.copy(Blocks.IRON_BLOCK);
-    public static final Block.Settings MACHINE_BLOCK_SETTINGS = Block.Settings.copy(Blocks.IRON_BLOCK);
 
     @Override
     public void onInitialize() {

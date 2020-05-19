@@ -19,13 +19,6 @@ import vivatech.common.menu.*;
 public class VivatechClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        BlockRenderLayerMap.INSTANCE.putBlocks(
-            RenderLayer.getCutout(),
-            VivatechBlocks.ENERGY_CONDUIT.get(0),
-            VivatechBlocks.ENERGY_CONDUIT.get(1),
-            VivatechBlocks.ENERGY_CONDUIT.get(2)
-        );
-
         VivatechScreens.initialize();
     }
 }
