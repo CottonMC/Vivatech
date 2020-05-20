@@ -1,14 +1,11 @@
 package vivatech.common.block.entity;
 
-import io.github.cottonmc.energy.api.DefaultEnergyTypes;
-import io.github.cottonmc.energy.api.EnergyAttribute;
-import io.github.cottonmc.energy.api.EnergyAttributeProviderItem;
+import io.github.cottonmc.component.energy.CapacitorComponentHelper;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import vivatech.api.block.entity.AbstractMachineBlockEntity;
 import vivatech.common.init.VivatechEntities;
-import vivatech.util.EnergyHelper;
 
 import javax.annotation.Nullable;
 
@@ -20,9 +17,9 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
         public int get(int propertyId) {
             switch (propertyId) {
                 case 0: // Current Energy
-                    return energy.getCurrentEnergy();
+                    return capacitor.getCurrentEnergy();
                 case 1: // Max Energy
-                    return energy.getMaxEnergy();
+                    return capacitor.getMaxEnergy();
                 default:
                     return 0;
             }
@@ -32,10 +29,10 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
         public void set(int propertyId, int value) {
             switch (propertyId) {
                 case 0: // Current Energy
-                    energy.setCurrentEnergy(value);
+                    capacitor.setCurrentEnergy(value);
                     break;
                 case 1: // Max Energy
-                    energy.setMaxEnergy(value);
+                    capacitor.setMaxEnergy(value);
                     break;
                 default:
                     break;
@@ -49,7 +46,7 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
     };
 
     public EnergyBankBlockEntity() {
-        super(VivatechEntities.ENERGY_BANK, DefaultEnergyTypes.LOW_VOLTAGE);
+        super(VivatechEntities.ENERGY_BANK);
     }
 
     // AbstractMachineEntity
@@ -63,35 +60,36 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
         boolean updateNeeded = false;
 
         ItemStack chargingStack = inventory.getStack(0);
-        if (!chargingStack.isEmpty() && energy.getCurrentEnergy() <= energy.getMaxEnergy()) {
-            EnergyAttributeProviderItem chargingItem = (EnergyAttributeProviderItem) chargingStack.getItem();
-            EnergyAttribute stackEnergy = chargingItem.getEnergyAttribute(chargingStack);
-
-            int transferSize = Math.min(stackEnergy.getCurrentEnergy(), TRANSFER_PER_TICK);
-            EnergyHelper.transfer(stackEnergy, energy, transferSize);
-
-            updateNeeded = true;
-        }
-
-        ItemStack dischargingStack = inventory.getStack(1);
-        if (!dischargingStack.isEmpty() && energy.getCurrentEnergy() > 0) {
-            EnergyAttributeProviderItem dischargingItem = (EnergyAttributeProviderItem) dischargingStack.getItem();
-            EnergyAttribute stackEnergy = dischargingItem.getEnergyAttribute(dischargingStack);
-
-            int transferSize = Math.min(energy.getCurrentEnergy(), TRANSFER_PER_TICK);
-            EnergyHelper.transfer(energy, stackEnergy, transferSize);
-
-            updateNeeded = true;
-        }
-
-        if (energy.getCurrentEnergy() != 0) {
-            EnergyHelper.emit(energy, world, pos);
-            updateNeeded = true;
-        }
-
-        if (updateNeeded) {
-            notifyWorldListeners();
-        }
+        // TODO: Uncomment those dirty cheats for dirty deeds
+//        if (!chargingStack.isEmpty() && capacitor.getCurrentEnergy() <= capacitor.getMaxEnergy()) {
+//            EnergyAttributeProviderItem chargingItem = (EnergyAttributeProviderItem) chargingStack.getItem();
+//            EnergyAttribute stackEnergy = chargingItem.getEnergyAttribute(chargingStack);
+//
+//            int transferSize = Math.min(stackEnergy.getCurrentEnergy(), TRANSFER_PER_TICK);
+//            EnergyHelper.transfer(stackEnergy, energyOld, transferSize);
+//
+//            updateNeeded = true;
+//        }
+//
+//        ItemStack dischargingStack = inventory.getStack(1);
+//        if (!dischargingStack.isEmpty() && energyOld.getCurrentEnergy() > 0) {
+//            EnergyAttributeProviderItem dischargingItem = (EnergyAttributeProviderItem) dischargingStack.getItem();
+//            EnergyAttribute stackEnergy = dischargingItem.getEnergyAttribute(dischargingStack);
+//
+//            int transferSize = Math.min(energyOld.getCurrentEnergy(), TRANSFER_PER_TICK);
+//            EnergyHelper.transfer(energyOld, stackEnergy, transferSize);
+//
+//            updateNeeded = true;
+//        }
+//
+//        if (energyOld.getCurrentEnergy() != 0) {
+//            EnergyHelper.emit(energyOld, world, pos);
+//            updateNeeded = true;
+//        }
+//
+//        if (updateNeeded) {
+//            notifyWorldListeners();
+//        }
     }
 
     // PropertyDelegateProvider
@@ -122,7 +120,7 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
     }
 
     @Override
-    public boolean isValidInvStack(int slot, ItemStack itemStack) {
-        return itemStack.getItem() instanceof EnergyAttributeProviderItem;
+    public boolean isValidInvStack(int slot, ItemStack stack) {
+        return CapacitorComponentHelper.INSTANCE.hasComponent(stack, null);
     }
 }

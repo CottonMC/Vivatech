@@ -1,7 +1,5 @@
 package vivatech.api.block;
 
-import alexiil.mc.lib.attributes.AttributeList;
-import alexiil.mc.lib.attributes.AttributeProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -20,7 +18,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import vivatech.api.block.entity.AbstractMachineBlockEntity;
 
-public abstract class AbstractMachineBlock extends Block implements BlockEntityProvider, AttributeProvider, InventoryProvider {
+public abstract class AbstractMachineBlock extends Block implements BlockEntityProvider, InventoryProvider {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
@@ -49,16 +47,6 @@ public abstract class AbstractMachineBlock extends Block implements BlockEntityP
             }
 
             super.onBlockRemoved(state, world, pos, newState, moved);
-        }
-    }
-
-    // AttributeProvider
-    @Override
-    public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
-        BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof AbstractMachineBlockEntity) {
-            to.offer(((AbstractMachineBlockEntity)be).getEnergy());
-            to.offer(((AbstractMachineBlockEntity)be).getInventoryComponent());
         }
     }
 

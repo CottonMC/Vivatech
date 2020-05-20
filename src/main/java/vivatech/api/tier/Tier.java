@@ -1,13 +1,13 @@
 package vivatech.api.tier;
 
-import io.github.cottonmc.energy.api.DefaultEnergyTypes;
-import io.github.cottonmc.energy.api.EnergyType;
+import io.github.cottonmc.component.energy.type.EnergyType;
+import io.github.cottonmc.component.energy.type.EnergyTypes;
 
 public enum Tier {
 	
-	MINIMAL(1, 1F, 0, "minimal", DefaultEnergyTypes.LOW_VOLTAGE),
-	NORMAL(2, 2F, 3, "normal", DefaultEnergyTypes.MEDIUM_VOLTAGE),
-	ADVANCED(4, 4F, 5, "advanced", DefaultEnergyTypes.HIGH_VOLTAGE);
+	MINIMAL(1, 1F, 0, "minimal", EnergyTypes.LOW_VOLTAGE),
+	NORMAL(2, 2F, 3, "normal", EnergyTypes.MEDIUM_VOLTAGE),
+	ADVANCED(4, 4F, 5, "advanced", EnergyTypes.HIGH_VOLTAGE);
 	
 	private int energyMultiplier;
 	private float speedMultiplier;

@@ -2,9 +2,7 @@ package vivatech.common.block.entity;
 
 import javax.annotation.Nullable;
 
-import alexiil.mc.lib.attributes.Simulation;
-import io.github.cottonmc.energy.api.DefaultEnergyTypes;
-import io.github.cottonmc.energy.api.EnergyType;
+import io.github.cottonmc.component.api.ActionType;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -26,9 +24,9 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
         public int get(int propertyId) {
             switch (propertyId) {
                 case 0: // Current Energy
-                    return energy.getCurrentEnergy();
+                    return capacitor.getCurrentEnergy();
                 case 1: // Max Energy
-                    return energy.getMaxEnergy();
+                    return capacitor.getMaxEnergy();
                 case 2: // Press Time
                     return pressTime;
                 case 3: // Press Time Total
@@ -42,10 +40,10 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
         public void set(int propertyId, int value) {
             switch (propertyId) {
                 case 0: // Current Energy
-                    energy.setCurrentEnergy(value);
+                    capacitor.setCurrentEnergy(value);
                     break;
                 case 1: // Max Energy
-                    energy.setMaxEnergy(value);
+                    capacitor.setMaxEnergy(value);
                     break;
                 case 2: // Press Time
                     pressTime = value;
@@ -65,11 +63,7 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
     };
 
     public PressBlockEntity() {
-        this(DefaultEnergyTypes.LOW_VOLTAGE);
-    }
-    
-    public PressBlockEntity(EnergyType type) {
-        super(VivatechEntities.PRESS, type);
+        super(VivatechEntities.PRESS);
     }
 
     // AbstractMachineEntity
@@ -89,7 +83,7 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
     	
         if (canRun()) {
             pressTime++;
-            if (pressTime % TICK_PER_CONSUME == 0) energy.extractEnergy(tier.getEnergyType(), CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), Simulation.ACTION);
+            if (pressTime % TICK_PER_CONSUME == 0) capacitor.extractEnergy(tier.getEnergyType(), CONSUME_PER_TICK * (int)tier.getSpeedMultiplier(), ActionType.PERFORM);
             if (pressTimeTotal == 0) {
                 pressTimeTotal = (int) (world.getRecipeManager().getFirstMatch(VivatechRecipes.PRESSING, this, world)
                         .map(PressingRecipe::getProcessTime).orElse(200) / tier.getSpeedMultiplier());
@@ -135,7 +129,7 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
         if (inventory.getStack(0).isEmpty()
                 || output.isEmpty()
                 || inventory.getStack(1).getCount() > 64
-                || energy.getCurrentEnergy() < CONSUME_PER_TICK) {
+                || capacitor.getCurrentEnergy() < CONSUME_PER_TICK) {
             return false;
         } else if (!inventory.getStack(1).isEmpty()) {
             return output.getItem() == inventory.getStack(1).getItem();

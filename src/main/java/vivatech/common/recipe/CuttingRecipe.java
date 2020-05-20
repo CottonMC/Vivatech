@@ -6,12 +6,12 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;
-import vivatech.api.recipe.ProcessingRecipe;
+import vivatech.api.recipe.AbstractProcessingRecipe;
 import vivatech.common.block.entity.CrusherBlockEntity;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.api.tier.Tier;
 
-public class CuttingRecipe extends ProcessingRecipe {
+public class CuttingRecipe extends AbstractProcessingRecipe {
 	public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "cutting");
 
 	public CuttingRecipe(Identifier id, Ingredient input, ItemStack output, Tier minTier, float exp, int processTime, Identifier bonusLootTable) {
@@ -26,10 +26,5 @@ public class CuttingRecipe extends ProcessingRecipe {
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return VivatechRecipes.CUTTING_SERIALIZER;
-	}
-
-	@Override
-	public int getEnergyCost() {
-		return (processTime / CrusherBlockEntity.TICK_PER_CONSUME) * CrusherBlockEntity.TICK_PER_CONSUME;
 	}
 }

@@ -6,12 +6,12 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;
-import vivatech.api.recipe.ProcessingRecipe;
+import vivatech.api.recipe.AbstractProcessingRecipe;
 import vivatech.common.block.entity.PressBlockEntity;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.api.tier.Tier;
 
-public class PressingRecipe extends ProcessingRecipe {
+public class PressingRecipe extends AbstractProcessingRecipe {
     public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "pressing");
 
     public PressingRecipe(Identifier id, Ingredient input, ItemStack output, Tier minTier, float exp, int processTime, Identifier bonusLootTable) {
@@ -27,9 +27,4 @@ public class PressingRecipe extends ProcessingRecipe {
     public RecipeType<?> getType() {
         return VivatechRecipes.PRESSING;
     }
-    
-    @Override
-	public int getEnergyCost() {
-		return (processTime / PressBlockEntity.TICK_PER_CONSUME) * PressBlockEntity.TICK_PER_CONSUME;
-	}
 }

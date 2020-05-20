@@ -1,7 +1,5 @@
 package vivatech.common.block;
 
-import alexiil.mc.lib.attributes.AttributeList;
-import alexiil.mc.lib.attributes.AttributeProvider;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -24,7 +22,7 @@ import vivatech.util.TierHelper;
 
 import javax.annotation.Nullable;
 
-public class EnergyConnectorBlock extends Block implements BlockEntityProvider, AttributeProvider, Tiered {
+public class EnergyConnectorBlock extends Block implements BlockEntityProvider, Tiered {
 	public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "connector");
 	private final Tier tier;
 	private final Identifier tieredId;
@@ -53,14 +51,6 @@ public class EnergyConnectorBlock extends Block implements BlockEntityProvider, 
 		super.onBlockRemoved(oldState, world, pos, newState, boolean_1);
 	}
 
-	@Override
-	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
-		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof EnergyConnectorBlockEntity) {
-			to.offer(((EnergyConnectorBlockEntity)be).getEnergy());
-		}
-	}
-
 	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockView view) {
@@ -68,7 +58,7 @@ public class EnergyConnectorBlock extends Block implements BlockEntityProvider, 
 	}
 
 	@Override
-	public Identifier getTierId() {
+	public Identifier getTieredId() {
 		return tieredId;
 	}
 

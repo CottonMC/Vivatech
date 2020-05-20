@@ -25,7 +25,7 @@ public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock im
 		this.tier = tier;
 	}
 	
-	public abstract Identifier getTierId();
+	public abstract Identifier getTieredId();
 
 	@Override
 	public String getTranslationKey() {

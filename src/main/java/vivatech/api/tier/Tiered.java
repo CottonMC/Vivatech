@@ -3,7 +3,7 @@ package vivatech.api.tier;
 import net.minecraft.util.Identifier;
 
 public interface Tiered {
-    Identifier getTierId();
+    Identifier getTieredId();
 
     Tier getTier();
 }

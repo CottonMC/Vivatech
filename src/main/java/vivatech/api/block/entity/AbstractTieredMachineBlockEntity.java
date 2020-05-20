@@ -1,6 +1,5 @@
 package vivatech.api.block.entity;
 
-import io.github.cottonmc.energy.api.EnergyType;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
@@ -8,8 +7,8 @@ import vivatech.api.tier.Tier;
 import vivatech.api.tier.Tiered;
 
 public abstract class AbstractTieredMachineBlockEntity extends AbstractMachineBlockEntity implements Tiered {
-	public AbstractTieredMachineBlockEntity(BlockEntityType<?> type, EnergyType energyType) {
-		super(type, energyType);
+	public AbstractTieredMachineBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
 	}
 
@@ -24,10 +23,10 @@ public abstract class AbstractTieredMachineBlockEntity extends AbstractMachineBl
 	}
 
 	@Override
-	public Identifier getTierId() {
+	public Identifier getTieredId() {
 		Block block = this.getWorld().getBlockState(this.getPos()).getBlock();
 		if (block instanceof Tiered) {
-			return ((Tiered) block).getTierId();
+			return ((Tiered) block).getTieredId();
 		} else {
 			return null;
 		}

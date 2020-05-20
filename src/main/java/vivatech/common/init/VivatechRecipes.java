@@ -8,7 +8,7 @@ import net.minecraft.util.registry.Registry;
 import vivatech.common.recipe.CrushingRecipe;
 import vivatech.common.recipe.CuttingRecipe;
 import vivatech.common.recipe.PressingRecipe;
-import vivatech.api.recipe.ProcessingRecipe;
+import vivatech.api.recipe.AbstractProcessingRecipe;
 
 public class VivatechRecipes {
 
@@ -22,11 +22,11 @@ public class VivatechRecipes {
 
     static {
         PRESSING = buildRecipeType(PressingRecipe.ID);
-        PRESSING_SERIALIZER = new ProcessingRecipe.Serializer<>(PressingRecipe::new, 200);
+        PRESSING_SERIALIZER = new AbstractProcessingRecipe.Serializer<>(PressingRecipe::new, 200);
         CRUSHING = buildRecipeType(CrushingRecipe.ID);
-        CRUSHING_SERIALIZER = new ProcessingRecipe.Serializer<>(CrushingRecipe::new, 100);
+        CRUSHING_SERIALIZER = new AbstractProcessingRecipe.Serializer<>(CrushingRecipe::new, 100);
         CUTTING = buildRecipeType(CuttingRecipe.ID);
-        CUTTING_SERIALIZER = new ProcessingRecipe.Serializer<>(CuttingRecipe::new, 100);
+        CUTTING_SERIALIZER = new AbstractProcessingRecipe.Serializer<>(CuttingRecipe::new, 100);
     }
 
     public static void initialize() {

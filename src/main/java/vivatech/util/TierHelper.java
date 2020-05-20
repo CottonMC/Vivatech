@@ -40,13 +40,13 @@ public class TierHelper {
 	public static void registerTieredBlocks(ImmutableList<? extends Tiered> blocks) {
 		for(int i = 0; i < blocks.size(); i++) {
 			Tiered block = blocks.get(i);
-			Registry.register(Registry.BLOCK, block.getTierId(), (Block) block);
+			Registry.register(Registry.BLOCK, block.getTieredId(), (Block) block);
 		}
 	}
 	
 	public static void registerTieredBlockItems(ImmutableList<? extends Tiered> blocks, Item[] items) {
 		for(int i = 0; i < items.length; i++) {
-			Registry.register(Registry.ITEM, blocks.get(i).getTierId(), items[i]);
+			Registry.register(Registry.ITEM, blocks.get(i).getTieredId(), items[i]);
 		}
 	}
 }

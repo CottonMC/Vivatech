@@ -1,13 +1,16 @@
 package vivatech.common.init;
 
+import io.github.cottonmc.component.UniversalComponents;
+import nerdhub.cardinal.components.api.event.ItemComponentCallback;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import vivatech.api.component.energy.CopyableCapacitorComponent;
 import vivatech.api.wire.WireItem;
 import vivatech.common.Vivatech;
-import vivatech.common.block.SterlingGeneratorBlock;
 import vivatech.common.block.EnergyBankBlock;
+import vivatech.common.block.SterlingGeneratorBlock;
 import vivatech.common.item.BatteryItem;
 import vivatech.common.item.ScrewdriverItem;
 import vivatech.util.TierHelper;
@@ -69,5 +72,11 @@ public class VivatechItems {
         Registry.register(Registry.ITEM, new Identifier(Vivatech.MOD_ID, "lv_wire"), LV_WIRE);
         Registry.register(Registry.ITEM, new Identifier(Vivatech.MOD_ID, "mv_wire"), MV_WIRE);
         Registry.register(Registry.ITEM, new Identifier(Vivatech.MOD_ID, "hv_wire"), HV_WIRE);
+
+        ItemComponentCallback.event(BATTERY).register((stack, components) -> {
+            CopyableCapacitorComponent capacitor = new CopyableCapacitorComponent(BatteryItem.MAX_ENERGY);
+            capacitor.listen(() -> stack.setDamage(stack.getMaxDamage() - capacitor.getCurrentEnergy()));
+            components.put(UniversalComponents.CAPACITOR_COMPONENT, capacitor);
+        });
     }
 }

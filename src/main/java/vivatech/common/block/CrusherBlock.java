@@ -40,12 +40,12 @@ public class CrusherBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new CrusherBlockEntity(this.getTier().getEnergyType());
+        return new CrusherBlockEntity();
     }
 
     // Tiered
     @Override
-    public Identifier getTierId() {
+    public Identifier getTieredId() {
         return tieredId;
     }
 }

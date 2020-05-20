@@ -3,9 +3,7 @@
   "package": "vivatech.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-  ],
-  "client": [
-    "MixinClientPlayerEntity"
+    "SmeltingRecipeMixin"
   ],
   "minVersion": "0.1.0",
   "injectors": {

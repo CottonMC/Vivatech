@@ -11,11 +11,15 @@ version = project.mod_version
 repositories {
     maven {
         name = "JitPack"
-        url "https://jitpack.io"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "Ladysnake"
+        url = "https://dl.bintray.com/ladysnake/libs"
     }
     maven {
         name = "Cotton"
-        url "http://server.bbkr.space:8081/artifactory/libs-release"
+        url = "http://server.bbkr.space:8081/artifactory/libs-release"
     }
     maven {
         name = "BuildCraft"
@@ -32,13 +36,15 @@ dependencies {
     // javax.annotations.*
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
+    modApi "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-base:${project.cca_version}"
+    modApi "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-item:${project.cca_version}"
     modApi "io.github.cottonmc:UniversalComponents:${project.uc_version}"
-    modApi "alexiil.mc.lib:libblockattributes-all:${project.lba_version}"
     modApi "io.github.cottonmc:LibGui:${project.libgui_version}"
     modApi "io.github.cottonmc:cotton-resources:${project.cr_version}"
 
+    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-base:${project.cca_version}"
+    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-item:${project.cca_version}"
     include "io.github.cottonmc:UniversalComponents:${project.uc_version}"
-    include "alexiil.mc.lib:libblockattributes-all:${project.lba_version}"
     include "io.github.cottonmc:LibGui:${project.libgui_version}"
     include "io.github.cottonmc:cotton-resources:${project.cr_version}"
 

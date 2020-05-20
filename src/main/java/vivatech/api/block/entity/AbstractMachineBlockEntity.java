@@ -1,13 +1,10 @@
 package vivatech.api.block.entity;
 
 import io.github.cottonmc.component.api.ActionType;
+import io.github.cottonmc.component.energy.impl.SimpleCapacitorComponent;
 import io.github.cottonmc.component.item.InventoryComponent;
 import io.github.cottonmc.component.item.impl.SimpleInventoryComponent;
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder;
-import io.github.cottonmc.energy.api.EnergyAttribute;
-import io.github.cottonmc.energy.api.EnergyAttributeProvider;
-import io.github.cottonmc.energy.api.EnergyType;
-import io.github.cottonmc.energy.impl.SimpleEnergyAttribute;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -17,24 +14,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import vivatech.api.block.AbstractMachineBlock;
+import vivatech.util.WorldUpdateFlags;
 
 public abstract class AbstractMachineBlockEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
-        BlockEntityClientSerializable, EnergyAttributeProvider {
+        BlockEntityClientSerializable {
     protected boolean active = false;
-    protected EnergyType energyType;
     protected InventoryComponent inventory = new SimpleInventoryComponent(getInvSize());
-    protected SimpleEnergyAttribute energy;
+    protected SimpleCapacitorComponent capacitor;
 
-    public AbstractMachineBlockEntity(BlockEntityType<?> type, EnergyType energyType) {
+    public AbstractMachineBlockEntity(BlockEntityType<?> type) {
         super(type);
-        this.energyType = energyType;
-        this.energy = new SimpleEnergyAttribute(getMaxEnergy(), energyType) {
-            @Override
-            public boolean canInsertEnergy() { return AbstractMachineBlockEntity.this.canInsertEnergy(); }
-
-            @Override
-            public boolean canExtractEnergy() { return AbstractMachineBlockEntity.this.canExtractEnergy(); }
-        };
+        this.capacitor = new SimpleCapacitorComponent(getMaxEnergy());
     }
 
     protected abstract int getMaxEnergy();
@@ -45,10 +35,6 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     protected boolean canExtractEnergy() {
         return true;
-    }
-
-    public EnergyAttribute getEnergy() {
-        return energy;
     }
 
     public InventoryComponent getInventoryComponent() {
@@ -62,26 +48,26 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     protected void setActive(boolean active) {
         if (this.active == active) return;
         this.active = active;
-        world.setBlockState(pos, getCachedState().with(AbstractMachineBlock.ACTIVE, active), 3);
+        world.setBlockState(pos, getCachedState().with(AbstractMachineBlock.ACTIVE, active), WorldUpdateFlags.NOTIFY_AND_PROPAGATE);
     }
 
     protected void notifyWorldListeners() {
         markDirty();
-        world.updateListeners(pos, getCachedState(), world.getBlockState(pos), 3);
+        world.updateListeners(pos, getCachedState(), world.getBlockState(pos), WorldUpdateFlags.NOTIFY_AND_PROPAGATE);
     }
 
     // BlockEntity
     @Override
     public void fromTag(CompoundTag tag) {
         super.fromTag(tag);
-        energy.fromTag(tag.getCompound("Energy"));
+        capacitor.fromTag(tag);
         inventory.fromTag(tag);
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag.put("Energy", energy.toTag());
+        tag = capacitor.toTag(tag);
         tag = inventory.toTag(tag);
         return tag;
     }
@@ -150,11 +136,5 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     @Override
     public CompoundTag toClientTag(CompoundTag tag) {
         return toTag(tag);
-    }
-
-    // EnergyAttributeProvider
-    @Override
-    public EnergyAttribute getEnergyAttribute() {
-        return energy;
     }
 }

@@ -27,7 +27,7 @@ public class PressBlock extends AbstractTieredMachineBlock {
     }
     
 	@Override
-	public Identifier getTierId() {
+	public Identifier getTieredId() {
 		return tieredId;
 	}
 
@@ -44,6 +44,6 @@ public class PressBlock extends AbstractTieredMachineBlock {
     // BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new PressBlockEntity(this.getTier().getEnergyType());
+        return new PressBlockEntity();
     }
 }
