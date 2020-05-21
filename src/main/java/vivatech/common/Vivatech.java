@@ -35,7 +35,7 @@ public class Vivatech implements ModInitializer {
 
         VivatechRecipes.initialize();
         VivatechBlocks.initialize();
-        VivatechEntities.initialize();
+        VivatechBlockEntities.initialize();
         VivatechItems.initialize();
         VivatechMenus.initialize();
     }

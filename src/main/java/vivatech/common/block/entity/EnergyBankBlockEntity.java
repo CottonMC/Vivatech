@@ -5,7 +5,7 @@ import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import vivatech.api.block.entity.AbstractMachineBlockEntity;
-import vivatech.common.init.VivatechEntities;
+import vivatech.common.init.VivatechBlockEntities;
 
 import javax.annotation.Nullable;
 
@@ -46,7 +46,7 @@ public class EnergyBankBlockEntity extends AbstractMachineBlockEntity {
     };
 
     public EnergyBankBlockEntity() {
-        super(VivatechEntities.ENERGY_BANK);
+        super(VivatechBlockEntities.ENERGY_BANK);
     }
 
     // AbstractMachineEntity

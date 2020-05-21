@@ -4,8 +4,10 @@ import io.github.cottonmc.component.api.ActionType;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.container.PropertyDelegate;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.math.Direction;
 import vivatech.api.recipe.ProcessingRecipe;
@@ -13,7 +15,7 @@ import vivatech.api.recipe.ProcessingRecipe;
 import javax.annotation.Nullable;
 
 public abstract class AbstractProcessingMachineBlockEntity extends AbstractTieredMachineBlockEntity {
-    private final RecipeType recipeType;
+    private final RecipeType<? extends Recipe<Inventory>> recipeType;
     private ProcessingRecipe recipe = null;
     private int timePassed = 0;
     private int timeToProcess = 0;
@@ -80,7 +82,7 @@ public abstract class AbstractProcessingMachineBlockEntity extends AbstractTiere
     protected void serverTick() {
         if (!active) {
             recipe = (ProcessingRecipe) world.getRecipeManager()
-                .getFirstMatch(RecipeType.SMELTING, inventory.asInventory(), world)
+                .getFirstMatch(recipeType, inventory.asInventory(), world)
                 .orElse(null);
 
             if (recipe != null) {

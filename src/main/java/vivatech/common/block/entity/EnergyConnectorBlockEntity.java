@@ -12,14 +12,10 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import vivatech.api.tier.Tier;
 import vivatech.api.tier.Tiered;
-import vivatech.api.wire.WireConnector;
 import vivatech.api.wire.WireType;
-import vivatech.common.block.EnergyConnectorBlock;
-import vivatech.common.init.VivatechEntities;
-import vivatech.common.init.VivatechWires;
+import vivatech.common.init.VivatechBlockEntities;
 import vivatech.api.wire.WireItem;
 
 import java.util.*;
@@ -29,7 +25,7 @@ public class EnergyConnectorBlockEntity extends BlockEntity implements Tickable,
 	private WireType wire;
 
 	public EnergyConnectorBlockEntity() {
-		super(VivatechEntities.CONNECTOR);
+		super(VivatechBlockEntities.CONNECTOR);
 	}
 
 	public EnergyConnectorBlockEntity(Tier tier) {

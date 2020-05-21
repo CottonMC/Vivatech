@@ -1,13 +1,12 @@
 package vivatech.common.block.entity;
 
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import vivatech.api.block.entity.AbstractMachineBlockEntity;
-import vivatech.common.init.VivatechEntities;
+import vivatech.common.init.VivatechBlockEntities;
 
 import javax.annotation.Nullable;
 
@@ -61,7 +60,7 @@ public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
 
 
     public SterlingGeneratorBlockEntity() {
-        super(VivatechEntities.COAL_GENERATOR);
+        super(VivatechBlockEntities.COAL_GENERATOR);
     }
 
     // AbstractMachineEntity

@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
-import vivatech.common.init.VivatechEntities;
+import vivatech.common.init.VivatechBlockEntities;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.common.recipe.PressingRecipe;
 import vivatech.api.tier.Tier;
@@ -63,7 +63,7 @@ public class PressBlockEntity extends AbstractTieredMachineBlockEntity {
     };
 
     public PressBlockEntity() {
-        super(VivatechEntities.PRESS);
+        super(VivatechBlockEntities.PRESS);
     }
 
     // AbstractMachineEntity

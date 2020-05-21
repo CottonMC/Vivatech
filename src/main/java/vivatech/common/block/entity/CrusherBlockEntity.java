@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import vivatech.api.block.entity.AbstractTieredMachineBlockEntity;
-import vivatech.common.init.VivatechEntities;
+import vivatech.common.init.VivatechBlockEntities;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.common.recipe.CrushingRecipe;
 import vivatech.api.tier.Tier;
@@ -62,7 +62,7 @@ public class CrusherBlockEntity extends AbstractTieredMachineBlockEntity {
     };
 
     public CrusherBlockEntity() {
-        super(VivatechEntities.CRUSHER);
+        super(VivatechBlockEntities.CRUSHER);
     }
 
     // AbstractMachineEntity

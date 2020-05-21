@@ -15,10 +15,9 @@ import net.minecraft.world.World;
 import vivatech.api.recipe.ProcessingRecipe;
 import vivatech.common.Vivatech;
 import vivatech.api.block.AbstractTieredMachineBlock;
-import vivatech.common.block.entity.ElectricFurnaceBlockEntity;
 import vivatech.api.tier.Tier;
 import vivatech.common.block.entity.SimpleProcessingMachineBlockEntity;
-import vivatech.common.init.VivatechEntities;
+import vivatech.common.init.VivatechBlockEntities;
 import vivatech.util.TierHelper;
 
 public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
@@ -44,7 +43,7 @@ public class ElectricFurnaceBlock extends AbstractTieredMachineBlock {
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
         return new SimpleProcessingMachineBlockEntity(
-            VivatechEntities.ELECTRIC_FURNACE,
+            VivatechBlockEntities.ELECTRIC_FURNACE,
             (RecipeType<? extends ProcessingRecipe>) (RecipeType<?>) RecipeType.SMELTING
         );
     }
