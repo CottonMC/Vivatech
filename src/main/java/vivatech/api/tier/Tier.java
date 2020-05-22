@@ -4,7 +4,6 @@ import io.github.cottonmc.component.energy.type.EnergyType;
 import io.github.cottonmc.component.energy.type.EnergyTypes;
 
 public enum Tier {
-	
 	MINIMAL(1, 1F, 0, "minimal", EnergyTypes.LOW_VOLTAGE),
 	NORMAL(2, 2F, 3, "normal", EnergyTypes.MEDIUM_VOLTAGE),
 	ADVANCED(4, 4F, 5, "advanced", EnergyTypes.HIGH_VOLTAGE);

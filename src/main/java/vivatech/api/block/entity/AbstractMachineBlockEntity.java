@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import vivatech.api.block.AbstractMachineBlock;
-import vivatech.util.WorldUpdateFlags;
+import vivatech.data.WorldUpdateFlags;
 
 public abstract class AbstractMachineBlockEntity extends BlockEntity implements Tickable, SidedInventory, PropertyDelegateHolder,
         BlockEntityClientSerializable {

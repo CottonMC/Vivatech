@@ -19,7 +19,7 @@ public class VivatechItems {
     public static final Item MINIMAL_MACHINE_CHASSIS;
     public static final Item NORMAL_MACHINE_CHASSIS;
     public static final Item ADVANCED_MACHINE_CHASSIS;
-    public static final Item COAL_GENERATOR;
+    public static final Item STERLING_GENERATOR;
     public static final Item ENERGY_BANK;
 
     public static final Item[] CRUSHER;
@@ -38,7 +38,7 @@ public class VivatechItems {
         MINIMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.MINIMAL_MACHINE_CHASSIS, Vivatech.getSettings());
         NORMAL_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.NORMAL_MACHINE_CHASSIS, Vivatech.getSettings());
         ADVANCED_MACHINE_CHASSIS = new BlockItem(VivatechBlocks.ADVANCED_MACHINE_CHASSIS, Vivatech.getSettings());
-        COAL_GENERATOR = new BlockItem(VivatechBlocks.COAL_GENERATOR, Vivatech.getSettings());
+        STERLING_GENERATOR = new BlockItem(VivatechBlocks.STERLING_GENERATOR, Vivatech.getSettings());
         ENERGY_BANK = new BlockItem(VivatechBlocks.ENERGY_BANK, Vivatech.getSettings());
 
         CRUSHER = TierHelper.fillTieredBlockItemArray(VivatechBlocks.CRUSHER);
@@ -58,7 +58,7 @@ public class VivatechItems {
         Registry.register(Registry.ITEM, VivatechBlocks.MINIMAL_MACHINE_CHASSIS_ID, MINIMAL_MACHINE_CHASSIS);
         Registry.register(Registry.ITEM, VivatechBlocks.NORMAL_MACHINE_CHASSIS_ID, NORMAL_MACHINE_CHASSIS);
         Registry.register(Registry.ITEM, VivatechBlocks.ADVANCED_MACHINE_CHASSIS_ID, ADVANCED_MACHINE_CHASSIS);
-        Registry.register(Registry.ITEM, SterlingGeneratorBlock.ID, COAL_GENERATOR);
+        Registry.register(Registry.ITEM, SterlingGeneratorBlock.ID, STERLING_GENERATOR);
         Registry.register(Registry.ITEM, EnergyBankBlock.ID, ENERGY_BANK);
 
         TierHelper.registerTieredBlockItems(VivatechBlocks.CRUSHER, CRUSHER);

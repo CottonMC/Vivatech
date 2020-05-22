@@ -5,6 +5,7 @@ public class TierConfig {
 	private int energyMultiplier;
 	private int speedMultiplier;
 	private int upgradeSlots;
+
 	public TierConfig(int energyMultiplier, int speedMultiplier, int upgradeSlots) {
 		this.energyMultiplier = energyMultiplier;
 		this.speedMultiplier = speedMultiplier;

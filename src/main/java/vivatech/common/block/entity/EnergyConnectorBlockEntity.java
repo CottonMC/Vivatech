@@ -135,6 +135,15 @@ public class EnergyConnectorBlockEntity extends BlockEntity implements Tickable,
 	}
 
 	@Override
+	public Identifier getBaseId() {
+		Block block = getCachedState().getBlock();
+		if (block instanceof Tiered) {
+			return ((Tiered) block).getBaseId();
+		} else {
+			return null;
+		}
+	}
+	@Override
 	public Identifier getTieredId() {
 		Block block = this.getWorld().getBlockState(this.getPos()).getBlock();
 		if (block instanceof Tiered) {

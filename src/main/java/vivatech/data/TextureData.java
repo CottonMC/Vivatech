@@ -1,4 +1,4 @@
-package vivatech.util;
+package vivatech.data;
 
 import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;

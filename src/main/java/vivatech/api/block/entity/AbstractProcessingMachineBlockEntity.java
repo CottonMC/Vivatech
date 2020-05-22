@@ -15,11 +15,11 @@ import vivatech.api.recipe.ProcessingRecipe;
 import javax.annotation.Nullable;
 
 public abstract class AbstractProcessingMachineBlockEntity extends AbstractTieredMachineBlockEntity {
-    private final RecipeType<? extends Recipe<Inventory>> recipeType;
-    private ProcessingRecipe recipe = null;
-    private int timePassed = 0;
-    private int timeToProcess = 0;
-    private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
+    protected final RecipeType<? extends Recipe<Inventory>> recipeType;
+    protected ProcessingRecipe recipe = null;
+    protected int timePassed = 0;
+    protected int timeToProcess = 0;
+    protected final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int propertyId) {
             switch (propertyId) {

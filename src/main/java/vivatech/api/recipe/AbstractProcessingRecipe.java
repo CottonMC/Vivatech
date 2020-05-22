@@ -6,14 +6,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootManager;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.world.World;
-import vivatech.common.recipe.CrushingRecipe;
 import vivatech.api.tier.Tier;
 
 import java.util.Collections;
@@ -41,7 +39,7 @@ import net.minecraft.util.JsonHelper;
  *     "bonus": "example:iron_ore_to_dust_bonuses"
  * }
  *
- * @see CrushingRecipe for an example implementation
+ * @see vivatech.common.recipe.CrushingRecipe for an example implementation
  */
 public abstract class AbstractProcessingRecipe implements ProcessingRecipe {
 

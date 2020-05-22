@@ -58,6 +58,11 @@ public class EnergyConnectorBlock extends Block implements BlockEntityProvider, 
 	}
 
 	@Override
+	public Identifier getBaseId() {
+		return ID;
+	}
+
+	@Override
 	public Identifier getTieredId() {
 		return tieredId;
 	}

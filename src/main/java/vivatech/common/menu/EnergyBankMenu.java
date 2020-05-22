@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;
 import vivatech.util.StringHelper;
-import vivatech.util.TextureData;
+import vivatech.data.TextureData;
 
 public class EnergyBankMenu extends CottonCraftingController {
 

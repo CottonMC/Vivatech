@@ -11,7 +11,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;
 import vivatech.util.StringHelper;
-import vivatech.util.TextureData;
+import vivatech.data.TextureData;
 
 public class ElectricFurnaceMenu extends CottonCraftingController {
     public ElectricFurnaceMenu(int syncId, PlayerInventory playerInventory, BlockContext context) {

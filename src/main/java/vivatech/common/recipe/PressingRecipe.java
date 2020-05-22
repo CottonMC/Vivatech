@@ -5,11 +5,10 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import vivatech.common.Vivatech;
 import vivatech.api.recipe.AbstractProcessingRecipe;
-import vivatech.common.block.entity.PressBlockEntity;
-import vivatech.common.init.VivatechRecipes;
 import vivatech.api.tier.Tier;
+import vivatech.common.Vivatech;
+import vivatech.common.init.VivatechRecipes;
 
 public class PressingRecipe extends AbstractProcessingRecipe {
     public static final Identifier ID = new Identifier(Vivatech.MOD_ID, "pressing");

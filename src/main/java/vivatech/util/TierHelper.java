@@ -20,7 +20,7 @@ public class TierHelper {
 	public static Identifier getTieredID(Identifier id, Tier tier) {
 		return new Identifier(id.getNamespace(), tier.getAffix() + "_" + id.getPath());
 	}
-	
+
 	public static <T extends Tiered> ImmutableList<T> fillTieredBlockArray(Function<Tier, T> function) {
 		List<T> blocks = new ArrayList<T>();
 	    for(int i = 0; i < Tier.values().length; i++) {

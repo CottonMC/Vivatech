@@ -60,7 +60,7 @@ public class SterlingGeneratorBlockEntity extends AbstractMachineBlockEntity {
 
 
     public SterlingGeneratorBlockEntity() {
-        super(VivatechBlockEntities.COAL_GENERATOR);
+        super(VivatechBlockEntities.STERLING_GENERATOR);
     }
 
     // AbstractMachineEntity

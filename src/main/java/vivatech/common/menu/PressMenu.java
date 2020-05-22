@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 import vivatech.common.Vivatech;
 import vivatech.common.init.VivatechRecipes;
 import vivatech.util.StringHelper;
-import vivatech.util.TextureData;
+import vivatech.data.TextureData;
 
 public class PressMenu extends CottonCraftingController {
 

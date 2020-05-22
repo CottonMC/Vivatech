@@ -15,7 +15,6 @@ import vivatech.api.tier.Tier;
 import vivatech.api.tier.Tiered;
 
 public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock implements Tiered {
-	
 	protected final Tier tier;
 	protected final Identifier id;
 
@@ -24,8 +23,6 @@ public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock im
 		this.id = id;
 		this.tier = tier;
 	}
-	
-	public abstract Identifier getTieredId();
 
 	@Override
 	public String getTranslationKey() {
@@ -44,7 +41,14 @@ public abstract class AbstractTieredMachineBlock extends AbstractMachineBlock im
 		super.buildTooltip(stack, view, lines, context);
 	}
 
+	// Tiered
+	@Override
 	public Tier getTier() {
 		return tier;
+	}
+
+	@Override
+	public Identifier getBaseId() {
+		return null;
 	}
 }

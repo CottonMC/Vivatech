@@ -1,4 +1,4 @@
-package vivatech.util;
+package vivatech.data;
 
 public class WorldUpdateFlags {
     /**

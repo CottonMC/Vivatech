@@ -12,9 +12,10 @@ public abstract class AbstractTieredMachineBlockEntity extends AbstractMachineBl
 
 	}
 
+	// Tiered
 	@Override
 	public Tier getTier() {
-		Block block = this.getWorld().getBlockState(this.getPos()).getBlock();
+		Block block = getCachedState().getBlock();
 		if (block instanceof Tiered) {
 			return ((Tiered) block).getTier();
 		} else {
@@ -24,9 +25,19 @@ public abstract class AbstractTieredMachineBlockEntity extends AbstractMachineBl
 
 	@Override
 	public Identifier getTieredId() {
-		Block block = this.getWorld().getBlockState(this.getPos()).getBlock();
+		Block block = getCachedState().getBlock();
 		if (block instanceof Tiered) {
 			return ((Tiered) block).getTieredId();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public Identifier getBaseId() {
+		Block block = getCachedState().getBlock();
+		if (block instanceof Tiered) {
+			return ((Tiered) block).getBaseId();
 		} else {
 			return null;
 		}

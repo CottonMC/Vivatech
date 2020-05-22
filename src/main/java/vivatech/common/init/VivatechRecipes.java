@@ -5,11 +5,13 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import vivatech.api.recipe.ProcessingRecipe;
 import vivatech.common.recipe.CrushingRecipe;
 import vivatech.common.recipe.CuttingRecipe;
 import vivatech.common.recipe.PressingRecipe;
 import vivatech.api.recipe.AbstractProcessingRecipe;
 
+@SuppressWarnings("unchecked")
 public class VivatechRecipes {
 
     public static final RecipeType<PressingRecipe> PRESSING;
@@ -18,7 +20,7 @@ public class VivatechRecipes {
     public static final RecipeSerializer<CrushingRecipe> CRUSHING_SERIALIZER;
     public static final RecipeType<CuttingRecipe> CUTTING;
     public static final RecipeSerializer<CuttingRecipe> CUTTING_SERIALIZER;
-
+    public static final RecipeType<ProcessingRecipe> SMELTING_RECIPE_PROXY;
 
     static {
         PRESSING = buildRecipeType(PressingRecipe.ID);
@@ -27,6 +29,7 @@ public class VivatechRecipes {
         CRUSHING_SERIALIZER = new AbstractProcessingRecipe.Serializer<>(CrushingRecipe::new, 100);
         CUTTING = buildRecipeType(CuttingRecipe.ID);
         CUTTING_SERIALIZER = new AbstractProcessingRecipe.Serializer<>(CuttingRecipe::new, 100);
+        SMELTING_RECIPE_PROXY = (RecipeType<ProcessingRecipe>) (RecipeType<?>) RecipeType.SMELTING;
     }
 
     public static void initialize() {
